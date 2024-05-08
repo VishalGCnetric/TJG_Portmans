@@ -39,7 +39,8 @@ const StyledDiv = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 20px;
+  /* padding: 20px; */
+ 
 `;
 
 const CrossBtn = styled.div`
@@ -88,29 +89,6 @@ const OpenHamburger = ({ drawer, setDrawer }) => {
       {drawer && <CrossBtn onClick={() => setDrawer(!drawer)}><ImCross/></CrossBtn>}
       <StyledDiv show={drawer}>
         <Container>
-          <button onClick={() => setDrawer(!drawer)}><IoHomeSharp/></button>
-          {showSearchInput ? (
-        <SearchContainer >
-          <input
-            type="text"
-            placeholder="Search"
-            style={{
-              border: "none",
-              padding: "5px",
-              margin: "10px",
-              borderBottom: "1px solid black",
-            }}
-          />
-          <div>
-            <img alt="" src="/svg-6.svg" style={{ height: "20px", width: "20px",cursor:"pointer" }} onClick={() => setShowSearchInput(false)}/>
-          </div>
-        </SearchContainer>
-      ) : (
-        <SearchButton onClick={() => setShowSearchInput(true)}>
-          <img alt="" src="/svg-6.svg" style={{ height: "20px", width: "20px" }} />
-          <SearchButtonText>Search</SearchButtonText>
-        </SearchButton>
-      )}
           <CustomAccordion/>
         </Container>
       </StyledDiv>
