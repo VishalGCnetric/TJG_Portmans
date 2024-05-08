@@ -21,7 +21,7 @@ const FooterLeft = memo(() => {
       <Container8>
         <Container7>
           <Form>
-          <h3 style={{marginBottom:'23px'}}>JOIN PORTMANS</h3>
+          <h2 style={{marginBottom:'23px',fontWeight:'700'}}>JOIN PORTMANS</h2>
 
             <p>
               Join today to receive 10%
@@ -95,19 +95,20 @@ const Join = styled.a`
   font-weight: 500;
   color: inherit;
   text-decoration: none;
-  color:black;
+  color:white;
 `;
 const Link = styled.div`
   width: 100%;
-  
-  background-color: yellow;
+  font-weight: 700;
+
+  background-color: #333;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   font-size: 16px;
-  // color: white;
+  color: white;
   padding-top: 8px;
   padding-bottom: 8px;
 `;
@@ -133,7 +134,7 @@ const IconFacebook = styled.img`
   height: 25px;
   overflow: hidden;
   flex-shrink: 0;
-  filter: invert(100%); /* Apply the inversion to make the icon white */
+  // filter: invert(100%); /* Apply the inversion to make the icon white */
   // border :1px solid red;
 `;
 const Link1 = styled.div`
@@ -290,7 +291,7 @@ width:40%;
   // border: 1px solid #e5e5e5;
   text-align: left;
   font-size: 14px;
-  color: white;
+  color: #333;
   @media (max-width: 768px) {
     width: 100%;
 

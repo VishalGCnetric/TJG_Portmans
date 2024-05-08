@@ -60,7 +60,7 @@ const BrandImage = styled.img`
   object-fit: contain;
   margin: 0;
   opacity: 1;
-  filter: invert(100%);
+  // filter: invert(100%);
   @media (max-width: 768px) {
     width: 80px; /* Adjust the width as needed */
     height: 80px; /* Adjust the height as needed */
