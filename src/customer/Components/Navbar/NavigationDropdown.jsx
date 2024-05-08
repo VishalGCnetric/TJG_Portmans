@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 const Container = styled.div`
     padding:15px ;
-   
     display: flex;
     justify-content:center;
     gap:30px;
@@ -20,33 +19,28 @@ const Container = styled.div`
 const MainContainer = styled.div`
   width:100%;
   margin: auto;
-
   border-bottom:1px solid #7c7c7c;
-  /* border:1px solid red; */
-  /* display: flex; */
-  /* justify-content: center; */
 `;
 
 const ListItem = styled.div`
 
   display: flex;
   justify-content: flex-end;
-  padding: 10px; /* Add padding for spacing */
- /* border-left:'2px solid #333' */
+  padding: 10px; 
+
   & > div {
-    /* border: 1px solid green; */
-    padding: 10px; /* Add padding for spacing */
+    padding: 10px; 
   }
 
   & ul {
-    list-style-type: none; /* Remove default list styles */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
   }
 
   & ul li {
-    text-decoration: none; /* Remove default text decoration */
-    margin-bottom: 5px; /* Add margin between list items */
+    text-decoration: none; 
+    margin-bottom: 5px; 
   }
 `;
 

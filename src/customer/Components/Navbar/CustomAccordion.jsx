@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { FaSearch } from "react-icons/fa";
 
 const fadeIn = keyframes`
   from {
@@ -12,14 +13,13 @@ const fadeIn = keyframes`
 `;
 
 const AccordionWrapper = styled.div`
-  width: 95%;
-  z-index: 120;
+  width: 100%;
+  z-index: 20;
 `;
 
 const AccordionItem = styled.div`
   border: 1px solid #f0f0f0;
   border-radius: 5px;
-  margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -29,7 +29,7 @@ const AccordionButton = styled.button`
   width: 100%;
   background-color: #f9f9f9;
   border: none;
-  padding: 10px;
+  padding: 15px 20px;
   text-align: left;
   cursor: pointer;
   outline: none;
@@ -42,7 +42,7 @@ const AccordionButton = styled.button`
 
   div {
     font-size: 16px;
-    color: #30497a;
+    color: #333;
     font-weight: bold;
   }
 `;
@@ -56,9 +56,10 @@ const AccordionContent = styled.div`
 
 const NestedLink = styled.a`
   display: block;
-  padding: 10px 20px;
   text-decoration: none;
-  color: #30497a;
+  color: #333;
+  padding: 10px;
+  margin-left: 30px;
   background-color: #ffffff;
   border-bottom: 1px solid #f0f0f0;
   transition: background-color 0.3s;
@@ -96,6 +97,16 @@ const CustomAccordion = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <AccordionWrapper>
+      <AccordionItem>
+            <AccordionButton >
+              <div style={{fontSize:'14px',color:'#656060'}}>Home</div>
+            </AccordionButton>
+            </AccordionItem>
+      <AccordionItem>
+            <AccordionButton >
+              <div style={{display:'flex',fontSize:'14px',color:'#656060'}}><FaSearch style={{marginRight:'10px'}}/>Search</div>
+            </AccordionButton>
+            </AccordionItem>
         {data.extraData.map((item, index) => (
           <AccordionItem key={index}>
             <AccordionButton onClick={() => toggleAccordion(index)}>
