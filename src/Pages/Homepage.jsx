@@ -77,13 +77,24 @@ const Homepage = () => {
         <HomeProductSection data={gounsPage1} section={"Women's Gouns"} />
         <HomeProductSection data={kurtaPage1} section={"Women's Kurtas"} /> */}
         {/* <HomeProductSection data={mensPantsPage1} section={"Men's Pants"} /> */}
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',gap:'10px', margin:'0px 10px'}}>
+          <div >
+            <img src={Data[0]?.url} alt="" />
+          </div>
+          <div >
+            <img src={Data[5]?.url} alt="" />
+          </div>
+          <div >
+            <img src={Data[3]?.url} alt="" />
+          </div>
+        </div>
         <img src={Data[9]?.url} alt={Data[9]?.title} />
 
         <img src={Data[7]?.url} alt={Data[7]?.title} />
 <img src={Data[6]?.url} alt={Data[6]?.title} />
-{/* {Data.map((item) => (
-          <img src={item.url} alt={item.title} style = {{width:"auto" ,height:"50%"}} />
-        ))} */}
+
+      
+       
       </div>
     </div>
   );
