@@ -17,15 +17,17 @@ const FooterLeft = memo(() => {
 
   return (
     <MarginRoot>
+     
       <Container8>
         <Container7>
           <Form>
-            <h3>JOIN JUST JEANS</h3>
+          <h3 style={{marginBottom:'23px'}}>JOIN PORTMANS</h3>
 
             <p>
               Join today to receive 10%
               off at Just Jeans for the next month & be the first to receive VIP offers and must-have denim trends.
             </p>
+            </Form>
             <Link>
               <Join
                 href="http://justjeans.jgl.com.au/shop/SubscriptionSignUpView"
@@ -34,7 +36,6 @@ const FooterLeft = memo(() => {
                 JOIN
               </Join>
             </Link>
-          </Form>
           <Container3>
             <Container2>
               <GetToKnow>GET TO KNOW US</GetToKnow>
@@ -50,7 +51,7 @@ const FooterLeft = memo(() => {
               <Itemmargin1>
                 <Item>
                   <Link1 onClick={onLinkContainer2Click}>
-                    <IconFacebook alt="" src="/icon--instagram.svg" />
+                    <IconFacebook alt="" src="/icon--instagram.svg"  />
                   </Link1>
                 </Item>
               </Itemmargin1>
@@ -94,24 +95,25 @@ const Join = styled.a`
   font-weight: 500;
   color: inherit;
   text-decoration: none;
+  color:black;
 `;
 const Link = styled.div`
   width: 100%;
   
-  background-color: #000d42;
+  background-color: yellow;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   font-size: 16px;
-  color: white;
+  // color: white;
   padding-top: 8px;
   padding-bottom: 8px;
 `;
 const Form = styled.div`
   text-align: center;
-
+  padding:10px;
 `;
 const GetToKnow = styled.b`
   
@@ -126,11 +128,13 @@ const Container2 = styled.div`
 
 `;
 const IconFacebook = styled.img`
-  width: 20px;
+  width: 25px;
   position: relative;
-  height: 20px;
+  height: 25px;
   overflow: hidden;
   flex-shrink: 0;
+  filter: invert(100%); /* Apply the inversion to make the icon white */
+  // border :1px solid red;
 `;
 const Link1 = styled.div`
   align-self: stretch;
@@ -186,14 +190,15 @@ const Container3 = styled.div`
   justify-content: space-between;
 `;
 const FrameIcon = styled.img`
-  width: 20px;
+  width: 25px;
   flex: 1;
   position: relative;
   max-height: 100%;
+
 `;
 const Svg = styled.div`
-  width: 20px;
-  border-radius: 10px;
+  width: 25px;
+  // border-radius: 10px;
   height: 20px;
   overflow: hidden;
   flex-shrink: 0;
@@ -261,6 +266,7 @@ const Container7 = styled.div`
   padding: 0px 16px;
   box-sizing: border-box;
   text-align: center;
+  padding: 32px 0px;
 
   gap: 32px;
 `;
@@ -278,13 +284,13 @@ width:40%;
   display: flex;
   flex-direction: column;
   align-text: center;
+  padding:10px 10px;
   align-items: center;
   justify-content: flex-start;
-  padding: 32px 0px;
+  // border: 1px solid #e5e5e5;
   text-align: left;
   font-size: 14px;
-  color: #000;
-  font-family: Roboto;
+  color: white;
   @media (max-width: 768px) {
     width: 100%;
 

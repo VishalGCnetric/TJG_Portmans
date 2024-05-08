@@ -13,7 +13,7 @@ const Container = styled.div`
   padding:20px;
   text-align: center;
   font-size: 16px;
-  color: #000;
+  color: white;
   font-family: Roboto;
 
   @media (max-width: 1280px) {
@@ -60,6 +60,7 @@ const BrandImage = styled.img`
   object-fit: contain;
   margin: 0;
   opacity: 1;
+  filter: invert(100%);
   @media (max-width: 768px) {
     width: 80px; /* Adjust the width as needed */
     height: 80px; /* Adjust the height as needed */

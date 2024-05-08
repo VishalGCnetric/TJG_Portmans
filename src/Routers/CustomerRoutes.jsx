@@ -19,6 +19,8 @@ import Footer from "../customer/Components/footer/Footer";
 import PaymentSuccess from "../customer/Components/paymentSuccess/PaymentSuccess";
 import RateProduct from "../customer/Components/ReviewProduct/RateProduct";
 import NotFound from "../Pages/Notfound";
+import NavBrand from "../customer/Components/Navbar/NavBrand";
+import Navbar from "../customer/Components/Navbar/Navbar";
 
 const CustomerRoutes = () => {
     const location = useLocation();
@@ -30,9 +32,10 @@ const CustomerRoutes = () => {
     // const path=["/","/home","/about","/privacy-policy","/terms-condition","/contact","/men",`/product/${productId}`]
   return (
     <div>
-
     <ThemeProvider theme={customerTheme}>
-    {showNavigation && <Navigation />}
+<NavBrand/>
+<Navbar/>
+    {/* {showNavigation && <Navigation />} */}
      <Routes>
      <Route path="/login" element={<Homepage />}></Route>
      <Route path="/register" element={<Homepage />}></Route>

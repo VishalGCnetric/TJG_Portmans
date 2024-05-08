@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 const FooterContainer = styled.div`
   width: 100%;
-  background-color: #fff;
+  // background-color: #fff;
+  color:white;
   border-top: 1px solid #e5e5e5;
   box-sizing: border-box;
   display: flex;

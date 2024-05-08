@@ -32,7 +32,7 @@ const Footer = () => {
   <FooterBrandList />
   <TermsOfUsePrivacy />
       
-      
+{/*       
       <Grid  item xs={12} sm={6} md={3}>
         <Typography className='pb-5' variant="h6" gutterBottom>
           Company
@@ -101,7 +101,7 @@ const Footer = () => {
       <Grid className='pt-20' item xs={12} >
         <Typography variant="body2" component="p" align="center">
           &copy; 2023 Cnetric. All rights reserved.
-        </Typography>
+        </Typography> */}
         {/* <Typography variant="body2" component="p" align="center">
           Made with love by Me.
         </Typography>
@@ -115,7 +115,7 @@ const Footer = () => {
             www.flaticon.com
           </Link>
         </Typography> */}
-      </Grid>
+      {/* </Grid> */}
     </Grid>
   );
 };
