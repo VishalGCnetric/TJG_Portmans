@@ -73,10 +73,20 @@ const Homepage = () => {
         <HomeProductSection data={gounsPage1} section={"Women's Gouns"} />
         <HomeProductSection data={kurtaPage1} section={"Women's Kurtas"} /> */}
         {/* <HomeProductSection data={mensPantsPage1} section={"Men's Pants"} /> */}
-
-        {Data.map((item) => (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',gap:'10px', margin:'0px 10px'}}>
+          <div >
+            <img src={Data[0]?.url} alt="" />
+          </div>
+          <div >
+            <img src={Data[5]?.url} alt="" />
+          </div>
+          <div >
+            <img src={Data[3]?.url} alt="" />
+          </div>
+        </div>
+        {/* {Data.map((item) => (
           <img src={item.url} alt={item.title} />
-        ))}
+        ))} */}
       </div>
     </div>
   );
