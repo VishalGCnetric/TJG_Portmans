@@ -24,7 +24,7 @@ const Footer = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    <Grid className='bg-black text-white mt-10 text-center' container color={'white' } sx={{ bgcolor: 'black', color: 'white', py: 3 }}>
+    <Grid className='bg-black text-white  text-center' container color={'white' } sx={{ bgcolor: 'black', color: 'white', py: 3 }}>
         <FooterWrapper>
     {isMobile ? <CustomAccordion/> : <FooterRight />}
     <FooterLeft />

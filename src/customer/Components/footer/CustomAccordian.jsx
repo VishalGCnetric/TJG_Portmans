@@ -14,11 +14,12 @@ const fadeIn = keyframes`
 const AccordionWrapper = styled.div`
   width: 100%;
   z-index:120;
+  background-color: black;
 `;
 
 const AccordionItem = styled.div`
 //   margin-bottom: 1px;
-border: 1px solid #ffff;
+border: 1px solid black;
 
   
 `;
@@ -28,15 +29,15 @@ const AccordionButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: gray;
   border: none;
   padding: 10px;
   text-align: left;
   cursor: pointer;
   outline: none;
   div{
-    font-size: 15px;
-    color: #30497a;
+    font-size: 18px;
+    color: blacka;
     
   }
   div a{
@@ -57,8 +58,8 @@ const NestedLink = styled.a`
   padding: 10px 20px;
   text-decoration: none;
   color: black;
-  background-color:#ffff;
-  border: 1px solid #f0f0f0;
+  background-color:gray;
+  border: 1px solid black;
 `;
 
 const NestedAccordionContent = styled.div`
@@ -83,7 +84,7 @@ const CustomAccordion = () => {
             <AccordionWrapper>
                 <AccordionItem>
                     <AccordionButton onClick={() => toggleAccordion(0)}>
-                        <div ><a href=""> STORES </a></div> <div>{openIndex === 0 ? '-' : '+'}</div>
+                        <div ><a href=""> STORES </a></div> <div style={{fontSize:'20px'}}>{openIndex === 0 ? '-' : '+'}</div>
                     </AccordionButton>
                     <AccordionContent isOpen={openIndex === 0}>
                         <NestedAccordionContent>

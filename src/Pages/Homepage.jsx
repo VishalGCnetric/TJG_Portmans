@@ -54,8 +54,12 @@ const Homepage = () => {
       <HomeCarousel images={banners} />
 <img src={Data[13]?.url} alt={Data[12]?.title} />
 <img src={Data[4]?.url} alt={Data[4]?.title} />
+<img src={Data[1]?.url} alt={Data[1]?.title} />
+
 <img src={Data[8]?.url} alt={Data[8]?.title} />
-<img src={Data[9]?.url} alt={Data[9]?.title} />
+<img src={Data[11]?.url} alt={Data[11]?.title} />
+<img src={Data[10]?.url} alt={Data[10]?.title} />
+
       <div className="space-y-1 py-2">
         <HomeProductSection
           data={topProducts?.slice(0, 10)}
@@ -73,10 +77,13 @@ const Homepage = () => {
         <HomeProductSection data={gounsPage1} section={"Women's Gouns"} />
         <HomeProductSection data={kurtaPage1} section={"Women's Kurtas"} /> */}
         {/* <HomeProductSection data={mensPantsPage1} section={"Men's Pants"} /> */}
+        <img src={Data[9]?.url} alt={Data[9]?.title} />
 
-        {Data.map((item) => (
-          <img src={item.url} alt={item.title} />
-        ))}
+        <img src={Data[7]?.url} alt={Data[7]?.title} />
+<img src={Data[6]?.url} alt={Data[6]?.title} />
+{/* {Data.map((item) => (
+          <img src={item.url} alt={item.title} style = {{width:"auto" ,height:"50%"}} />
+        ))} */}
       </div>
     </div>
   );
