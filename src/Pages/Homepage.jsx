@@ -14,8 +14,10 @@ import { receiveGetContent, receiveProducts } from "../action";
 const Homepage = () => {
   const [topProducts, setTopProducts] = useState();
   const [banners,setBanners]=useState()
-
+  const [Data,setData] = useState([]);
   useEffect(() => {
+    fetchData();
+
     receiveProducts().then((data) => {
       setTopProducts(data.hits);
     });
@@ -28,12 +30,32 @@ const Homepage = () => {
       setBanners(data);
     });
   }, []);
-
+  const fetchData = async () => {
+    try {
+      const res = await fetch("http://49.206.253.146:2109/content/portmans");
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await res.json();
+      setData(data);
+      console.log("Data:", data);
+      // return data; // Return the fetched data if needed
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error; // Rethrow the error if needed+
+    }
+  }
+  
+  // Call fetchData function
+  
   //   console.log("this is landing page", topProducts);
   return (
     <div className="">
       <HomeCarousel images={banners} />
-
+<img src={Data[13]?.url} alt={Data[12]?.title} />
+<img src={Data[4]?.url} alt={Data[4]?.title} />
+<img src={Data[8]?.url} alt={Data[8]?.title} />
+<img src={Data[9]?.url} alt={Data[9]?.title} />
       <div className="space-y-1 py-2">
         <HomeProductSection
           data={topProducts?.slice(0, 10)}
@@ -51,6 +73,10 @@ const Homepage = () => {
         <HomeProductSection data={gounsPage1} section={"Women's Gouns"} />
         <HomeProductSection data={kurtaPage1} section={"Women's Kurtas"} /> */}
         {/* <HomeProductSection data={mensPantsPage1} section={"Men's Pants"} /> */}
+
+        {Data.map((item) => (
+          <img src={item.url} alt={item.title} />
+        ))}
       </div>
     </div>
   );
