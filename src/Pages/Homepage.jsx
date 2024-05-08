@@ -52,8 +52,8 @@ const Homepage = () => {
   return (
     <div className="">
       <HomeCarousel images={banners} />
-<img src={Data[13]?.url} alt={Data[12]?.title} />
 <img src={Data[4]?.url} alt={Data[4]?.title} />
+<img src={Data[13]?.url} alt={Data[12]?.title} />
 <img src={Data[1]?.url} alt={Data[1]?.title} />
 
 <img src={Data[8]?.url} alt={Data[8]?.title} />
@@ -88,8 +88,8 @@ const Homepage = () => {
             <img src={Data[3]?.url} alt="" />
           </div>
         </div>
-        <img src={Data[9]?.url} alt={Data[9]?.title} />
 
+        <img src={Data[9]?.url} alt={Data[9]?.title} />
         <img src={Data[7]?.url} alt={Data[7]?.title} />
 <img src={Data[6]?.url} alt={Data[6]?.title} />
 

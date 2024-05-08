@@ -8,7 +8,7 @@ const Stores = styled.a`
   line-height: 17.5px;
   text-transform: uppercase;
   font-weight: 700;
-  color: #fff;
+  color: black;
   text-decoration: none;
 `;
 const Link = styled.div`
@@ -24,7 +24,7 @@ const FindAStore = styled.a`
   position: relative;
   letter-spacing: 0.4px;
   line-height: 17.5px;
-  color: #fff;
+  color: black;
   text-decoration: none;
 `;
 const Item = styled.div`
@@ -109,7 +109,7 @@ width:60%;
   padding: 31.3px 0px 61.5px;
   text-align: left;
   font-size: 14px;
-  color: #fff;
+  color: black;
   @media (max-width: 768px) {
     width:100%;
   }

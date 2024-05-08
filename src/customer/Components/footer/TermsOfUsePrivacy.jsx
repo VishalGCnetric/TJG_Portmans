@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const FooterContainer = styled.div`
   width: 100%;
   // background-color: #fff;
-  color:white;
-  border-top: 1px solid #e5e5e5;
+  color:black;
+  border-top: 1px solid black;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@ const LinksContainer = styled.div`
 
 const LinkWrapper = styled.div`
   align-self: stretch;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -40,7 +40,7 @@ const Link = styled.a`
   position: relative;
   letter-spacing: 0.4px;
   line-height: 15px;
-  color: inherit;
+  // color: inherit;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
