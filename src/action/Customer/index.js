@@ -22,21 +22,24 @@ export const getCartItems = () => {
 export const getCustomerNew = (data) => {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
+      // console.log(data, "data");
       post("login", data)
         .then((response) => {
-          if (response.status === 200) {
+          // console.log("response", response);
+          if (response.status === 201) {
             // console.log("this is details", response.data);
             LocalStorageService.setUserAuthAccessToken(response.data.token);
             dispatch({
               type: "GET_CUSTOMER_NEW",
               user: response?.data,
             });
-
+console.log(response.data,"response.data")
             window.location.replace("/");
             resolve(response.data);
           }
         })
         .catch((error) => {
+          console.log("Error", error);
           reject(error);
         })
         .finally();

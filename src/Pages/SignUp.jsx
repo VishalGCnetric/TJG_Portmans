@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { register } from '../Redux/Auth/Action';
 
 const Container = styled.div`
   margin-top: 20px;
@@ -99,7 +102,41 @@ const SignUp = () => {
   const [firstNameFocus, setFirstNameFocus] = useState(false);
   const [lastNameFocus, setLastNameFocus] = useState(false);
   const [mobileFocus, setMobileFocus] = useState(false);
+  const navigate = useNavigate();
+  const dispatch=useDispatch();
+  // const [openSnackBar,setOpenSnackBar]=useState(false);
+  const { auth } = useSelector((store) => store);
+  // const handleClose=()=>setOpenSnackBar(false);
 
+  const jwt=localStorage.getItem("jwt");
+
+useEffect(()=>{
+  // if(jwt){
+  //   dispatch(getUser(jwt))
+  // }
+
+},[jwt])
+
+
+  // useEffect(() => {
+  //   if (auth.user || auth.error) setOpenSnackBar(true)
+  // }, [auth.user]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+    const userData={
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+      email: data.get("email"),
+      password: data.get("password"),
+
+    }
+    console.log("user data",userData);
+    // dispatch(register(userData))
+
+  };
   const handleEmailFocus = () => {
     setEmailFocus(true);
   };
@@ -160,7 +197,7 @@ const SignUp = () => {
       <FormContainer>
         <FormWrapper>
           <p>* Indicates a required field</p>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <InputWrapper>
               <Label focus={emailFocus}>Email*</Label>
               <StyledInput
