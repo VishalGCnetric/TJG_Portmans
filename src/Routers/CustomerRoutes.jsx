@@ -21,6 +21,8 @@ import RateProduct from "../customer/Components/ReviewProduct/RateProduct";
 import NotFound from "../Pages/Notfound";
 import NavBrand from "../customer/Components/Navbar/NavBrand";
 import Navbar from "../customer/Components/Navbar/Navbar";
+import SignUp from "../Pages/SignUp";
+import SignIn from "../Pages/SignIn";
 
 const CustomerRoutes = () => {
     const location = useLocation();
@@ -45,6 +47,8 @@ const CustomerRoutes = () => {
         <Route path="/about" element={<About />}></Route>
         <Route path="/privaciy-policy" element={<PrivacyPolicy />}></Route>
         <Route path="/terms-condition" element={<TearmsCondition />}></Route>
+        <Route path="/sign-up" element={<SignUp />}></Route>
+        <Route path="/sign-in" element={<SignIn/>}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/:lavelOne/:lavelTwo/:lavelThree" element={<Product />}></Route>
         <Route path="/product/:productId" element={<ProductDetails />}></Route>

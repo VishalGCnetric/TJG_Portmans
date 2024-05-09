@@ -124,10 +124,10 @@ const DropDownHover = ({ childrenData }) => {
                     {childrenData?.children?.map((el, index) => (
                         <div key={index} >
                             <ul>
-                                <li >{el.name}</li>
+                                <li style={{cursor:'pointer'}}>{el.name}</li>
                                 <ul>
                                     {el.children?.map((child, i) => (
-                                        <li key={i}>{child.name}</li>
+                                        <li style={{cursor:'pointer'}} key={i}>{child.name}</li>
                                     ))}
                                 </ul>
                             </ul>

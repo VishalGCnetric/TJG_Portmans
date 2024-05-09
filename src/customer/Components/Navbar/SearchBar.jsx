@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import OpenHumburger from "./OpenHumburger"
+import { Link } from 'react-router-dom';
 const DROPDOWN_LINKS = [
-  { text: 'Sign In', href: '#' },
-  { text: 'Create Account', href: '#' },
+  { text: 'Sign In', href: '/sign-in' },
+  { text: 'Create Account', href: '/sign-up' },
   { text: 'Account Help', href: '#' }
 ];
 
@@ -82,7 +83,9 @@ const SearchBar = () => {
         {isDropdownVisible && (
           <DropdownMenu>
             {DROPDOWN_LINKS.map((link, index) => (
-              <DropdownItem key={index} onClick={() => handleDropdownItemClick(link)}>{link.text}</DropdownItem>
+              <DropdownItem key={index} >
+                <Link to={link.href} onClick={() => handleDropdownItemClick(link)} > {link.text}</Link>
+               </DropdownItem>
             ))}
           </DropdownMenu>
         )}

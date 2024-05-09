@@ -4,6 +4,7 @@ import HomeProductSection from "../customer/Components/Home/HomeProductSection";
 import { receiveGetContent, receiveProducts } from "../action";
 import HomeProductCard from "../customer/Components/Home/HomeProductCard";
 
+
 const Homepage = () => {
   const [topProducts, setTopProducts] = useState([]);
   const [banners, setBanners] = useState([]);
@@ -69,6 +70,7 @@ const Homepage = () => {
         {/* <span className=" text-#333 border-b-2 border-#333">SHOP NEW IN</span> */}
         <span className="text-#333 border-b-2 border-#333">SHOP KNITWEAR &amp; COATS</span>
       </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', margin: '10px 10px' }}>
             <div className="m-2">
               <img src={banners[0]?.url} alt="" />
@@ -98,6 +100,7 @@ const Homepage = () => {
          
         </div>
       )}
+
     </div>
   );
 };
