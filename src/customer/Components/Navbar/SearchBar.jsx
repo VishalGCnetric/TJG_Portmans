@@ -4,6 +4,7 @@ import OpenHumburger from "./OpenHumburger"
 import { Link } from 'react-router-dom';
 const DROPDOWN_LINKS = [
   { text: 'Sign In', href: '/sign-in' },
+  { text: 'My Account', href: '/my-account' },
   { text: 'Create Account', href: '/sign-up' },
   { text: 'Account Help', href: '#' }
 ];
