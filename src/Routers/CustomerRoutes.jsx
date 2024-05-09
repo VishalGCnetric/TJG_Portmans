@@ -23,6 +23,7 @@ import NavBrand from "../customer/Components/Navbar/NavBrand";
 import Navbar from "../customer/Components/Navbar/Navbar";
 import SignUp from "../Pages/SignUp";
 import SignIn from "../Pages/SignIn";
+import MyAccount from "../Pages/MyAccount";
 
 const CustomerRoutes = () => {
     const location = useLocation();
@@ -49,6 +50,7 @@ const CustomerRoutes = () => {
         <Route path="/terms-condition" element={<TearmsCondition />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
         <Route path="/sign-in" element={<SignIn/>}></Route>
+        <Route path="/my-account" element={<MyAccount/>}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/:lavelOne/:lavelTwo/:lavelThree" element={<Product />}></Route>
         <Route path="/product/:productId" element={<ProductDetails />}></Route>

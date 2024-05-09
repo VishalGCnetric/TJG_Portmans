@@ -111,7 +111,7 @@ const SignIn = () => {
             <StyledInput
               type="email"
               onFocus={handleEmailFocus}
-              onBlur={handleEmailBlur}
+            //   onBlur={handleEmailBlur}
             />
           </InputWrapper>
           <InputWrapper>
@@ -119,7 +119,7 @@ const SignIn = () => {
             <StyledInput
               type="password"
               onFocus={handlePasswordFocus}
-              onBlur={handlePasswordBlur}
+            //   onBlur={handlePasswordBlur}
             />
           </InputWrapper>
 
