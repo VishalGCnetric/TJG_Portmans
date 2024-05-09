@@ -6,7 +6,7 @@ import { getCartItems } from "./cart";
 
 export const receiveProducts = () => {
   return new Promise((resolve, reject) => {
-    get("products2")
+    get("products/portmans")
       .then((response) => {
         if (response.status === 200) {
           // let data = response.data;
@@ -122,7 +122,7 @@ export const receiveProductsSearch = (search) => {
 
 export const receiveGetContent = () => {
   return new Promise((resolve, reject) => {
-    get("getContent")
+    get("content/portmans")
       .then((response) => {
         if (response.status === 200) {
 

@@ -6,19 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 const handleDragStart = (e) => e.preventDefault();
 
-const HomeCarousel = () => {
+const HomeCarousel = ({images}) => {
   const navigate = useNavigate();
-  const item = homeCarouselData.map((item, index) => (
+  const item = images?.slice(4, 5).map((item, index) => (
     <img
       className="cursor-pointer"
       // onClick={() => navigate(item.path)}
-      src={`${item.image}`}
+      src={`${item.url}`}
       alt={`banner-${index + 1}`}
       onDragStart={handleDragStart}
       role="presentation"
       // style={{ height: 450, width: 1500 }}
       style={{
-        // width: "100vw",
+        width: "100vw",
         objectFit: "contain",
         // height: "350px",
 
