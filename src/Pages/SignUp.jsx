@@ -23,12 +23,13 @@ const Title = styled.div`
   }
 `;
 
+
+
 const FormContainer = styled.div`
   width:100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border:1px solid teal;
   /* margin: 0 30px;      */
 `;
 
@@ -141,12 +142,18 @@ const SignUp = () => {
 
   return (
     <Container>
+        <CenteredText marginBottom="20px">
+        <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
+      </CenteredText>
+      <CenteredText>
+        <h3>Just Jeans   Portmans   dotti   Jay jays   Jacquie</h3>
+      </CenteredText>
       <Title>
         <div>
           <h1>Sign Up</h1>
         </div>
       </Title>
-      <div style={{textAlign:'center'}}>
+      <div style={{textAlign:'center',margin:'20px  '}}>
         <p>Create an account for quick sign in and fast checkout.</p>
         <p>Plus, sign up to our emails to be the first to know about our new collections & latest offers.</p>
       </div>
