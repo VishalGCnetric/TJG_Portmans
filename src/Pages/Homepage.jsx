@@ -10,6 +10,7 @@ import HomeProductSection from "../customer/Components/Home/HomeProductSection";
 // import { mens_kurta } from "../Data/Men/men_kurta";
 // import { lengha_page1 } from "../Data/Women/LenghaCholi";
 import { receiveGetContent, receiveProducts } from "../action";
+import LoginUserForm from "../customer/Components/Auth/Login";
 
 const Homepage = () => {
   const [topProducts, setTopProducts] = useState();
@@ -96,6 +97,7 @@ const Homepage = () => {
       
        
       </div>
+      {/* <LoginUserForm/> */}
     </div>
   );
 };
