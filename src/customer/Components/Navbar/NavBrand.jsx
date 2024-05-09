@@ -56,8 +56,8 @@ const BrandIcon = styled.img`
 
 const NavBrand = () => {
   const brands = [
-    // { url: "https://justjeans.jgl.com.au/", icon: "/svg2.svg" },
-    { url: "https://portmans.jgl.com.au/", icon: "/icon--mbportmans.svg" },
+    { url: "https://justjeans.jgl.com.au/", icon: "/svg2.svg" },
+    // { url: "https://portmans.jgl.com.au/", icon: "/icon--mbportmans.svg" },
     { url: "https://dotti.jgl.com.au/", icon: "/svg9.svg" },
     { url: "https://jayjays.jgl.com.au/", icon: "/svg10.svg" },
     { url: "https://jacquie.jgl.com.au/", icon: "/svg11.svg" },
