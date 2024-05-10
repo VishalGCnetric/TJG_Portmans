@@ -93,7 +93,11 @@ const Homepage = () => {
           <div className="p-3">
             <img src={banners[6]?.url} alt={banners[6]?.title} />
           </div>
-
+          <div className="text-#333 font-semibold cursor-pointer text-#333 mt-3 mb-3">
+            {/* <span className="mr-2 text-#333 border-b-2 border-#333">SHOP TOPS</span> */}
+            <span className=" text-#333 border-b-2 border-#333">BIG DAY SELL</span>
+            {/* <span className=" mr-2 text-#333 border-b-2 border-#333">SHOP KNITWEAR &amp; COATS</span> */}
+          </div>
           <div className="p-3">
             <img src={banners[9]?.url} alt={banners[9]?.title} />
           </div>
