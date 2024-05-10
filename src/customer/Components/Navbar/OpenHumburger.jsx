@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CustomAccordion from './CustomAccordion';
 import { IoHomeSharp } from "react-icons/io5";
 import { ImCross } from "react-icons/im";
+import { useSelector } from 'react-redux';
 
 
 const MainContainer = styled.div`
@@ -84,6 +85,8 @@ const SearchContainer = styled.div`
 
 const OpenHamburger = ({ drawer, setDrawer }) => {
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const auth =useSelector(state => state.auth.auth);
+  console.log("user loged in ",auth);
   return (
     <MainContainer show={drawer}>
       {drawer && <CrossBtn onClick={() => setDrawer(!drawer)}><ImCross/></CrossBtn>}

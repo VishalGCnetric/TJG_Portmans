@@ -14,8 +14,7 @@ const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-
+const auth = useSelector(state => state.auth.auth);
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };

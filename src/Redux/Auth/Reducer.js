@@ -13,6 +13,7 @@ import {
 
 const initialState = {
   user: null,
+  auth:false,
   isLoading: false,
   error: null,
 };
@@ -25,17 +26,16 @@ const authReducer = (state = initialState, action) => {
       return { ...state, isLoading: true, error: null };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      return { ...state, isLoading: false };
+      return { ...state,auth:true, isLoading: false };
     case REGISTER_FAILURE:
     case LOGIN_FAILURE:
     case GET_USER_FAILURE:
-      return { ...state, isLoading: false, error: action.payload };
+      return { ...state, isLoading: false, error: action.payload }; // Updated: action.payload
     case GET_USER_SUCCESS:
-      return { ...state, isLoading: false, user: action.payload, error: null }; // Reset error to null
+      return { ...state, isLoading: false, user: action.payload, error: null };
     case LOGOUT:
-      localStorage.removeItem("wt");
-      localStorage.removeItem("wtt"); // Remove tokens from localStorage
-      return { ...state, user: null, error: null }; // Reset user and error
+      localStorage.removeItem("jwt"); // Updated: Remove 'jwt' token
+      return { ...state, user: null, auth:false,error: null }; // Removed: Removing 'wt' and 'wtt' tokens
     default:
       return state;
   }

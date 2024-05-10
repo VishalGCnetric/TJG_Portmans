@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { getCustomerNew } from '../action/Customer';
-
-import {  TextField, } from "@mui/material";
-
-import { getUser, login } from '../Redux/Auth/Action'; // Import login action
-import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
-
+import { TextField } from "@mui/material";
+import { login } from '../Redux/Auth/Action'; // Import login action
 
 const Container = styled.div`
   margin-top: 20px;
@@ -48,30 +41,9 @@ const InputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const Label = styled.label`
-  position: absolute;
-  top: ${({ focus }) => (focus ? '-10px' : '50%')};
-  left: 10px;
-  transform: ${({ focus }) => (focus ? 'translateY(0)' : 'translateY(-50%)')};
-  // background: white;
-  padding: 0 5px;
-  transition: all 0.3s ease;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
 const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const CheckboxInput = styled.input`
-  /* margin-right: 5px; */
 `;
 
 const Button = styled.button`
@@ -100,7 +72,7 @@ const Button2 = styled.button`
   &:hover {
     background: #e2e2e2; /* Change background color on hover */
   }
-  border:1px solid black;
+  border: 1px solid black;
 `
 
 const BrandItem = styled.div`
@@ -109,11 +81,10 @@ const BrandItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // padding: 15px 18px 15px 19px;
   min-height: 24px;
   cursor: pointer;
   box-sizing: border-box;
-  margin-left: 15px; /* Fix typo here */
+  margin-left: 15px;
   @media (max-width: 350px) {
     padding: 15px 15px 15px 15px;
   }
@@ -125,15 +96,11 @@ const BrandIcon = styled.img`
 `;
 
 const SignIn = () => {
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
   const [error, setError] = useState(null); // State variable to hold error message
-  // const dispatch = useDispatch();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { auth } = useSelector((store) => store); 
   
-
   const brands = [
     { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
     { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
@@ -142,13 +109,6 @@ const SignIn = () => {
     { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
   ];
 
-  // useEffect(() => {
-   
-
-  //   if (auth?.user?.WCToken) {
-  //     dispatch(getUser(auth?.user?.WCToken, auth?.user?.WCTrustedToken));
-  //   }
-  // }, [auth?.user?.WCToken, auth?.user?.WCTrustedToken]); 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -156,7 +116,7 @@ const SignIn = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    
+    console.log(userData)
     try {
       // Dispatch login action
       await dispatch(login(userData));
@@ -168,11 +128,7 @@ const SignIn = () => {
       // Handle login error
       setError(error.message);
     }
-    dispatch(login(userData)); // Call login action
-    alert("Sign in successful");
   };
-
-
 
   const handleBrandClick = (url) => {
     window.open(url, "_blank");
@@ -198,28 +154,27 @@ const SignIn = () => {
       <FormContainer>
         <Form onSubmit={handleSubmit}>
           <InputWrapper>
-
-          <TextField
+            <TextField
               required
-              id="username"
-              name="username"
-              label="username"
+              id="email"
+              name="email"
+              label="Email"
               fullWidth
-              autoComplete="given-name"
+              autoComplete="email"
+              type="email"
             />
           </InputWrapper>
           <InputWrapper>
-          <TextField
+            <TextField
               required
               id="password"
               name="password"
-              label="password"
+              label="Password"
               fullWidth
-              autoComplete="given-name"
-
+              autoComplete="password"
+              type="password"
             />
           </InputWrapper>
-
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
             <CheckboxContainer>
               {/* <CheckboxInput type="checkbox" id="remember-me" />
@@ -232,14 +187,7 @@ const SignIn = () => {
           {error && <div>Error: {error}</div>}
           <Button type="submit">SIGN IN</Button>
         </Form>
-
-        <div
-          style={{
-            width: '100%',
-            margin: '30px 0px',
-            borderBottom: '1px solid #333',
-          }}
-        ></div>
+        <div style={{ width: '100%', margin: '30px 0px', borderBottom: '1px solid #333' }}></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <CenteredText>
             <h3>Need An Online Account</h3>
@@ -248,7 +196,7 @@ const SignIn = () => {
             <p>Sign up now and create an account</p>
           </CenteredText>
           <CenteredText>
-            <Button2 >CREATE ACCOUNT</Button2>
+            <Button2>CREATE ACCOUNT</Button2>
           </CenteredText>
         </div>
       </FormContainer>

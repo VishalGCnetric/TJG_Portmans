@@ -15,14 +15,14 @@ import {
 import { API_BASE_URL } from '../../config/api';
 
 // Register action creators
-const registerRequest = () => ({ type: REGISTER_REQUEST });
-const registerSuccess = (user) => ({ type: REGISTER_SUCCESS, payload: user });
-const registerFailure = error => ({ type: REGISTER_FAILURE, payload: error });
+export const registerRequest = () => ({ type: REGISTER_REQUEST });
+export const registerSuccess = (user) => ({ type: REGISTER_SUCCESS, payload: user });
+export const registerFailure = error => ({ type: REGISTER_FAILURE, payload: error });
 
 export const register = userData => async dispatch => {
   dispatch(registerRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}/signup`, userData);
+    const response = await axios.post(`${API_BASE_URL}signup`, userData);
     const user = response.data;
     localStorage.setItem("jwt", user.jwt);
     dispatch(registerSuccess(user));
@@ -32,14 +32,14 @@ export const register = userData => async dispatch => {
 };
 
 // Login action creators
-const loginRequest = () => ({ type: LOGIN_REQUEST });
-const loginSuccess = user => ({ type: LOGIN_SUCCESS, payload: user });
-const loginFailure = error => ({ type: LOGIN_FAILURE, payload: error });
+export const loginRequest = () => ({ type: LOGIN_REQUEST });
+export const loginSuccess = user => ({ type: LOGIN_SUCCESS, payload: user });
+export const loginFailure = error => ({ type: LOGIN_FAILURE, payload: error });
 
 export const login = userData => async dispatch => {
   dispatch(loginRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}/login`, userData);
+    const response = await axios.post(`${API_BASE_URL}login`, userData); // Corrected API URL
     const user = response.data;
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
@@ -51,19 +51,23 @@ export const login = userData => async dispatch => {
 };
 
 // Get user details action creator
+export const getUserRequest = () => ({ type: GET_USER_REQUEST });
+export const getUserSuccess = user => ({ type: GET_USER_SUCCESS, payload: user });
+export const getUserFailure = error => ({ type: GET_USER_FAILURE, payload: error });
+
 export const getUser = () => async dispatch => {
-  dispatch({ type: GET_USER_REQUEST });
+  dispatch(getUserRequest());
   try {
-    const response = await axios.get(`${API_BASE_URL}/info`, {
+    const response = await axios.get(`${API_BASE_URL}info`, {
       headers: {
         'wt': localStorage.getItem("wt"),
         'wtt': localStorage.getItem("wtt")
       }
     });
     const user = response.data;
-    dispatch({ type: GET_USER_SUCCESS, payload: user });
+    dispatch(getUserSuccess(user));
   } catch (error) {
-    dispatch({ type: GET_USER_FAILURE, payload: error.message });
+    dispatch(getUserFailure(error.message));
   }
 };
 
