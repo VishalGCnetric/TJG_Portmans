@@ -13,6 +13,7 @@ import {
   LOGOUT
 } from './ActionTypes';
 import { API_BASE_URL } from '../../config/api';
+import { WidthWideOutlined } from '@mui/icons-material';
 
 // Register action creators
 export const registerRequest = () => ({ type: REGISTER_REQUEST });
@@ -22,9 +23,11 @@ export const registerFailure = error => ({ type: REGISTER_FAILURE, payload: erro
 export const register = userData => async dispatch => {
   dispatch(registerRequest());
   try {
+    console.log(userData,"register");
     const response = await axios.post(`${API_BASE_URL}signup`, userData);
     const user = response.data;
-    localStorage.setItem("jwt", user.jwt);
+    // localStorage.setItem("jwt", user.jwt);
+    alert("registration successful")
     dispatch(registerSuccess(user));
   } catch (error) {
     dispatch(registerFailure(error.message));
@@ -43,7 +46,8 @@ export const login = userData => async dispatch => {
     const user = response.data;
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
-    dispatch(getUser());
+    // dispatch(getUser());
+alert("login successful")
     dispatch(loginSuccess(user));
   } catch (error) {
     dispatch(loginFailure(error.message));

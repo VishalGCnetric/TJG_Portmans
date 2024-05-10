@@ -124,10 +124,12 @@ const Card = styled.div`
 
 const MyAccount = () => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [profile,setProfile]=useState({});
   const { user } = useSelector((state) => state.auth);
   const wt = localStorage.getItem('wt');
   const wtt = localStorage.getItem('wtt');
 const fullname = user?.firstName + " " + user?.lastName;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -142,6 +144,7 @@ const fullname = user?.firstName + " " + user?.lastName;
             },
           });
           const data = response.data;
+          setProfile(data);
           console.log('req User ', data);
        
         }
@@ -192,7 +195,7 @@ const fullname = user?.firstName + " " + user?.lastName;
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <InfoBox>
-            <p>Name:{user && fullname} </p>
+            <p>Name:{profile?.firstName + " " + profile?.lastName} </p>
 
             <p>Primary Address:</p>
             <Button>EDIT PRIMARY ADDRESS</Button>
