@@ -1,6 +1,5 @@
-import React, { useState , useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
 
@@ -102,40 +101,30 @@ const SignUp = () => {
   const [firstNameFocus, setFirstNameFocus] = useState(false);
   const [lastNameFocus, setLastNameFocus] = useState(false);
   const [mobileFocus, setMobileFocus] = useState(false);
-  const navigate = useNavigate();
-  const dispatch=useDispatch();
-  // const [openSnackBar,setOpenSnackBar]=useState(false);
-  const { auth } = useSelector((store) => store);
-  // const handleClose=()=>setOpenSnackBar(false);
+  const [error, setError] = useState(null); // State variable to hold error message
+  const dispatch = useDispatch();
 
-  const jwt=localStorage.getItem("jwt");
-
-useEffect(()=>{
-  // if(jwt){
-  //   dispatch(getUser(jwt))
-  // }
-
-},[jwt])
-
-
-  // useEffect(() => {
-  //   if (auth.user || auth.error) setOpenSnackBar(true)
-  // }, [auth.user]);
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    const userData={
+    const userData = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
+    };
 
+    try {
+      // Dispatch register action
+      await dispatch(register(userData));
+      // Reset error state
+      setError(null);
+      // Show success message
+      alert("Account created successfully");
+    } catch (error) {
+      // Handle registration error
+      setError(error.message);
     }
-    console.log("user data",userData);
-    // dispatch(register(userData))
-
   };
   const handleEmailFocus = () => {
     setEmailFocus(true);
@@ -254,7 +243,7 @@ useEffect(()=>{
                 </label>
               </CheckboxContainer>
             </div>
-
+            {error && <div>Error: {error}</div>}
             <Button>CREATE ACCOUNT</Button>
           </Form>
         </FormWrapper>
