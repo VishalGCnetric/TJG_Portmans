@@ -1,6 +1,5 @@
-import React, { useState , useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
 import {  TextField } from "@mui/material";
@@ -87,11 +86,18 @@ const BrandIcon = styled.img`
 `;
 
 const SignUp = () => {
+
   const navigate = useNavigate();
-  const dispatch=useDispatch();
   const { auth } = useSelector((store) => store);
   const jwt = localStorage.getItem("jwt");
 
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [firstNameFocus, setFirstNameFocus] = useState(false);
+  const [lastNameFocus, setLastNameFocus] = useState(false);
+  const [mobileFocus, setMobileFocus] = useState(false);
+  const [error, setError] = useState(null); // State variable to hold error message
+  const dispatch = useDispatch();
   const brands = [
     { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
     { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
@@ -100,23 +106,36 @@ const SignUp = () => {
     { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
   ];
 
-  useEffect(()=>{
-    // if(jwt){
-    //   dispatch(getUser(jwt))
-    // }
-  },[jwt]);
+ 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const userData={
+    const userData = {
+
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
     };
+
     console.log("user data",userData);
     // dispatch(register(userData))
+
+
+    try {
+      // Dispatch register action
+      await dispatch(register(userData));
+      // Reset error state
+      setError(null);
+      // Show success message
+      alert("Account created successfully");
+    } catch (error) {
+      // Handle registration error
+      setError(error.message);
+    }
+  };
+
   };
 
   const handleBrandClick = (url) => {
@@ -210,6 +229,9 @@ const SignUp = () => {
               </label>
               </div>
             </div>
+
+            {error && <div>Error: {error}</div>}
+
             <Button>CREATE ACCOUNT</Button>
           </Form>
         </FormWrapper>

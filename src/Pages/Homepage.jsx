@@ -11,7 +11,7 @@ const Homepage = () => {
 
   useEffect(() => {
     receiveProducts().then((data) => {
-      console.log("this is top products", data.hits);
+      // console.log("this is top products", data.hits);
       setTopProducts(data.hits);
     });
   }, []);
@@ -19,7 +19,7 @@ const Homepage = () => {
   useEffect(() => {
     receiveGetContent()
       .then((data) => {
-        console.log("this is banners", data);
+        // console.log("this is banners", data);
         setBanners(data);
       })
       .catch((error) => {

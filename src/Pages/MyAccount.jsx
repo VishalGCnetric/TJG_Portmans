@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
 
-// Styled Components
+import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { API_BASE_URL } from '../config/api';
+
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +35,6 @@ const Sidebar = styled.div`
     
   }
 
- 
 
   h3 {
     margin-bottom: 10px;
@@ -129,52 +133,56 @@ const Card = styled.div`
 
 // React Component
 const MyAccount = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
 
-  const handleToggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+  const { user } = useSelector(state => state.auth);
+  const wt = localStorage.getItem("wt");
+  const wtt = localStorage.getItem("wtt");
+  console.log(user.firstName);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/info`, {
+          headers: {
+            'wt': wt || user?.WCToken,
+            'wtt': wtt || user?.WCTrustedToken
+          }
+        });
+        const data = response.data;
+        console.log("req User ", data);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+
+    fetchData();
+  }, [user, wt, wtt]);
 
   return (
     <Container>
-     
-        <Sidebar>
-          <h3>My Account</h3>
-          <hr />
-          <ul>
-            <li>Account Home</li>
-            <li>Primary Address</li>
-            <li>Address Book</li>
-            <li>Change Password</li>
-            <li>Subscriptions</li>
-            <li>Saved Payments</li>
-            <li>My Orders</li>
-            <li>Sign Out</li>
-          </ul>
-        </Sidebar>
-  
-       
+      <Sidebar>
+        <h3>My Account</h3>
+        <hr />
+        <ul>
+          <li>Account Home</li>
+          <li>Primary Address</li>
+          <li>Address Book</li>
+          <li>Change Password</li>
+          <li>Subscriptions</li>
+          <li>Saved Payments</li>
+          <li>My Orders</li>
+          <li>Sign Out</li>
+        </ul>
+      </Sidebar>
 
       <MainContent>
-      <SelectBar>
-          <select onChange={handleToggleSidebar}>
-            <option value="account">Account Home</option>
-            <option value="address">Address Book</option>
-            <option value="changepassword">Change Password</option>
-            <option value="subscription">Subscriptions</option>
-            <option value="payment">Saved Payments</option>
-            <option value="orders">My Orders</option>
-            <option value="signout">Sign Out</option>
-          </select>
-        </SelectBar>
-  
-        <InfoBox>
+        <div style={{ backgroundColor: '#e7e7e7', padding: '10px', marginBottom: '10px' }}>
           <h2>Account Home - My Details</h2>
-        </InfoBox>
+        </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <InfoBox style={{ backgroundColor: 'white' }}>
-            <p>Name: Sajjak Ali</p>
+          <InfoBox>
+            <p>Name: {`${user?.firstName} ${user?.lastName}`}</p>
+
             <p>Primary Address:</p>
             <Button>EDIT PRIMARY ADDRESS</Button>
             <Button>EDIT ADDRESS BOOK</Button>
