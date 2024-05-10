@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { getCustomerNew } from '../action/Customer';
-import { getUser } from '../Redux/Auth/Action';
+import { getUser, login } from '../Redux/Auth/Action'; // Import login action
+import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 const Container = styled.div`
   margin-top: 20px;
@@ -101,11 +102,13 @@ const BrandIcon = styled.img`
 const SignIn = () => {
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
+  const [error, setError] = useState(null); // State variable to hold error message
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
-  // const [openSnackBar, setOpenSnackBar] = useState(false);
-  const { auth, newUser } = useSelector((store) => store);
+  const { auth } = useSelector((store) => store); 
+  
+
   const brands = [
     { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
     { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
@@ -114,33 +117,36 @@ const SignIn = () => {
     { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
   ];
 
-  // const handleCloseSnakbar = () => setOpenSnackBar(false);
-  console.log(jwt)
-  useEffect(() => {
-    if (jwt) {
-      dispatch(getUser(jwt));
-    }
-  }, [jwt]);
-
   // useEffect(() => {
-  //   if (newUser?.newUser?.user || auth.error) setOpenSnackBar(true);
-  // }, [newUser?.newUser?.user]);
+   
 
-  const handleSubmit = (event) => {
+  //   if (auth?.user?.WCToken) {
+  //     dispatch(getUser(auth?.user?.WCToken, auth?.user?.WCTrustedToken));
+  //   }
+  // }, [auth?.user?.WCToken, auth?.user?.WCTrustedToken]); 
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-// console.log(data,"data form")
     const userData = {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log("login user", userData);
-
-    // dispatch(login(userData));
-    dispatch(getCustomerNew(userData));
+    
+    try {
+      // Dispatch login action
+      await dispatch(login(userData));
+      // Reset error state
+      setError(null);
+      // Show success message
+      alert("Sign in successful");
+    } catch (error) {
+      // Handle login error
+      setError(error.message);
+    }
+    dispatch(login(userData)); // Call login action
+    alert("Sign in successful");
   };
 
-  console.log("this is state", newUser?.newUser?.user?.name);
   const handleEmailFocus = () => {
     setEmailFocus(true);
   };
@@ -160,6 +166,7 @@ const SignIn = () => {
   const handleBrandClick = (url) => {
     window.open(url, "_blank");
   };
+
   return (
     <Container>
       <CenteredText marginBottom="20px">
@@ -180,22 +187,21 @@ const SignIn = () => {
       <FormContainer>
         <Form onSubmit={handleSubmit}>
           <InputWrapper>
-            <Label focus={emailFocus}>email*</Label>
+            <Label focus={emailFocus}>Email*</Label>
             <StyledInput
               type="email"
               name="email"
               onFocus={handleEmailFocus}
-              // onBlur={handleEmailBlur}
-
+              // onBlur={handleEmailBlur} // Add onBlur event handler
             />
           </InputWrapper>
           <InputWrapper>
-            <Label focus={passwordFocus}>password*</Label>
+            <Label focus={passwordFocus}>Password*</Label>
             <StyledInput
               type="password"
               name="password"
               onFocus={handlePasswordFocus}
-
+              // onBlur={handlePasswordBlur} // Add onBlur event handler
             />
           </InputWrapper>
 
@@ -208,7 +214,7 @@ const SignIn = () => {
               <Link to="#">Forgot Password</Link>
             </CenteredText>
           </div>
-
+          {error && <div>Error: {error}</div>}
           <Button type="submit">SIGN IN</Button>
         </Form>
 

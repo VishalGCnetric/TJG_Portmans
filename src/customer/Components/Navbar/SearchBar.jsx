@@ -7,6 +7,7 @@ const DROPDOWN_LINKS = [
   { text: 'My Account', href: '/my-account' },
   { text: 'Create Account', href: '/sign-up' },
   { text: 'Account Help', href: '#' }
+//  { text: 'Sign Out', href: '' }
 ];
 
 const SearchBar = () => {
@@ -82,6 +83,8 @@ const SearchBar = () => {
           onClick={toggleDropdown}
         />
         {isDropdownVisible && (
+          <div>
+
           <DropdownMenu>
             {DROPDOWN_LINKS.map((link, index) => (
               <DropdownItem key={index} >
@@ -89,6 +92,7 @@ const SearchBar = () => {
                </DropdownItem>
             ))}
           </DropdownMenu>
+          </div>
         )}
         <img alt="fevorite" src="/icon--wishlist.svg" />
         <img alt="shopping-cart" src="/icon--bag.svg" />
