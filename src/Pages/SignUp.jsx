@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
-import {  TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -89,40 +89,22 @@ const BrandIcon = styled.img`
 const SignUp = () => {
 
   const navigate = useNavigate();
-  const { auth } = useSelector((store) => store);
-  const jwt = localStorage.getItem("jwt");
-
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-  const [firstNameFocus, setFirstNameFocus] = useState(false);
-  const [lastNameFocus, setLastNameFocus] = useState(false);
-  const [mobileFocus, setMobileFocus] = useState(false);
-  const [error, setError] = useState(null); // State variable to hold error message
   const dispatch = useDispatch();
-  const brands = [
-    { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
-    { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
-    { url: "https://portmans.jgl.com.au/", image: "/svg3.svg" },
-    { url: "https://jacquie.jgl.com.au/", image: "/svg6.svg" },
-    { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
-  ];
 
- 
+  const [error, setError] = useState(null); // State variable to hold error message
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
-
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
+      phoneNumber: data.get("phoneNumber"), // Use phoneNumber instead of mobile
     };
 
-    console.log("user data",userData);
-    // dispatch(register(userData))
-
+    console.log("user data", userData);
 
     try {
       // Dispatch register action
@@ -137,30 +119,17 @@ const SignUp = () => {
     }
   };
 
-
-
-  const handleBrandClick = (url) => {
-    window.open(url, "_blank");
-  };
-
   return (
     <Container>
       <CenteredText marginBottom="20px">
         <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
       </CenteredText>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-        {brands.map((brand, index) => (
-          <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
-            <BrandIcon src={brand.image} alt="" />
-          </BrandItem>
-        ))}
-      </div>
       <Title>
         <div>
           <h1>Sign Up</h1>
         </div>
       </Title>
-      <div style={{textAlign:'center',margin:'20px'}}>
+      <div style={{ textAlign: 'center', margin: '20px' }}>
         <p>Create an account for quick sign in and fast checkout.</p>
         <p>Plus, sign up to our emails to be the first to know about our new collections & latest offers.</p>
       </div>
@@ -168,7 +137,7 @@ const SignUp = () => {
         <FormWrapper>
           <p>* Indicates a required field</p>
           <Form onSubmit={handleSubmit}>
-          <InputWrapper>
+            <InputWrapper>
               <TextField
                 required
                 id="firstname"
@@ -185,7 +154,7 @@ const SignUp = () => {
                 name="lastName"
                 label="Last Name"
                 fullWidth
-                autoComplete="given-name"
+                autoComplete="family-name"
               />
             </InputWrapper>
             <InputWrapper>
@@ -195,7 +164,7 @@ const SignUp = () => {
                 name="email"
                 label="Email"
                 fullWidth
-                autoComplete="given-name"
+                autoComplete="email"
               />
             </InputWrapper>
             <InputWrapper>
@@ -206,28 +175,27 @@ const SignUp = () => {
                 type="password"
                 label="Password"
                 fullWidth
-                autoComplete="given-name"
+                autoComplete="new-password"
               />
             </InputWrapper>
-           
             <InputWrapper>
               <TextField
                 required
-                id="mobile"
-                name="mobile"
-                label="Mobile"
+                id="phonenumber"
+                name="phoneNumber" // Use phoneNumber instead of mobile
+                label="Phone Number"
                 fullWidth
-                autoComplete="given-name"
+                autoComplete="tel"
               />
             </InputWrapper>
-            <div style={{ marginBottom: '10px',display:'flex',gap:'10px' }}>
-              <div >
-              <input style={{height:'20px', width:'20px',marginTop:'5px'}} type="checkbox" id="terms" />
+            <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
+              <div>
+                <input style={{ height: '20px', width: '20px', marginTop: '5px' }} type="checkbox" id="terms" />
               </div>
               <div>
-              <label htmlFor="terms">
-                Sign up to Portmans emails and receive 15% off your next full price purchase at Portmans.
-              </label>
+                <label htmlFor="terms">
+                  Sign up to Portmans emails and receive 15% off your next full price purchase at Portmans.
+                </label>
               </div>
             </div>
 
@@ -239,12 +207,6 @@ const SignUp = () => {
         <ImageWrapper>
           <img
             src="https://portmans.jgl.com.au/RJ/aurora/images/espot/static/CreateAccount/PO23AW_CreateAccount_1.jpg"
-            // alt=""
-            // style={{
-            //   width: '100%',
-            //   objectFit: 'cover',
-            //   borderRadius: '8px',
-            // }}
           />
         </ImageWrapper>
       </FormContainer>
