@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getCustomerNew } from '../action/Customer';
 import { getUser } from '../Redux/Auth/Action';
+import {  TextField, } from "@mui/material";
 
 const Container = styled.div`
   margin-top: 20px;
@@ -75,7 +76,26 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background: #2d2d2d; /* Change background color on hover */
+  }
 `;
+
+const Button2 = styled.button`
+  width: 100%;
+  padding: 10px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background: #e2e2e2; /* Change background color on hover */
+  }
+  border:1px solid black;
+`
 
 const BrandItem = styled.div`
   flex: 1;
@@ -141,21 +161,7 @@ const SignIn = () => {
   };
 
   console.log("this is state", newUser?.newUser?.user?.name);
-  const handleEmailFocus = () => {
-    setEmailFocus(true);
-  };
-
-  const handleEmailBlur = () => {
-    setEmailFocus(false);
-  };
-
-  const handlePasswordFocus = () => {
-    setPasswordFocus(true);
-  };
-
-  const handlePasswordBlur = () => {
-    setPasswordFocus(false);
-  };
+ 
 
   const handleBrandClick = (url) => {
     window.open(url, "_blank");
@@ -180,29 +186,30 @@ const SignIn = () => {
       <FormContainer>
         <Form onSubmit={handleSubmit}>
           <InputWrapper>
-            <Label focus={emailFocus}>email*</Label>
-            <StyledInput
-              type="email"
-              name="email"
-              onFocus={handleEmailFocus}
-              // onBlur={handleEmailBlur}
-
+          <TextField
+              required
+              id="username"
+              name="username"
+              label="username"
+              fullWidth
+              autoComplete="given-name"
             />
           </InputWrapper>
           <InputWrapper>
-            <Label focus={passwordFocus}>password*</Label>
-            <StyledInput
-              type="password"
+          <TextField
+              required
+              id="password"
               name="password"
-              onFocus={handlePasswordFocus}
-
+              label="password"
+              fullWidth
+              autoComplete="given-name"
             />
           </InputWrapper>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" id="remember-me" />
-              <label htmlFor="remember-me">Remember Me</label>
+              {/* <CheckboxInput type="checkbox" id="remember-me" />
+              <label htmlFor="remember-me">Remember Me</label> */}
             </CheckboxContainer>
             <CenteredText>
               <Link to="#">Forgot Password</Link>
@@ -227,7 +234,7 @@ const SignIn = () => {
             <p>Sign up now and create an account</p>
           </CenteredText>
           <CenteredText>
-            <Button>CREATE ACCOUNT</Button>
+            <Button2 >CREATE ACCOUNT</Button2>
           </CenteredText>
         </div>
       </FormContainer>
