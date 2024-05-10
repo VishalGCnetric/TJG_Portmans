@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
+import {  TextField } from "@mui/material";
 
 const Container = styled.div`
   margin-top: 20px;
@@ -25,64 +26,37 @@ const Title = styled.div`
   }
 `;
 
-
-
 const FormContainer = styled.div`
-  width:100%;
   display: flex;
+  padding: 0px 100px;
+  flex-direction: row;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  /* margin: 0 30px;      */
+  @media (max-width: 768px) {
+    padding: 0px 10px;
+  }
 `;
 
 const FormWrapper = styled.div`
-  flex: 1;
-  /* width:70%; */
-  margin: 0 100px;
+  width: 100%;
+  max-width: 600px;
+  margin-right: 20px;
 `;
 
 const ImageWrapper = styled.div`
   flex: 1;
-
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Form = styled.form`
   padding: 20px;
-  /* background-color: #f9f9f9; */
   border-radius: 8px;
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 `;
 
 const InputWrapper = styled.div`
-  position: relative;
   margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  position: absolute;
-  top: ${({ focus }) => (focus ? '-10px' : '50%')};
-  left: 10px;
-  transform: ${({ focus }) =>
-    focus ? 'translateY(0)' : 'translateY(-50%)'};
-  background: white;
-  padding: 0 5px;
-  transition: all 0.3s ease;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const CheckboxInput = styled.input`
-  /* margin-right: 5px; */
 `;
 
 const Button = styled.button`
@@ -93,9 +67,30 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background: #2d2d2d; /* Change background color on hover */
+  }
+`;
+
+const BrandItem = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const BrandIcon = styled.img`
+  width: auto;
+  height: 50%;
 `;
 
 const SignUp = () => {
+
+  const navigate = useNavigate();
+  const { auth } = useSelector((store) => store);
+  const jwt = localStorage.getItem("jwt");
+
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [firstNameFocus, setFirstNameFocus] = useState(false);
@@ -103,16 +98,30 @@ const SignUp = () => {
   const [mobileFocus, setMobileFocus] = useState(false);
   const [error, setError] = useState(null); // State variable to hold error message
   const dispatch = useDispatch();
+  const brands = [
+    { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
+    { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
+    { url: "https://portmans.jgl.com.au/", image: "/svg3.svg" },
+    { url: "https://jacquie.jgl.com.au/", image: "/svg6.svg" },
+    { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
+  ];
+
+ 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
+
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
     };
+
+    console.log("user data",userData);
+    // dispatch(register(userData))
+
 
     try {
       // Dispatch register action
@@ -126,60 +135,31 @@ const SignUp = () => {
       setError(error.message);
     }
   };
-  const handleEmailFocus = () => {
-    setEmailFocus(true);
+
   };
 
-  const handleEmailBlur = () => {
-    setEmailFocus(false);
-  };
-
-  const handlePasswordFocus = () => {
-    setPasswordFocus(true);
-  };
-
-  const handlePasswordBlur = () => {
-    setPasswordFocus(false);
-  };
-
-  const handleFirstNameFocus = () => {
-    setFirstNameFocus(true);
-  };
-
-  const handleFirstNameBlur = () => {
-    setFirstNameFocus(false);
-  };
-
-  const handleLastNameFocus = () => {
-    setLastNameFocus(true);
-  };
-
-  const handleLastNameBlur = () => {
-    setLastNameFocus(false);
-  };
-
-  const handleMobileFocus = () => {
-    setMobileFocus(true);
-  };
-
-  const handleMobileBlur = () => {
-    setMobileFocus(false);
+  const handleBrandClick = (url) => {
+    window.open(url, "_blank");
   };
 
   return (
     <Container>
-        <CenteredText marginBottom="20px">
+      <CenteredText marginBottom="20px">
         <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
       </CenteredText>
-      <CenteredText>
-        <h3>Just Jeans   Portmans   dotti   Jay jays   Jacquie</h3>
-      </CenteredText>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+        {brands.map((brand, index) => (
+          <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
+            <BrandIcon src={brand.image} alt="" />
+          </BrandItem>
+        ))}
+      </div>
       <Title>
         <div>
           <h1>Sign Up</h1>
         </div>
       </Title>
-      <div style={{textAlign:'center',margin:'20px  '}}>
+      <div style={{textAlign:'center',margin:'20px'}}>
         <p>Create an account for quick sign in and fast checkout.</p>
         <p>Plus, sign up to our emails to be the first to know about our new collections & latest offers.</p>
       </div>
@@ -187,74 +167,83 @@ const SignUp = () => {
         <FormWrapper>
           <p>* Indicates a required field</p>
           <Form onSubmit={handleSubmit}>
-            <InputWrapper>
-              <Label focus={emailFocus}>Email*</Label>
-              <StyledInput
-                type="email"
-                onFocus={handleEmailFocus}
-                onBlur={handleEmailBlur}
+          <InputWrapper>
+              <TextField
+                required
+                id="firstname"
+                name="firstName"
+                label="First Name"
+                fullWidth
+                autoComplete="given-name"
               />
             </InputWrapper>
             <InputWrapper>
-              <Label focus={passwordFocus}>Password*</Label>
-              <StyledInput
+              <TextField
+                required
+                id="lastname"
+                name="lastName"
+                label="Last Name"
+                fullWidth
+                autoComplete="given-name"
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <TextField
+                required
+                id="email"
+                name="email"
+                label="Email"
+                fullWidth
+                autoComplete="given-name"
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <TextField
+                required
+                id="password"
+                name="password"
                 type="password"
-                onFocus={handlePasswordFocus}
-                onBlur={handlePasswordBlur}
+                label="Password"
+                fullWidth
+                autoComplete="given-name"
               />
             </InputWrapper>
+           
             <InputWrapper>
-              <Label focus={firstNameFocus}>First Name*</Label>
-              <StyledInput
-                type="text"
-                onFocus={handleFirstNameFocus}
-                onBlur={handleFirstNameBlur}
+              <TextField
+                required
+                id="mobile"
+                name="mobile"
+                label="Mobile"
+                fullWidth
+                autoComplete="given-name"
               />
             </InputWrapper>
-            <InputWrapper>
-              <Label focus={lastNameFocus}>Last Name*</Label>
-              <StyledInput
-                type="text"
-                onFocus={handleLastNameFocus}
-                onBlur={handleLastNameBlur}
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <Label focus={mobileFocus}>Mobile*</Label>
-              <StyledInput
-                type="text"
-                onFocus={handleMobileFocus}
-                onBlur={handleMobileBlur}
-              />
-            </InputWrapper>
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: '10px',
-              }}
-            >
-              <CheckboxContainer>
-                <CheckboxInput type="checkbox" id="terms" />
-                <label htmlFor="terms">
-                  Sign up to Portmans emails and receive 15% off your next
-                  full price purchase at Portmans.
-                </label>
-              </CheckboxContainer>
+            <div style={{ marginBottom: '10px',display:'flex',gap:'10px' }}>
+              <div >
+              <input style={{height:'20px', width:'20px',marginTop:'5px'}} type="checkbox" id="terms" />
+              </div>
+              <div>
+              <label htmlFor="terms">
+                Sign up to Portmans emails and receive 15% off your next full price purchase at Portmans.
+              </label>
+              </div>
             </div>
+
             {error && <div>Error: {error}</div>}
+
             <Button>CREATE ACCOUNT</Button>
           </Form>
         </FormWrapper>
         <ImageWrapper>
           <img
             src="https://portmans.jgl.com.au/RJ/aurora/images/espot/static/CreateAccount/PO23AW_CreateAccount_1.jpg"
-            alt=""
-            style={{
-              width: '75%',
-              objectFit: 'cover',
-            }}
+            // alt=""
+            // style={{
+            //   width: '100%',
+            //   objectFit: 'cover',
+            //   borderRadius: '8px',
+            // }}
           />
         </ImageWrapper>
       </FormContainer>

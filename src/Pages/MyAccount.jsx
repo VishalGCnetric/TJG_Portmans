@@ -1,27 +1,51 @@
+
+import React, { useState } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { API_BASE_URL } from '../config/api';
 
-// Styled Components
+
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 20px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Sidebar = styled.div`
-  width: 20%;
+  width: 100%;
   padding-right: 20px;
+  margin-bottom: 20px;
+ 
+  
+  @media (max-width: 768px) {
+   display: none;
+    
+  }
+
+  @media (min-width: 768px) {
+    width: 20%;
+    padding-right: 20px;
+    margin-bottom: 0;
+    
+  }
+
+
   h3 {
     margin-bottom: 10px;
     font-weight: 600;
   }
+
   ul {
     list-style-type: none;
     padding: 0;
   }
+
   ul li {
     padding: 2px 0;
     cursor: pointer;
@@ -34,12 +58,43 @@ const Sidebar = styled.div`
 const MainContent = styled.div`
   width: 100%;
   padding-left: 20px;
+
+  @media (min-width: 768px) {
+    width: 80%;
+    padding-left: 20px;
+  }
 `;
 
-const InfoBox = styled.div`
-  width: 70%;
+const SelectBar = styled.div`
+  display: none;
+  border:1px solid black;
   padding: 10px;
   margin-bottom: 10px;
+  select{
+    width: 100%;
+  }
+  option{
+    width: 100%;
+  }
+  @media (max-width: 768px) {
+    display: block;
+  }
+
+`
+
+const InfoBox = styled.div`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #e7e7e7;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  @media (min-width: 768px) {
+    width: 70%;
+  }
 `;
 
 const Button = styled.button`
@@ -52,11 +107,22 @@ const Button = styled.button`
   text-align: center;
   text-decoration: none;
   border: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #2d2d2d;
+  }
 `;
 
 const RightPanel = styled.div`
-  width: 30%;
+  width: 100%;
   padding-left: 20px;
+
+  @media (min-width: 768px) {
+    width: 30%;
+    padding-left: 20px;
+  
+  }
 `;
 
 const Card = styled.div`
@@ -67,6 +133,7 @@ const Card = styled.div`
 
 // React Component
 const MyAccount = () => {
+
   const { user } = useSelector(state => state.auth);
   const wt = localStorage.getItem("wt");
   const wtt = localStorage.getItem("wtt");
@@ -115,6 +182,7 @@ const MyAccount = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <InfoBox>
             <p>Name: {`${user?.firstName} ${user?.lastName}`}</p>
+
             <p>Primary Address:</p>
             <Button>EDIT PRIMARY ADDRESS</Button>
             <Button>EDIT ADDRESS BOOK</Button>
