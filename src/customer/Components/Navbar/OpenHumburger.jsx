@@ -92,7 +92,7 @@ const OpenHamburger = ({ drawer, setDrawer }) => {
       {drawer && <CrossBtn onClick={() => setDrawer(!drawer)}><ImCross/></CrossBtn>}
       <StyledDiv show={drawer}>
         <Container>
-          <CustomAccordion/>
+          <CustomAccordion drawer={drawer} setDrawer={setDrawer}/>
         </Container>
       </StyledDiv>
     </MainContainer>

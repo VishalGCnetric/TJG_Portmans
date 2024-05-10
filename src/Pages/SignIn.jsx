@@ -196,7 +196,8 @@ const SignIn = () => {
             <p>Sign up now and create an account</p>
           </CenteredText>
           <CenteredText>
-            <Button2>CREATE ACCOUNT</Button2>
+            <Button2>
+            <Link to="/sign-up">CREATE ACCOUNT  </Link></Button2>
           </CenteredText>
         </div>
       </FormContainer>

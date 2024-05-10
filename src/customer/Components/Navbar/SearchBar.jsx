@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import OpenHumburger from "./OpenHumburger"
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const DROPDOWN_LINKS = [
   { text: 'Sign In', href: '/sign-in' },
   { text: 'My Account', href: '/my-account' },
@@ -14,7 +15,8 @@ const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
-const auth = useSelector(state => state.auth.auth);
+  const [selectOption, setSelectedOption] =useState(null)
+
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
