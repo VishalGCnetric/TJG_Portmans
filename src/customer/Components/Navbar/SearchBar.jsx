@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import OpenHumburger from "./OpenHumburger"
+import { useSelector } from 'react-redux';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../Redux/Auth/Action';
@@ -11,6 +13,7 @@ import { logout } from '../../../Redux/Auth/Action';
 //   { text: 'Account Help', href: '#' }
 // //  { text: 'Sign Out', href: '' }
 // ];
+
 
 const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,6 +38,7 @@ const navigate = useNavigate();
    { text: 'Sign Out', href: '#' }
   ];
   const data = auth ? DROPDOWN_LINKS_auth : DROPDOWN_LINKS;
+
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
