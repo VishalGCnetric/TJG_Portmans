@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
 import {  TextField } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   margin-top: 20px;
@@ -136,7 +137,7 @@ const SignUp = () => {
     }
   };
 
-  };
+
 
   const handleBrandClick = (url) => {
     window.open(url, "_blank");

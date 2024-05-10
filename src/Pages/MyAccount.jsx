@@ -1,11 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
-import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { API_BASE_URL } from '../config/api';
-
 
 const Container = styled.div`
   display: flex;
@@ -35,6 +33,7 @@ const Sidebar = styled.div`
     
   }
 
+ 
 
   h3 {
     margin-bottom: 10px;
@@ -128,12 +127,12 @@ const RightPanel = styled.div`
 const Card = styled.div`
   border: 1px solid #ccc;
   padding: 30px;
-  margin-bottom: 10px;
+  margin-bottom: 10px;
 `;
 
 // React Component
 const MyAccount = () => {
-
+  const [showSidebar, setShowSidebar] = useState(false);
   const { user } = useSelector(state => state.auth);
   const wt = localStorage.getItem("wt");
   const wtt = localStorage.getItem("wtt");
@@ -157,6 +156,9 @@ const MyAccount = () => {
     fetchData();
   }, [user, wt, wtt]);
 
+  const handleToggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
   return (
     <Container>
       <Sidebar>
@@ -175,12 +177,23 @@ const MyAccount = () => {
       </Sidebar>
 
       <MainContent>
+      <SelectBar>
+          <select onChange={handleToggleSidebar}>
+            <option value="account">Account Home</option>
+            <option value="address">Address Book</option>
+            <option value="changepassword">Change Password</option>
+            <option value="subscription">Subscriptions</option>
+            <option value="payment">Saved Payments</option>
+            <option value="orders">My Orders</option>
+            <option value="signout">Sign Out</option>
+          </select>
+        </SelectBar>
         <div style={{ backgroundColor: '#e7e7e7', padding: '10px', marginBottom: '10px' }}>
           <h2>Account Home - My Details</h2>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <InfoBox>
+          <InfoBox style={{backgroundColor:"white"}}>
             <p>Name: {`${user?.firstName} ${user?.lastName}`}</p>
 
             <p>Primary Address:</p>
