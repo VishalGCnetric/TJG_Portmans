@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
 import { TextField,InputAdornment } from "@mui/material";
@@ -75,26 +75,18 @@ const Button = styled.button`
   }
 `;
 
-const BrandItem = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const BrandIcon = styled.img`
-  width: auto;
-  height: 50%;
+const ErrorText = styled.p`
+  color: red;
+  text-align: center;
 `;
 
 const SignUp = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { error } = useSelector(state => state.auth);
+  const [formError, setFormError] = useState(null);
 
-  const [error, setError] = useState(null); // State variable to hold error message
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
@@ -102,21 +94,17 @@ const SignUp = () => {
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-      phoneNumber: data.get("phoneNumber"), // Use phoneNumber instead of mobile
+      phoneNumber: data.get("phoneNumber")
     };
 
-    console.log("user data", userData);
-
     try {
-      // Dispatch register action
       await dispatch(register(userData));
-      // Reset error state
-      setError(null);
-      // Show success message
+      setFormError(null);
       alert("Account created successfully");
+      // navigate("/"); // Redirect upon successful registration
     } catch (error) {
-      // Handle registration error
-      setError(error.message);
+      console.log("error", error.errorMessage);
+      setFormError(error.message);
     }
   };
 
@@ -130,6 +118,7 @@ const SignUp = () => {
   const handleBrandClick = (url) => {
     window.open(url, "_blank");
   };
+
 
   return (
     <Container>
@@ -203,7 +192,7 @@ const SignUp = () => {
               <TextField
                 required
                 id="phonenumber"
-                name="phoneNumber" // Use phoneNumber instead of mobile
+                name="phoneNumber"
                 label="Phone Number"
                 fullWidth
                 autoComplete="tel"
@@ -223,9 +212,8 @@ const SignUp = () => {
                 </label>
               </div>
             </div>
-
-            {error && <div>Error: {error}</div>}
-
+            {error && <ErrorText>{error}</ErrorText>}
+            {formError && <ErrorText>{formError}</ErrorText>}
             <Button>CREATE ACCOUNT</Button>
           </Form>
         </FormWrapper>
