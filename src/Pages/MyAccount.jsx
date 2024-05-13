@@ -159,9 +159,9 @@ const fullname = user?.firstName + " " + user?.lastName;
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
-  if(!user.auth){
-    return <h1>you need to login first</h1>
-  }
+  // if(!user.auth){
+  //   return <h1>you need to login first</h1>
+  // }
   return (
     <Container>
       <Sidebar showSidebar={showSidebar}>

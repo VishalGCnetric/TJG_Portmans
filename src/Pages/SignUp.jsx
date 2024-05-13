@@ -100,6 +100,7 @@ const BrandIcon = styled.img`
   height: 50%;
 `;
 
+
 const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
