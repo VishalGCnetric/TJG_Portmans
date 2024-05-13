@@ -106,7 +106,7 @@ export const ordersById = (id) => {
 
 export const receiveProductsSearch = (search) => {
   return new Promise((resolve, reject) => {
-    get(`search?query=${search}`)
+    get(`search/portmans?query=${search}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
