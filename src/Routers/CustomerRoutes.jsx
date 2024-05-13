@@ -24,6 +24,7 @@ import Navbar from "../customer/Components/Navbar/Navbar";
 import SignUp from "../Pages/SignUp";
 import SignIn from "../Pages/SignIn";
 import MyAccount from "../Pages/MyAccount";
+// import ProductDetails from "../Pages/ProductDetails";
 
 const CustomerRoutes = () => {
     const location = useLocation();
@@ -53,7 +54,7 @@ const CustomerRoutes = () => {
         <Route path="/my-account" element={<MyAccount/>}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/:lavelOne/:lavelTwo/:lavelThree" element={<Product />}></Route>
-        <Route path="/product/:productId" element={<ProductDetails />}></Route>
+        <Route path="/product/:productId" element={<ProductDetails/>}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/account/order" element={<Order />}></Route>
         <Route path="/account/order/:orderId" element={<OrderDetails />}></Route>

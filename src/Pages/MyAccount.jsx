@@ -159,7 +159,7 @@ const fullname = user?.firstName + " " + user?.lastName;
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
- 
+
   return (
     <Container>
       <Sidebar showSidebar={showSidebar}>

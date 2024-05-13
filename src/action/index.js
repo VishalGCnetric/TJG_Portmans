@@ -64,7 +64,8 @@ export const receiveProducts = () => {
 // };
 
 export const receiveProductsById = (id) => {
-  let url = `product?productId=${id}`;
+  console.log(id)
+  let url = `/product?productId=${id}`;
   return new Promise((resolve, reject) => {
     get(url)
       .then((response) => {
