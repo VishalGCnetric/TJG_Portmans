@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import OpenHumburger from "./OpenHumburger"
-import { useSelector } from 'react-redux';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../Redux/Auth/Action';

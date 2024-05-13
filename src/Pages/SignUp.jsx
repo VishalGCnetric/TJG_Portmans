@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
-import { TextField } from "@mui/material";
+import { TextField,InputAdornment } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import MobileNumberInput from './Mobile';
 
 const Container = styled.div`
   margin-top: 20px;
@@ -119,10 +120,30 @@ const SignUp = () => {
     }
   };
 
+  const brands = [
+    { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
+    { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
+    { url: "https://portmans.jgl.com.au/", image: "/svg3.svg" },
+    { url: "https://jacquie.jgl.com.au/", image: "/svg6.svg" },
+    { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
+  ];
+  const handleBrandClick = (url) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <Container>
       <CenteredText marginBottom="20px">
         <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
+      </CenteredText>
+      <div style={{ marginTop:'-30px',display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+          {brands.map((brand, index) => (
+            <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
+              <BrandIcon src={brand.image} alt="" />
+            </BrandItem>
+          ))}
+        </div>
+      <CenteredText>
       </CenteredText>
       <Title>
         <div>
@@ -186,8 +207,12 @@ const SignUp = () => {
                 label="Phone Number"
                 fullWidth
                 autoComplete="tel"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">+61</InputAdornment>,
+                }}
               />
             </InputWrapper>
+            {/* <MobileNumberInput/> */}
             <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
               <div>
                 <input style={{ height: '20px', width: '20px', marginTop: '5px' }} type="checkbox" id="terms" />

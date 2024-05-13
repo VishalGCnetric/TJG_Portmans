@@ -143,6 +143,7 @@ const SignIn = () => {
       <CenteredText marginBottom="20px">
         <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
       </CenteredText>
+      
       <CenteredText>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
           {brands.map((brand, index) => (
