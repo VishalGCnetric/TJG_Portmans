@@ -14,12 +14,12 @@ const fadeIn = keyframes`
 const AccordionWrapper = styled.div`
   width: 100%;
   z-index:120;
-  background-color: black;
+  background-color: white;
 `;
 
 const AccordionItem = styled.div`
 //   margin-bottom: 1px;
-border: 1px solid black;
+// border: 1px solid gray;
 
   
 `;
@@ -29,7 +29,7 @@ const AccordionButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  background-color: gray;
+  background-color: white;
   border: none;
   padding: 10px;
   text-align: left;
@@ -37,7 +37,7 @@ const AccordionButton = styled.button`
   outline: none;
   div{
     font-size: 18px;
-    color: blacka;
+    color: black;
     
   }
   div a{
@@ -58,8 +58,8 @@ const NestedLink = styled.a`
   padding: 10px 20px;
   text-decoration: none;
   color: black;
-  background-color:gray;
-  border: 1px solid black;
+  background-color:white;
+  border: 1px solid gray;
 `;
 
 const NestedAccordionContent = styled.div`

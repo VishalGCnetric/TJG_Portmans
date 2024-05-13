@@ -46,7 +46,7 @@ export const login = userData => async dispatch => {
     const user = response.data;
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
-    // dispatch(getUser());
+    dispatch(getUser());
 alert("login successful")
     dispatch(loginSuccess(user));
   } catch (error) {
