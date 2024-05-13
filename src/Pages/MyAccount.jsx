@@ -159,9 +159,7 @@ const fullname = user?.firstName + " " + user?.lastName;
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
-  if(!user.auth){
-    return <h1>you need to login first</h1>
-  }
+ 
   return (
     <Container>
       <Sidebar showSidebar={showSidebar}>
@@ -197,9 +195,9 @@ const fullname = user?.firstName + " " + user?.lastName;
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <InfoBox>
-            <p>Name:{profile?.firstName + " " + profile?.lastName} </p>
+            <p>NAME :{" " +profile?.firstName + " " + profile?.lastName} </p>
 
-            <p>Primary Address:</p>
+            <p>Primary Address :</p>
             <Button>EDIT PRIMARY ADDRESS</Button>
             <Button>EDIT ADDRESS BOOK</Button>
           </InfoBox>

@@ -30,6 +30,7 @@ import { deepPurple } from "@mui/material/colors";
 import { Backdrop, CircularProgress, Grid, TextField } from "@mui/material";
 import BackdropComponent from "../../BackDrop/Backdrop";
 import { receiveProducts, receiveProductsSearch } from "../../../../action";
+import HomeProductCard from "../../Home/HomeProductCard";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -107,8 +108,8 @@ export default function Product() {
 
   useEffect(() => {
     receiveProducts().then((data) => {
-      console.log("this  is useEffect data", data);
       setProducts(data.hits);
+      console.log("this  is useEffect data", data,products);
       setSearchProducts(data.hits);
     });
   }, []);
@@ -186,7 +187,7 @@ export default function Product() {
       setSearchProducts(products);
     }
   }, [searchValue.length]);
-
+console.log(products,searchProducts)
   return (
     <div className="bg-white -z-20 ">
       <div>
@@ -521,10 +522,15 @@ export default function Product() {
                     {/* {customersProduct?.products?.content?.map((item) => (
                       <ProductCard product={item} />
                     ))} */}
-                    {searchProducts?.map((item) => (
+                    {/* {searchProducts?.map((item) => (
                       <ProductCard product={item} />
-                    ))}
-
+                    ))} */}
+{ 
+searchProducts && searchProducts?.map((item) => (
+  <div className="w-[15rem] border m-3 transition-all cursor-pointer hover:scale-105">
+  <HomeProductCard product={item} />
+  </div>
+))}
                     {/* <ProductCard product={products} /> */}
                   </div>
                 </div>
