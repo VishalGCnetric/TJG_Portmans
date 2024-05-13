@@ -70,7 +70,9 @@ const navigate = useNavigate();
                 <Line />
               </div>
               <SearchModel onClick={toggleDropdown}>
+              <Link to="/shops">
                 <img alt="" src="/icon--search.svg" style={{ height: "20px", width: "20px" }} />
+                </Link>
               </SearchModel>
             </div>
           )}
@@ -94,9 +96,11 @@ const navigate = useNavigate();
           </div>
         </SearchContainer>
       ) : (
-        <SearchButton onClick={() => setShowSearchInput(true)}>
+        <SearchButton >
+          <Link to="/shops">
           <img alt="" src="/icon--search.svg" style={{ height: "20px", width: "20px" }} />
           <SearchButtonText>Search</SearchButtonText>
+          </Link>
         </SearchButton>
       )}
       <LogoContainer>
