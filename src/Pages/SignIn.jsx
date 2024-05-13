@@ -188,7 +188,8 @@ const SignIn = () => {
               <Link to="#">Forgot Password</Link>
             </CenteredText>
           </div>
-          {error && <div>Error: {error}</div>}
+          {error&&<p style={{color: 'red', textAlign: 'center'}}>{error}</p>} 
+
           <Button type="submit">SIGN IN</Button>
         </Form>
         <div style={{ width: '100%', margin: '30px 0px', borderBottom: '1px solid #333' }}></div>
