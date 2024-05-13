@@ -158,10 +158,7 @@ const SignIn = () => {
     console.log(userData)
     try {
       // Dispatch login action
-      dispatch(login(userData)).then(() => {
-        // Redirect to the root route upon successful login
-        window.location = "/";
-      });
+      dispatch(login(userData))
       // Reset error state
       setError(null);
       // Show success message

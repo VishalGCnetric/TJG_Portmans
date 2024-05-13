@@ -85,7 +85,7 @@ const navigate = useNavigate();
             style={{
               border: "none",
               padding: "5px",
-              margin: "10px",
+              // margin: "10px",
               borderBottom: "1px solid black",
             }}
           />
