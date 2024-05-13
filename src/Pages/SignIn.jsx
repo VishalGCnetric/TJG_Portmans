@@ -96,11 +96,50 @@ const BrandIcon = styled.img`
 `;
 
 const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+
+  const validateEmail = (input) => {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(input);
+  };
+
+  const handleBlur = () => {
+    if (!email) {
+      setErrorMessage('Please enter an email address');
+    } else if (!validateEmail(email)) {
+      setErrorMessage('The email address entered is not in a valid format.');
+    } else {
+      setErrorMessage('');
+    }
+  };
+
+  const [password, setPassword] = useState('');
+  const [errorPasswordMessage, setPasswordErrorMessage] = useState('');
+
+  const validatePassword = (input) => {
+    // Regular expression for password validation (at least one digit)
+    const passwordRegex = /^(?=.*\d).{6,}$/;
+    return passwordRegex.test(input);
+  };
+
+  const handleBlurPassword = () => {
+    if (!password) {
+      setPasswordErrorMessage('Please enter a password');
+    } else if (!validatePassword(password)) {
+      setPasswordErrorMessage('The password must contain at least one digit and be at least 6 characters long.');
+    } else {
+      setPasswordErrorMessage('');
+    }
+  };
+
   const [error, setError] = useState(null); // State variable to hold error message
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { auth } = useSelector((store) => store); 
-  
+  const { auth } = useSelector((store) => store);
+
   const brands = [
     { url: "https://justjeans.jgl.com.au/", image: "/svg2.svg" },
     { url: "https://jayjays.jgl.com.au/", image: "/svg5.svg" },
@@ -143,7 +182,7 @@ const SignIn = () => {
       <CenteredText marginBottom="20px">
         <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
       </CenteredText>
-      
+
       <CenteredText>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
           {brands.map((brand, index) => (
@@ -167,18 +206,30 @@ const SignIn = () => {
               fullWidth
               autoComplete="email"
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleBlur}
+              error={errorMessage}
+              helperText={errorMessage}
             />
+           
           </InputWrapper>
           <InputWrapper>
-            <TextField
-              required
-              id="password"
-              name="password"
-              label="Password"
-              fullWidth
-              autoComplete="password"
-              type="password"
-            />
+          <TextField
+          required
+          id="password"
+          name="password"
+          label="Password"
+          fullWidth
+          autoComplete="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onBlur={handleBlurPassword}
+          error={errorPasswordMessage}
+          helperText={errorPasswordMessage}
+        />
+          
           </InputWrapper>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
             <CheckboxContainer>
@@ -189,7 +240,7 @@ const SignIn = () => {
               <Link to="#">Forgot Password</Link>
             </CenteredText>
           </div>
-          {error&&<p style={{color: 'red', textAlign: 'center'}}>{error}</p>} 
+          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
           <Button type="submit">SIGN IN</Button>
         </Form>
@@ -203,7 +254,7 @@ const SignIn = () => {
           </CenteredText>
           <CenteredText>
             <Button2>
-            <Link to="/sign-up">CREATE ACCOUNT  </Link></Button2>
+              <Link to="/sign-up">CREATE ACCOUNT  </Link></Button2>
           </CenteredText>
         </div>
       </FormContainer>

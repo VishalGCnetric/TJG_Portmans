@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { register } from '../Redux/Auth/Action';
-import { TextField,InputAdornment } from "@mui/material";
+import { TextField, InputAdornment } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import MobileNumberInput from './Mobile';
 
@@ -80,6 +80,26 @@ const ErrorText = styled.p`
   text-align: center;
 `;
 
+const BrandItem = styled.div`
+  flex: 1;
+  border-left: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-left: 15px;
+  @media (max-width: 350px) {
+    padding: 15px 15px 15px 15px;
+  }
+`;
+
+const BrandIcon = styled.img`
+  width: auto;
+  height: 50%;
+`;
+
 const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -119,19 +139,88 @@ const SignUp = () => {
     window.open(url, "_blank");
   };
 
+  const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleFirstNameBlur = () => {
+    if (!firstName.trim()) {
+      setFirstNameError('Please enter your first name');
+    } else {
+      setFirstNameError('');
+    }
+  };
+
+  const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const handleLastNameBlur = () => {
+    if (!lastName.trim()) {
+      setLastNameError('Please enter your last name');
+    } else {
+      setLastNameError('');
+    }
+  };
+
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+
+  const validateEmail = (input) => {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(input);
+  };
+
+  const handleBlur = () => {
+    if (!email) {
+      setErrorMessage('Please enter an email address');
+    } else if (!validateEmail(email)) {
+      setErrorMessage('The email address entered is not in a valid format.');
+    } else {
+      setErrorMessage('');
+    }
+  };
+
+  const [password, setPassword] = useState('');
+  const [errorPasswordMessage, setPasswordErrorMessage] = useState('');
+
+  const validatePassword = (input) => {
+    // Regular expression for password validation (at least one digit)
+    const passwordRegex = /^(?=.*\d).{6,}$/;
+    return passwordRegex.test(input);
+  };
+
+  const handleBlurPassword = () => {
+    if (!password) {
+      setPasswordErrorMessage('Please enter a password');
+    } else if (!validatePassword(password)) {
+      setPasswordErrorMessage('The password must contain at least one digit and be at least 6 characters long.');
+    } else {
+      setPasswordErrorMessage('');
+    }
+  };
+
 
   return (
     <Container>
       <CenteredText marginBottom="20px">
         <h3>MORE BRANDS TO SHOP ONE ACCOUNT.</h3>
       </CenteredText>
-      <div style={{ marginTop:'-30px',display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-          {brands.map((brand, index) => (
-            <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
-              <BrandIcon src={brand.image} alt="" />
-            </BrandItem>
-          ))}
-        </div>
+      <div style={{ marginTop: '-30px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+        {brands.map((brand, index) => (
+          <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
+            <BrandIcon src={brand.image} alt="" />
+          </BrandItem>
+        ))}
+      </div>
       <CenteredText>
       </CenteredText>
       <Title>
@@ -155,38 +244,61 @@ const SignUp = () => {
                 label="First Name"
                 fullWidth
                 autoComplete="given-name"
+                value={firstName}
+                onChange={handleFirstNameChange}
+                onBlur={handleFirstNameBlur}
+                error={!!firstNameError}
+                helperText={firstNameError}
               />
+              {/* {firstNameError && <span>{firstNameError}</span>} */}
             </InputWrapper>
             <InputWrapper>
-              <TextField
-                required
-                id="lastname"
-                name="lastName"
-                label="Last Name"
-                fullWidth
-                autoComplete="family-name"
-              />
+            <TextField
+        required
+        id="lastname"
+        name="lastName"
+        label="Last Name"
+        fullWidth
+        autoComplete="family-name"
+        value={lastName}
+        onChange={handleLastNameChange}
+        onBlur={handleLastNameBlur}
+        error={!!lastNameError}
+        helperText={lastNameError}
+      />
+      {/* {lastNameError && <span>{lastNameError}</span>} */}
             </InputWrapper>
             <InputWrapper>
-              <TextField
-                required
-                id="email"
-                name="email"
-                label="Email"
-                fullWidth
-                autoComplete="email"
-              />
+            <TextField
+              required
+              id="email"
+              name="email"
+              label="Email"
+              fullWidth
+              autoComplete="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleBlur}
+              error={errorMessage}
+              helperText={errorMessage}
+            />
             </InputWrapper>
             <InputWrapper>
-              <TextField
-                required
-                id="password"
-                name="password"
-                type="password"
-                label="Password"
-                fullWidth
-                autoComplete="new-password"
-              />
+            <TextField
+          required
+          id="password"
+          name="password"
+          label="Password"
+          fullWidth
+          autoComplete="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onBlur={handleBlurPassword}
+          error={errorPasswordMessage}
+          helperText={errorPasswordMessage}
+        />
             </InputWrapper>
             <InputWrapper>
               <TextField
