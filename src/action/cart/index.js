@@ -14,7 +14,7 @@ export const getCartItems = () => {
         .then((response) => {
           console.log(response,"res")
           if (response.status === 200) {
-            // console.log("this is new cart response", response.data);
+            console.log("this is new cart response", response.data);
             dispatch({
               type: "GET_CART_ITEMS",
               cartItems: response?.data,

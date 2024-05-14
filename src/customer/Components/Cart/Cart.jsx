@@ -10,6 +10,10 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cartItems } = useSelector((store) => store);
+  const {auth} = useSelector((store) => store.auth);
+  const [data,setData]=useState([]);
+  const {orderId}=cartItems;
+
 
   useEffect(() => {
     dispatch(getCartItems());
@@ -26,14 +30,14 @@ const Cart = () => {
       dispatch(getCartItems());
     });
   };
-console.log(cartItems?.cartItems?.orderItem?.length)
+console.log("cartdata",cartItems.orderId)
   return (
     <div>
-      {cartItems?.cartItems?.orderItem.length > 0 && (
+      {auth  && (
         <div className="lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems?.cartItems?.cart?.lines.map((item) => (
+              {cartItems.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}
@@ -51,8 +55,8 @@ console.log(cartItems?.cartItems?.orderItem?.length)
 
               <div className="space-y-3 font-semibold">
                 <div className="flex justify-between pt-3 text-black ">
-                  <span>Price ({cartItems?.cartItems?.cart?.totalQuantity} item)</span>
-                  <span>{cartItems?.cartItems?.cart?.total / 100}</span>
+                  <span>Price ({cartItems?.cartItems?.orderItem?.length} item)</span>
+                  <span>{cartItems?.cartItems?.totalProductPrice }</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Discount</span>
@@ -66,7 +70,7 @@ console.log(cartItems?.cartItems?.orderItem?.length)
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total Amount</span>
                   <span className="text-green-700">
-                    {cartItems?.cartItems?.cart?.total / 100}
+                    {cartItems?.cartItems?.totalProductPrice }
                   </span>
                 </div>
               </div>

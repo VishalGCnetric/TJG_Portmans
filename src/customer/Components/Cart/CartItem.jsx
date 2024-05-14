@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   removeCartItem,
   updateCartItem,
@@ -14,6 +14,7 @@ import {
   handleRemoveItemFromCart,
 } from "../../../action/cart";
 import { grey } from "@mui/material/colors";
+import { API_BASE_URL } from "../../../config/api";
 
 const CartItem = ({
   item,
@@ -24,8 +25,24 @@ const CartItem = ({
 }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
+  const [data, setData] = useState({});
+  const {orderId}=useSelector((store) => store.cartItems);
+  const { orderItemId, productId } = item;
+  console.log(item)
   // const { cartItems } = useSelector((store) => store);
+useEffect(()=>{
+  console.log(item.partNumber)
+fetch(`${API_BASE_URL}product?partNumber=${item.partNumber}`).then((res)=>{
+  return res.json()
+}).then((res)=>{
+  console.log(res,"data")
+  const data =res.catalogEntryView[0]
 
+  setData(data)
+}).catch((err)=>{
+  console.log(err)
+})
+},[])
   // const handleRemoveItemFromCart = () => {
 
   //   RemoveCartItemNew(item.id).then((res)=>{
@@ -33,36 +50,44 @@ const CartItem = ({
 
   //   })
   // };
+//   {
+//     "orderId" : 1062626683,
+//     "orderItemId" : 15019,
+//     "productId": "14263",
+//     "quantity": "9"
+// }
+console.log(orderId,orderItemId,productId)
   const handleUpdateCartItem = (num) => {
-    const data = {
+    const datas = {
       data: { quantity: item.quantity + num },
       cartItemId: item?._id,
       jwt,
     };
     // console.log("update data ", data);
-    dispatch(updateCartItem(data));
+    dispatch(updateCartItem(datas));
   };
+// console.log(data,"data item",data.price[0].value)
 
-  return (
-    <div className="p-5 shadow-lg border rounded-md">
+  return (<>
+   <div className="p-5 shadow-lg border rounded-md">
       <div className="flex items-center">
         <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem] ">
           <img
             className="w-full h-full object-cover object-top"
-            src={item?.productVariant?.images[0]?.url}
-            alt=""
+            src={data.fullImage}
+            alt="img"
           />
         </div>
         <div className="ml-5 space-y-1">
-          <p className="font-semibold">{item?.productVariant?.name}</p>
+          <p className="font-semibold">{data.name}</p>
           {/* <p className="opacity-70">Size: {item?.size},White</p>
           <p className="opacity-70 mt-2">Seller: {item?.product?.brand}</p> */}
           <div className="flex space-x-2 items-center pt-3">
-            <p className="opacity-50 line-through">
-              ₹{item?.productVariant.price / 100}
-            </p>
+            {/* <p className="opacity-50 line-through">
+              ${data.price[0]?.value }
+            </p> */}
             <p className="font-semibold text-lg">
-              ₹{item?.productVariant.price / 100}
+              {/* {data && `$ ${data?.price[0]?.value }`} */}
             </p>
             <p className="text-green-600 font-semibold">10% off</p>
           </div>
@@ -103,6 +128,8 @@ const CartItem = ({
         </div>
       )}
     </div>
+  </>
+   
   );
 };
 
