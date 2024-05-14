@@ -10,6 +10,7 @@ export function post(endPoint, params, isStringfy = true) {
 }
 
 export function get(endPoint) {
+  // console.log("endPoint", endPoint);
   return instance.get(endPoint);
 }
 

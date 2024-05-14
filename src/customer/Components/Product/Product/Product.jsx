@@ -31,7 +31,7 @@ import { Backdrop, CircularProgress, Grid, TextField } from "@mui/material";
 import BackdropComponent from "../../BackDrop/Backdrop";
 import { receiveProducts, receiveProductsSearch } from "../../../../action";
 import HomeProductCard from "../../Home/HomeProductCard";
-
+import { debounce, throttle } from 'lodash';
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -171,22 +171,38 @@ export default function Product() {
     // }
   };
 
-  useEffect(() => {
-    // let OriginalProudcts = products;
+  // useEffect(() => {
+  //   // let OriginalProudcts = products;
 
-    if (searchValue) {
-      // let searchResults = products?.filter((eachUser) =>
-      //   eachUser?.name?.toLowerCase().includes(searchValue)
-      // );
-      // setSearchProducts(searchResults);
+  //   if (searchValue) {
+  //     // let searchResults = products?.filter((eachUser) =>
+  //     //   eachUser?.name?.toLowerCase().includes(searchValue)
+  //     // );
+  //     // setSearchProducts(searchResults);
 
-      receiveProductsSearch(searchValue).then((data) => {
+  //     receiveProductsSearch(searchValue).then((data) => {
+  //       setSearchProducts(data.hits);
+  //     });
+  //   } else {
+  //     setSearchProducts(products);
+  //   }
+  // }, [searchValue.length]);
+
+  
+  // Debounce the search input to limit API calls while typing
+  const debouncedSearch = debounce((value) => {
+    if (value) {
+      receiveProductsSearch(value).then((data) => {
         setSearchProducts(data.hits);
       });
     } else {
       setSearchProducts(products);
     }
-  }, [searchValue.length]);
+  }, 1000);
+  useEffect(() => {
+    // Call the debounced search function with the current search value
+    debouncedSearch(searchValue);
+  }, [searchValue]);
 console.log(products,searchProducts)
   return (
     <div className="bg-white -z-20 ">
@@ -308,7 +324,8 @@ console.log(products,searchProducts)
 
         <main className="mx-auto px-4 lg:px-14 ">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-2">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900
+            mt-6">
               Product
             </h1>
 
