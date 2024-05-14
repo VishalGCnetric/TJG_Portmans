@@ -99,6 +99,8 @@ const navigate = useNavigate();
         <SearchButton >
           <Link to="/shops">
           <img alt="" src="/icon--search.svg" style={{ height: "20px", width: "20px" }} />
+          </Link>
+          <Link to="/shops">
           <SearchButtonText>Search</SearchButtonText>
           </Link>
         </SearchButton>
@@ -127,7 +129,7 @@ const navigate = useNavigate();
         </DropdownMenu>
       )}
       <img alt="fevorite" src="/icon--wishlist.svg" />
-      <img alt="shopping-cart" src="/icon--bag.svg" />
+     <Link to="/cart"> <img alt="shopping-cart" src="/icon--bag.svg" /></Link>
     </SvgContainer>
     
       <OpenHumburger drawer={isOpen} setDrawer={setIsOpen}/>

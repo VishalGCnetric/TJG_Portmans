@@ -15,9 +15,9 @@ const HomeProductCard = ({ product }) => {
   return (
     <div
       onClick={() => navigate(`/product/${product?.uniqueID}`)}
-      className="relative cursor-pointer flex flex-col border rounded-lg shadow-lg overflow-hidden w-45 p-4 transition-transform transform hover:-translate-y-2 hover:shadow-xl"
+      className="relative h-[25rem] cursor-pointer flex flex-col border rounded-lg shadow-lg overflow-hidden w-45  p-4 transition-transform transform hover:-translate-y-2 hover:shadow-xl"
     >
-      <div className="relative">
+      <div className="relative ">
         <img
           src={product?.images[0]?.thumbnail || product?.thumbnail}
           alt={product?.name}
@@ -37,20 +37,20 @@ const HomeProductCard = ({ product }) => {
         )}
       </div>
       <div className="flex flex-col justify-between flex-grow mt-4">
-        <h3 className="text-lg font-semibold text-gray-900 truncate">
+        <h3 className="text-lg text-center font-semibold text-gray-900 ">
           {product?.name}
         </h3>
         <div className="flex justify-around items-center mt-2">
-          <span className="text-gray-600 text-sm">
+          {/* <span className="text-gray-600 text-sm">
             <del>${product?.price[0]?.value}</del>
-          </span>
-          <span className="text-green-600 font-bold text-sm">
-            ${product?.price[1]?.value}
+          </span> */}
+          <span className="text-purple-600 font-bold text-sm">
+            $ {product?.price[1]?.value}
           </span>
         </div>
-        <div className="mt-2 text-sm text-gray-700">
+        {/* <div className="mt-2 text-sm text-gray-700">
           <p className="truncate">{product?.shortDescription}</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

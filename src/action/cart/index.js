@@ -6,9 +6,13 @@ import { deleteCall, get, post, putCall } from "../../api/config/APIController";
 
 export const getCartItems = () => {
   return (dispatch) => {
+    const wt=localStorage.getItem("wt");
+    const wtt=localStorage.getItem("wtt");
+    console.log("wt",wt,"wtt",wtt);
     return new Promise((resolve, reject) => {
-      get("cart")
+      get("cart", {wt,wtt})
         .then((response) => {
+          console.log(response,"res")
           if (response.status === 200) {
             // console.log("this is new cart response", response.data);
             dispatch({
@@ -23,7 +27,7 @@ export const getCartItems = () => {
             type: "GET_CART_ITEMS",
             cartItems: {},
           });
-          reject(error);
+          reject(error.message);
         })
         .finally();
     });

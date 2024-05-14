@@ -48,8 +48,10 @@ export const login = userData => async dispatch => {
     localStorage.setItem("wtt", user.WCTrustedToken);
     dispatch(getUser());
 alert("login successful")
+window.location("./");
     dispatch(loginSuccess(user));
   } catch (error) {
+    alert("email or password mismatched , please check")
     dispatch(loginFailure(error.message));
   }
 };
