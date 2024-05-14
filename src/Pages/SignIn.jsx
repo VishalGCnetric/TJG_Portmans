@@ -148,6 +148,33 @@ const SignIn = () => {
     { url: "https://dotti.jgl.com.au/", image: "/svg4.svg" },
   ];
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   const userData = {
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //   };
+  //   console.log(userData)
+  //   try {
+  //     // Dispatch login action
+  //     dispatch(login(userData)).then(() => {
+  //       // Navigate to home page
+  //       navigate("/");
+  //     }).catch((error) => {
+  //       // Handle login error
+  //       setError(error.message);
+  //     });
+  //     // Reset error state
+  //     setError(null);
+  //     // Show success message
+  //     navigate("/");
+  //     // alert("Sign in successful");
+  //   } catch (error) {
+  //     // Handle login error
+  //     setError(error.message);
+  //   }
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -155,21 +182,19 @@ const SignIn = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log(userData)
+  console.log(userData)
     try {
       // Dispatch login action
-      dispatch(login(userData))
-      // Reset error state
-      setError(null);
-      // Show success message
-      // navigate("/");
-      // alert("Sign in successful");
+      await dispatch(login(userData));
+      // Navigate to home page
+      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       // Handle login error
       setError(error.message);
     }
   };
-
+  
   const handleBrandClick = (url) => {
     window.open(url, "_blank");
   };
