@@ -19,7 +19,6 @@ import { WidthWideOutlined } from '@mui/icons-material';
 export const registerRequest = () => ({ type: REGISTER_REQUEST });
 export const registerSuccess = (user) => ({ type: REGISTER_SUCCESS, payload: user });
 export const registerFailure = error => ({ type: REGISTER_FAILURE, payload: error });
-
 export const register = userData => async dispatch => {
   dispatch(registerRequest());
   try {
@@ -38,23 +37,45 @@ export const register = userData => async dispatch => {
 export const loginRequest = () => ({ type: LOGIN_REQUEST });
 export const loginSuccess = user => ({ type: LOGIN_SUCCESS, payload: user });
 export const loginFailure = error => ({ type: LOGIN_FAILURE, payload: error });
-
 export const login = userData => async dispatch => {
   dispatch(loginRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}login`, userData); // Corrected API URL
+    const response = await axios.post(`${API_BASE_URL}login`, userData);
     const user = response.data;
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
     dispatch(getUser());
-alert("login successful")
-window.location("./");
     dispatch(loginSuccess(user));
+    alert("login successful");
+    return Promise.resolve(response);
   } catch (error) {
-    alert("email or password mismatched , please check")
+    // alert("email or password mismatched, please check");
     dispatch(loginFailure(error.message));
+    return Promise.reject(error);
   }
 };
+
+
+// export const login = userData => async dispatch => {
+//   dispatch(loginRequest());
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}login`, userData); // Corrected API URL
+//     const user = response.data;
+//     localStorage.setItem("wt", user.WCToken);
+//     localStorage.setItem("wtt", user.WCTrustedToken);
+//     dispatch(getUser());
+//     dispatch(loginSuccess(user));
+
+// alert("login successful")
+
+// return response;
+// // navigate("/");
+//   } catch (error) {
+//     alert("email or password mismatched , please check")
+//     dispatch(loginFailure(error.message));
+//     return error;
+//   }
+// };
 
 // Get user details action creator
 export const getUserRequest = () => ({ type: GET_USER_REQUEST });
