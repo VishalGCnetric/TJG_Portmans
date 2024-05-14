@@ -72,6 +72,7 @@ function classNames(...classes) {
 }
 
 export default function ProductDetails() {
+  const [qty,setQty] = useState(1)
   const [selectedSize, setSelectedSize] = useState();
   const [activeImage, setActiveImage] = useState(null);
   const navigate = useNavigate();
@@ -81,6 +82,8 @@ export default function ProductDetails() {
   const jwt = localStorage.getItem("jwt");
   // console.log("param",productId,customersProduct.product)
   const [productDetails, setProductDetails] = useState({});
+
+  console.log(cartItems)
 
   const handleSetActiveImage = (image) => {
     setActiveImage(image);
@@ -92,9 +95,30 @@ export default function ProductDetails() {
     // dispatch(addItemToCart({ data, jwt }));
     // navigate("/cart");
     // dispatch(AddItemToCartNew(productDetails.product?.variants[0]?.id))
-    AddItemToCartNew(productDetails.product?.variants[0]?.id).then((res) => {
-      dispatch(getCartItems());
-    });
+    // AddItemToCartNew(productDetails?.variants[productDetails?.variants?.length - 1]?.partNumber).then((res) => {
+    //   console.log(productDetails)
+    //   dispatch(getCartItems());
+    // });
+    // dispatch(AddItemToCartNew(activeImage?.partNumber && activeImage.partNumber))
+    const partNumber = activeImage && activeImage.partNumber;
+    const quantity = qty;
+    
+    if (partNumber) {
+      AddItemToCartNew({ partNumber, quantity })
+        .then((res) => {
+          console.log(res);
+          dispatch(getCartItems());
+        })
+        .catch((error) => {
+          console.error("Error adding item to cart:", error);
+        });
+    } else {
+      console.error("Part number is missing.");
+    }
+    // console.log(activeImage?.partNumber && activeImage.partNumber)
+
+    
+
   };
 
   useEffect(() => {
@@ -143,14 +167,17 @@ export default function ProductDetails() {
   if (!productDetails) {
     return <LinearProgress />
   }
+  console.log(productDetails[0]?.partNumber)
 
   return (
+    <>
+       <div style={{marginTop:'10px',marginLeft:'100px'}}>
+          <Link to='/shops'>Product / {productDetails[0]?.name}</Link>
+        </div>
     <Container>
       {
         productDetails && <>
-        <div style={{marginTop:'-30px'}}>
-          <Link to='/shops'>Product /</Link>
-        </div>
+       
           <ProductImage>
             <img
               //  src={productDetails[0]?.fullImage} h
@@ -168,11 +195,15 @@ export default function ProductDetails() {
                 ${productDetails[0]?.price[1]?.value}
               </span>
             </div>
-            <QuantityContainer>
-              <QuantityButton >-</QuantityButton>
-              <QuantityDisplay>{1}</QuantityDisplay>
-              <QuantityButton >+</QuantityButton>
-            </QuantityContainer>
+            <div style={{ marginTop: '12px' }}>
+                <Rating
+                  name="read-only"
+                  value={4.6}
+                  precision={0.5}
+                  readOnly
+                />
+              </div>
+            
 
             <div style={{ marginTop: '10px' }}>
               <label>Color:   {activeImage?.colour}</label>
@@ -182,6 +213,9 @@ export default function ProductDetails() {
                   <ColorCircle key={index} onClick={() => setActiveImage(variant)} style={{ backgroundImage: `url(${variant?.smallImage})` }} />
                 ))}
               </ColorVariant>
+                <div style={{fontSize:'10px',color:`${activeImage?.partNumber && activeImage.partNumber?"green":"red"}`}}>
+                <span>{activeImage?.partNumber && activeImage.partNumber?'In Stock':'Out of Stock'}</span> 
+                </div>
               <div style={{ marginTop: '10px' }}>
                 <div>
                   <label htmlFor="">
@@ -199,30 +233,59 @@ export default function ProductDetails() {
                   })}
                 </ColorVariant>
               </div>
-              <div style={{ marginTop: '12px' }}>
-                <Rating
-                  name="read-only"
-                  value={4.6}
-                  precision={0.5}
-                  readOnly
-                />
-              </div>
+                <QuantityContainer>
+              <QuantityButton disabled={qty==1} onClick={()=>setQty((pre)=>pre-1)}>-</QuantityButton>
+              <QuantityDisplay >{qty}</QuantityDisplay>
+              <QuantityButton onClick={()=>setQty((pre)=>pre+1)}>+</QuantityButton>
+            </QuantityContainer>
+               
             </div>
             <AddToCartButton>
-             <Link to='/cart' >Add to Cart</Link> </AddToCartButton>
+             <Link onClick={handleSubmit} to='/cart' >{!CheckCardItem(productDetails.product?.variants[0]?.id) ?"Add to Cart":"View Cart"}</Link> </AddToCartButton>
           </ProductDetail>
         </>
       }
     </Container>
+    </>
   );
 }
+
+
+// {!CheckCardItem(productDetails.product?.variants[0]?.id) ? (
+//   <Button
+//     variant="contained"
+//     type="submit"
+//     sx={{
+//       padding: ".8rem 2rem",
+//       marginTop: "2rem",
+//       bgcolor: grey[900],
+//     }}
+//   >
+//     Add To Cart
+//   </Button>
+// ) : (
+//   <Button
+//     variant="contained"
+//     type="submit"
+//     sx={{
+//       padding: ".8rem 2rem",
+//       marginTop: "2rem",
+//       bgcolor: grey[900],
+//     }}
+//     onClick={() => {
+//       navigate("/cart");
+//     }}
+//   >
+//     View Cart
+//   </Button>
+// )}
 
 
 
 const Container = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 50px;
+  padding: 10px 50px;
   border-radius: 10px;
   background-color: white;
 
@@ -233,7 +296,7 @@ const Container = styled.div`
 
 const ProductImage = styled.div`
   width: 40%;
-  height: 400px;
+  height: 450px;
   border-radius: 10px;
 
   img {
@@ -273,7 +336,7 @@ const Price = styled.p`
 const QuantityContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 const QuantityButton = styled.button`
@@ -316,8 +379,9 @@ const ColorCircle = styled.div`
   }
 `;
 
+
 const AddToCartButton = styled.button`
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 12px 24px;
   background-color: #000000;
   color: #fff;
