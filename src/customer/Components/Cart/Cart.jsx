@@ -11,6 +11,8 @@ const Cart = () => {
   const navigate = useNavigate();
   const { cartItems } = useSelector((store) => store);
   const {auth} = useSelector((store) => store.auth);
+  const cart =useSelector((store) => store.cartItems.cartItems);
+  // console.log("cart",cart)
   const [data,setData]=useState([]);
   const {orderId}=cartItems;
 
@@ -19,10 +21,8 @@ const Cart = () => {
     dispatch(getCartItems());
   }, [dispatch]);
 
-  const handleRemoveItemFromCart = (id) => {
-    dispatch(RemoveCartItemNew(id)).then(() => {
-      dispatch(getCartItems());
-    });
+  const handleRemoveItemFromCart = (data) => {
+    dispatch(RemoveCartItemNew(data))
   };
 
   const handleUpdateCartQty = (lineId, qty) => {
@@ -30,11 +30,17 @@ const Cart = () => {
       dispatch(getCartItems());
     });
   };
-console.log("cartdata",cartItems.orderId)
+  
   return (
     <div>
+      {cartItems.cartItems.orderitems ? <div className="px-5 sticky top-0 w-[60%] h-[10vh] mt-5 lg:mt-0">
+          <div className="border p-5 bg-white shadow-lg rounded-md">
+           <div>cart is empty</div>
+        </div>
+        </div>:<></>
+        }
       {auth  && (
-        <div className="lg:grid grid-cols-3 lg:px-16 relative">
+        <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
               {cartItems.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (

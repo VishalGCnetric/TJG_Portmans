@@ -104,15 +104,19 @@ export const removeCartItem = (reqData) => async (dispatch) => {
       dispatch({ type: UPDATE_CART_ITEM_REQUEST });
       const config = {
         headers: {
-          Authorization: `Bearer ${reqData.jwt}`,
+          "wt":localStorage.getItem("wt"),
+          "wtt":localStorage.getItem("wtt"),
           "Content-Type":"application/json"
         },
+        data:reqData
       };
+      console.log("req data ",reqData)
       const { data } = await axios.put(
-        `${API_BASE_URL}/api/cart_items/${reqData.cartItemId}`,
-        reqData.data,config
+        `${API_BASE_URL}cart`,
+        config
       );
   console.log("udated cartitem ",data)
+  alert("qty updated successfully")
       dispatch({
         type: UPDATE_CART_ITEM_SUCCESS,
         payload: data,
