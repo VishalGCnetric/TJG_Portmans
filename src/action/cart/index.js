@@ -6,15 +6,11 @@ import { deleteCall, get, post, putCall } from "../../api/config/APIController";
 
 export const getCartItems = () => {
   return (dispatch) => {
-    const wt=localStorage.getItem("wt");
-    const wtt=localStorage.getItem("wtt");
-    console.log("wt",wt,"wtt",wtt);
     return new Promise((resolve, reject) => {
-      get("cart", {wt,wtt})
+      get("cart")
         .then((response) => {
-          console.log(response,"res")
           if (response.status === 200) {
-            // console.log("this is new cart response", response.data);
+            console.log("this is new cart response", response.data);
             dispatch({
               type: "GET_CART_ITEMS",
               cartItems: response?.data,
@@ -27,7 +23,7 @@ export const getCartItems = () => {
             type: "GET_CART_ITEMS",
             cartItems: {},
           });
-          reject(error.message);
+          reject(error);
         })
         .finally();
     });
@@ -93,10 +89,11 @@ export const getCutomerOrdersNew = () => {
   };
 };
 
-export const AddItemToCartNew = (id) => {
+export const AddItemToCartNew = ({partNumber,quantity,id}) => {
   let data = {
-    productVariantId: id,
-    quantity: 1,
+    partNumber: partNumber,
+    quantity: `${quantity}`,
+    uniqueID:`${id}`
   };
   // return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -119,33 +116,57 @@ export const AddItemToCartNew = (id) => {
   // };
 };
 
-export const RemoveCartItemNew = (id) => {
-  let url = `cart?lineId=${id}`;
-  // let data = {
-  //   productVariantId: id,
-  //   quantity: 1,
-  // };
-  // return (dispatch) => {
-    return new Promise((resolve, reject) => {
-      deleteCall(url)
-        .then((response) => {
-          if (response.status === 200) {
-            // console.log("this getCutomerOrdersNew", response.data);
-            // dispatch({
-            //   type: "GET_ORDER_HISTORY_NEW",
-            //   order: response?.data,
-            // });
-            resolve(response.data);
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        })
-        .finally();
-    });
-  };
+// export const RemoveCartItemNew = (data) => {
+//   let url = `cart`;
+//   console.log(data,"remove cart item");
+//   // let data = {
+//   //   productVariantId: id,
+//   //   quantity: 1,
+//   // };
+//   // return (dispatch) => {
+//     return new Promise((resolve, reject) => {
+//       deleteCall(url,data)
+//         .then((response) => {
+//           if (response.status === 200) {
+//             // console.log("this getCutomerOrdersNew", response.data);
+//             // dispatch({
+//             //   type: "GET_ORDER_HISTORY_NEW",
+//             //   order: response?.data,
+//             // });
+//             alert("Item has been removed from cart");
+//             resolve(response.data);
+//           }
+//         })
+//         .catch((error) => {
+//           reject(error);
+//         })
+//         .finally();
+//     });
+//   };
 // };
 
+export const RemoveCartItemNew = (data) => {
+  let url = `cart`;
+  console.log(data, "remove cart item");
+
+  return (dispatch) => { // Return a function that accepts dispatch
+    return deleteCall(url, data)
+      .then((response) => {
+        if (response.status === 200) {
+          // Dispatch an action to update the cart after item removal
+          dispatch(getCartItems());
+          alert("Item has been removed from cart");
+        } else {
+          // Handle other status codes if needed
+          console.error("Failed to remove item from cart:", response.data);
+        }
+      })
+      .catch((error) => {
+        // Log or handle the error
+        console.error("Error removing item from cart:", error);
+      });
+  };
+};
 
 export const updateCartQtyNEW = (id, qty) => {
   let params = {

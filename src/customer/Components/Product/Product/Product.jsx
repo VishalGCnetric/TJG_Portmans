@@ -198,7 +198,7 @@ export default function Product() {
     } else {
       setSearchProducts(products);
     }
-  }, 1000);
+  }, 500);
   useEffect(() => {
     // Call the debounced search function with the current search value
     debouncedSearch(searchValue);
