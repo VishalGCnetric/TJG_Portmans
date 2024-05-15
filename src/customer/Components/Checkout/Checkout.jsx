@@ -53,7 +53,7 @@ console.log("step",step)
   }
 
   return (
-    <Box className="px-5 lg:px-32 " sx={{ width: "100%" }}>
+    <Box className="mt-10 px-5 lg:px-32 " sx={{ width: "100%" }}>
       <Stepper activeStep={step}>
         {steps.map((label, index) => {
           const stepProps = {};

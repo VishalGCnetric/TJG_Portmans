@@ -14,24 +14,27 @@ import api, { API_BASE_URL } from "../../../config/api";
 
 export const createOrder = (reqData) => async (dispatch) => {
   console.log("req data ", reqData);
+
   try {
     dispatch({ type: CREATE_ORDER_REQUEST });
 
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${reqData.jwt}`,
+        // Authorization: `Bearer ${reqData.jwt}`,
+        // wt:wt,
+        // wtt:wt,
       },
     };
 
     const { data } = await api.post(
-      `${API_BASE_URL}/api/orders/`,
+      `${API_BASE_URL}address`,
       reqData.address,
     );
-
-    if (data._id) {
-      reqData.navigate({ search: `step=3&order_id=${data._id}` });
-    }
+console.log("address data ", data);
+    // if (data._id) {
+    //   reqData.navigate({ search: `step=3&order_id=${data._id}` });
+    // }
     console.log("created order - ", data);
     dispatch({
       type: CREATE_ORDER_SUCCESS,
