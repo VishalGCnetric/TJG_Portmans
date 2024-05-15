@@ -16,7 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Pagination from "@mui/material/Pagination";
 
-import { filters, singleFilter, sortOptions } from "./FilterData";
+import {  singleFilter, sortOptions } from "./FilterData";
 import ProductCard from "../ProductCard/ProductCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { productdata } from "../../../../data";
@@ -32,6 +32,7 @@ import BackdropComponent from "../../BackDrop/Backdrop";
 import { receiveProducts, receiveProductsSearch } from "../../../../action";
 import HomeProductCard from "../../Home/HomeProductCard";
 import { debounce, throttle } from 'lodash';
+import { API_BASE_URL } from "../../../../config/api";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -48,7 +49,17 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
+const [filters, setFilters] = useState([]);
 
+useEffect(() => {
+fetch(`${API_BASE_URL}filters/portmans`).then((res) => res.json()).then((res) => {
+  setFilters(res.filters);}).catch((err) => {
+  console.log(err);
+  })
+
+
+}, [])
+console.log(filters)
   const handleLoderClose = () => {
     setIsLoaderOpen(false);
   };
@@ -284,7 +295,7 @@ console.log(products,searchProducts)
                             </h3>
                             <Disclosure.Panel className="pt-6">
                               <div className="space-y-6">
-                                {section.options.map((option, optionIdx) => (
+                                {section.children.map((option, optionIdx) => (
                                   <div
                                     key={option.value}
                                     className="flex items-center"
@@ -305,7 +316,7 @@ console.log(products,searchProducts)
                                       className="ml-3 min-w-0 flex-1 text-gray-500"
                                       // onClick={()=>handleFilter(option.value,section.id)}
                                     >
-                                      {option.label}
+                                      {option.name}
                                     </label>
                                   </div>
                                 ))}

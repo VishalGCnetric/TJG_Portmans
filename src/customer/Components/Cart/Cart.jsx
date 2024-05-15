@@ -15,10 +15,18 @@ const Cart = () => {
   // console.log("cart",cart)
   const [data,setData]=useState([]);
   const {orderId}=cartItems;
-
-
+  
+  // const formattedPrice = totalPrice ? totalPrice.toFixed(2) : "";
+  let formattedPrice = +cartItems?.cartItems?.totalProductPrice;
+  
   useEffect(() => {
     dispatch(getCartItems());
+    const totalPrice = cartItems && cartItems?.cartItems && cartItems?.cartItems?.totalProductPrice;
+    if (typeof totalPrice === "number") {
+      formattedPrice = totalPrice.toFixed(2);
+    } else {
+      console.error("Total price is not a number:", totalPrice);
+    }
   }, [dispatch]);
 
   const handleRemoveItemFromCart = (data) => {
@@ -31,6 +39,7 @@ const Cart = () => {
     });
   };
   
+  console.log(formattedPrice)
   return (
     <div>
       {cartItems?.cartItems?.orderitems ? <div className="px-5 sticky top-0 w-[60%] h-[10vh] mt-5 lg:mt-0">
@@ -62,7 +71,8 @@ const Cart = () => {
               <div className="space-y-3 font-semibold">
                 <div className="flex justify-between pt-3 text-black ">
                   <span>Price ({cartItems?.cartItems?.orderItem?.length} item)</span>
-                  <span>{cartItems?.cartItems?.totalProductPrice }</span>
+                  {/* <span>{cartItems?.cartItems?.totalProductPrice }</span> */}
+                  <span>{formattedPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Discount</span>
@@ -76,7 +86,8 @@ const Cart = () => {
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total Amount</span>
                   <span className="text-green-700">
-                    {cartItems?.cartItems?.totalProductPrice }
+                  {/* {cartItems?.cartItems?.totalProductPrice} */}
+                  {formattedPrice.toFixed(2)}
                   </span>
                 </div>
               </div>

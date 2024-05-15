@@ -10,7 +10,7 @@ const localStorageService = LocalStorageService.getService();
 const userAccessToken = localStorageService.getUserAuthAccessToken();
  console.log("userAccessToken", userAccessToken);
 // let accesstoken="5cd59bcb6f99cec3fc932e5d6f7fdabea59d96b8bf8d9b7980d2ac4bb955ff19"
-const jwt = localStorage.getItem("jwt");
+// const jwt = localStorage.getItem("jwt");
 const wt = localStorage.getItem("wt");
 const wtt = localStorage.getItem("wtt");
 instance.interceptors.request.use(
@@ -20,10 +20,10 @@ instance.interceptors.request.use(
       "wt": wt,
       "wtt": wtt,
     };
-    if (userAccessToken) {
-      config.headers["wt"] = wt;
-      config.headers["wtt"] = wtt;
-    }
+    // if (userAccessToken) {
+    //   config.headers["wt"] = wt;
+    //   config.headers["wtt"] = wtt;
+    // }
     return config;
   },
   (error) => {
