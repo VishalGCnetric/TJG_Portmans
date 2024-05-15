@@ -33,7 +33,7 @@ const Cart = () => {
   
   return (
     <div>
-      {cartItems.cartItems.orderitems ? <div className="px-5 sticky top-0 w-[60%] h-[10vh] mt-5 lg:mt-0">
+      {cartItems?.cartItems?.orderitems ? <div className="px-5 sticky top-0 w-[60%] h-[10vh] mt-5 lg:mt-0">
           <div className="border p-5 bg-white shadow-lg rounded-md">
            <div>cart is empty</div>
         </div>
@@ -43,7 +43,7 @@ const Cart = () => {
         <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (
+              {cartItems?.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}

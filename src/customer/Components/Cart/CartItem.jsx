@@ -83,7 +83,7 @@ const CartItem = ({
               ${data.price[0]?.value }
             </p> */}
             <p className="font-semibold text-lg">
-              {data && `$ ${data?.price[0]?.value }`}
+              {/* {data && `$ ${data?.price?.[0]?.value }`} */}
             </p>
             <p className="text-green-600 font-semibold">10% off</p>
           </div>
