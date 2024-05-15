@@ -42,6 +42,7 @@ export const login = userData => async dispatch => {
   try {
     const response = await axios.post(`${API_BASE_URL}login`, userData);
     const user = response.data;
+    console.log(user,"user");
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
     dispatch(getUser());

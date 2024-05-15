@@ -9,9 +9,12 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-const token = localStorage.getItem('jwt');
-
-api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+// const token = localStorage.getItem('jwt');
+const wt=localStorage.getItem("wt");
+const wtt=localStorage.getItem("wtt");
+api.defaults.headers.common['wt'] = `${wt}`;
+api.defaults.headers.common['wtt'] = `${wtt}`;
+// api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 api.defaults.headers.post['Content-Type'] = 'application/json';
 
