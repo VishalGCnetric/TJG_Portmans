@@ -72,7 +72,7 @@ function classNames(...classes) {
 }
 
 export default function ProductDetails() {
-  const [qty,setQty] = useState(1)
+  const [qty, setQty] = useState(1)
   const [selectedSize, setSelectedSize] = useState();
   const [activeImage, setActiveImage] = useState(null);
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ export default function ProductDetails() {
     // dispatch(AddItemToCartNew(activeImage?.partNumber && activeImage.partNumber))
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
-    
+
     if (partNumber) {
       AddItemToCartNew({ partNumber, quantity })
         .then((res) => {
@@ -117,7 +117,7 @@ export default function ProductDetails() {
     }
     // console.log(activeImage?.partNumber && activeImage.partNumber)
 
-    
+
 
   };
 
@@ -171,31 +171,31 @@ export default function ProductDetails() {
 
   return (
     <>
-       <div style={{marginTop:'10px',marginLeft:'100px'}}>
-          <Link to='/shops'>Product / {productDetails[0]?.name}</Link>
-        </div>
-    <Container>
-      {
-        productDetails && <>
-       
-          <ProductImage>
-            <img
-              //  src={productDetails[0]?.fullImage} h
-              src={activeImage ? activeImage.mainImage : productDetails[0]?.fullImage}
-              alt={productDetails[0]?.name} />
-          </ProductImage>
-          <ProductDetail>
-            <Title>{productDetails[0]?.name}</Title>
-            <Details>{productDetails[0]?.longDescription}</Details>
-            <div style={{ marginBottom: '10px' }}>
-              {/* <span className="text-gray-600 text-sm">
+      <div style={{ marginTop: '10px', marginLeft: '100px' }}>
+        <Link to='/shops'>Product / {productDetails[0]?.name}</Link>
+      </div>
+      <Container>
+        {
+          productDetails && <>
+
+            <ProductImage>
+              <img
+                //  src={productDetails[0]?.fullImage} h
+                src={activeImage ? activeImage.mainImage : productDetails[0]?.fullImage}
+                alt={productDetails[0]?.name} />
+            </ProductImage>
+            <ProductDetail>
+              <Title>{productDetails[0]?.name}</Title>
+              <Details>{productDetails[0]?.longDescription}</Details>
+              <div style={{ marginBottom: '10px' }}>
+                {/* <span className="text-gray-600 text-sm">
             <del>${productDetails[0]?.price[0]?.value}</del>
           </span> */}
-              <span className="text-green-600 font-bold text-lg">
-                ${productDetails[0]?.price[1]?.value}
-              </span>
-            </div>
-            <div style={{ marginTop: '12px' }}>
+                <span className="text-green-600 font-bold text-lg">
+                  ${productDetails[0]?.price[1]?.value}
+                </span>
+              </div>
+              <div style={{ marginTop: '12px' }}>
                 <Rating
                   name="read-only"
                   value={4.6}
@@ -203,49 +203,79 @@ export default function ProductDetails() {
                   readOnly
                 />
               </div>
-            
 
-            <div style={{ marginTop: '10px' }}>
-              <label>Color:   {activeImage?.colour}</label>
-              <ColorVariant>
-              
-                 {productDetails[0]?.variants && productDetails[0]?.variants.map((variant, index) => (
-                  <ColorCircle key={index} onClick={() => setActiveImage(variant)} style={{ backgroundImage: `url(${variant?.smallImage})` }} />
-                ))}
-              </ColorVariant>
-                <div style={{fontSize:'10px',color:`${activeImage?.partNumber && activeImage.partNumber?"green":"red"}`}}>
-                <span>{activeImage?.partNumber && activeImage.partNumber?'In Stock':'Out of Stock'}</span> 
-                </div>
+
               <div style={{ marginTop: '10px' }}>
-                <div>
-                  <label htmlFor="">
-                    Size:
-                  </label>
-                </div>
+                <label>Color:   {activeImage?.colour}</label>
                 <ColorVariant>
-                  {productDetails[0]?.sizes && productDetails[0]?.sizes.map((size, index) => {
-                    const digits = size.match(/\d+/);
-                    return (
-                      <ColorCircle key={index} onClick={() => setSelectedSize(size)}>
-                        {digits && digits[0]}
-                      </ColorCircle>
-                    );
-                  })}
+
+                  {productDetails[0]?.variants && productDetails[0]?.variants.map((variant, index) => (
+                    <ColorCircle key={index} onClick={() => setActiveImage(variant)} style={{ backgroundImage: `url(${variant?.smallImage})` }} />
+                  ))}
                 </ColorVariant>
-              </div>
+                <div style={{ fontSize: '10px', color: `${activeImage?.partNumber && activeImage.partNumber ? "green" : "red"}` }}>
+                  <span>{activeImage?.partNumber && activeImage.partNumber ? 'In Stock' : 'Out of Stock'}</span>
+                </div>
+                <div style={{ marginTop: '10px' }}>
+                  <div>
+                    <label htmlFor="">
+                      Size:
+                    </label>
+                  </div>
+                  <ColorVariant>
+                    {productDetails[0]?.sizes && productDetails[0]?.sizes.map((size, index) => {
+                      const digits = size.match(/\d+/);
+                      return (
+                        <ColorCircle key={index} onClick={() => setSelectedSize(size)}>
+                          {digits && digits[0]}
+                        </ColorCircle>
+                      );
+                    })}
+                  </ColorVariant>
+                </div>
                 <QuantityContainer>
-              <QuantityButton disabled={qty==1} onClick={()=>setQty((pre)=>pre-1)}>-</QuantityButton>
-              <QuantityDisplay >{qty}</QuantityDisplay>
-              <QuantityButton onClick={()=>setQty((pre)=>pre+1)}>+</QuantityButton>
-            </QuantityContainer>
-               
-            </div>
-            <AddToCartButton>
-             <Link onClick={handleSubmit} to='/cart' >{!CheckCardItem(productDetails.product?.variants[0]?.id) ?"Add to Cart":"View Cart"}</Link> </AddToCartButton>
-          </ProductDetail>
-        </>
-      }
-    </Container>
+                  <QuantityButton disabled={qty == 1} onClick={() => setQty((pre) => pre - 1)}>-</QuantityButton>
+                  <QuantityDisplay >{qty}</QuantityDisplay>
+                  <QuantityButton onClick={() => setQty((pre) => pre + 1)}>+</QuantityButton>
+                </QuantityContainer>
+
+              </div>
+              {/* <AddToCartButton>
+             <Link onClick={handleSubmit} to='/cart' >{cartView? "Add to Cart":"View Cart"}</Link> </AddToCartButton> */}
+
+              {(false) ? (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    padding: ".8rem 2rem",
+                    marginTop: "2rem",
+                    bgcolor: grey[900],
+                  }}
+                >
+                  Add To Cart
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    padding: ".8rem 2rem",
+                    marginTop: "2rem",
+                    bgcolor: grey[900],
+                  }}
+                  onClick={() => {
+                    navigate("/cart");
+                  }}
+                >
+                  View Cart
+                </Button>
+              )}
+
+            </ProductDetail>
+          </>
+        }
+      </Container>
     </>
   );
 }
@@ -385,7 +415,7 @@ const AddToCartButton = styled.button`
   padding: 12px 24px;
   background-color: #000000;
   color: #fff;
-  border: none;
+  border: none;   
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
