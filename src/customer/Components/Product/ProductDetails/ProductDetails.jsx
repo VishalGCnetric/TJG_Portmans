@@ -245,7 +245,6 @@ export default function ProductDetails() {
               </div>
               {/* <AddToCartButton>
              <Link onClick={handleSubmit} to='/cart' >{cartView? "Add to Cart":"View Cart"}</Link> </AddToCartButton> */}
-
               { true?
                 <Button
                   variant="contained"
