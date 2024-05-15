@@ -115,33 +115,57 @@ export const AddItemToCartNew = ({partNumber,quantity}) => {
   // };
 };
 
-export const RemoveCartItemNew = (id) => {
-  let url = `cart?lineId=${id}`;
-  // let data = {
-  //   productVariantId: id,
-  //   quantity: 1,
-  // };
-  // return (dispatch) => {
-    return new Promise((resolve, reject) => {
-      deleteCall(url)
-        .then((response) => {
-          if (response.status === 200) {
-            // console.log("this getCutomerOrdersNew", response.data);
-            // dispatch({
-            //   type: "GET_ORDER_HISTORY_NEW",
-            //   order: response?.data,
-            // });
-            resolve(response.data);
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        })
-        .finally();
-    });
-  };
+// export const RemoveCartItemNew = (data) => {
+//   let url = `cart`;
+//   console.log(data,"remove cart item");
+//   // let data = {
+//   //   productVariantId: id,
+//   //   quantity: 1,
+//   // };
+//   // return (dispatch) => {
+//     return new Promise((resolve, reject) => {
+//       deleteCall(url,data)
+//         .then((response) => {
+//           if (response.status === 200) {
+//             // console.log("this getCutomerOrdersNew", response.data);
+//             // dispatch({
+//             //   type: "GET_ORDER_HISTORY_NEW",
+//             //   order: response?.data,
+//             // });
+//             alert("Item has been removed from cart");
+//             resolve(response.data);
+//           }
+//         })
+//         .catch((error) => {
+//           reject(error);
+//         })
+//         .finally();
+//     });
+//   };
 // };
 
+export const RemoveCartItemNew = (data) => {
+  let url = `cart`;
+  console.log(data, "remove cart item");
+
+  return (dispatch) => { // Return a function that accepts dispatch
+    return deleteCall(url, data)
+      .then((response) => {
+        if (response.status === 200) {
+          // Dispatch an action to update the cart after item removal
+          dispatch(getCartItems());
+          alert("Item has been removed from cart");
+        } else {
+          // Handle other status codes if needed
+          console.error("Failed to remove item from cart:", response.data);
+        }
+      })
+      .catch((error) => {
+        // Log or handle the error
+        console.error("Error removing item from cart:", error);
+      });
+  };
+};
 
 export const updateCartQtyNEW = (id, qty) => {
   let params = {

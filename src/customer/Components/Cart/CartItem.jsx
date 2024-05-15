@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,62 +19,58 @@ import { API_BASE_URL } from "../../../config/api";
 const CartItem = ({
   item,
   showButton,
-  handleRemoveItemFromCart,
-  handleUpdateCartMinus,
-  handleUpdateCartPlus,
+  
 }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const [data, setData] = useState({});
-  const {orderId}=useSelector((store) => store.cartItems);
+  const {} = useSelector((store) => store);
+  const cart=useSelector((store) => store.cartItems.cartItems);
   const { orderItemId, productId } = item;
-  console.log(item)
+  const { orderId } = cart;
+  const [qty, setQty] = useState(0);
   // const { cartItems } = useSelector((store) => store);
-useEffect(()=>{
-  console.log(item.partNumber)
-fetch(`${API_BASE_URL}product?partNumber=${item.partNumber}`).then((res)=>{
-  return res.json()
-}).then((res)=>{
-  console.log(res,"data")
-  const data =res.catalogEntryView[0]
-
-  setData(data)
-}).catch((err)=>{
-  console.log(err)
-})
-},[])
-  // const handleRemoveItemFromCart = () => {
-
-  //   RemoveCartItemNew(item.id).then((res)=>{
-  //     dispatch(getCartItems());
-
-  //   })
-  // };
-//   {
-//     "orderId" : 1062626683,
-//     "orderItemId" : 15019,
-//     "productId": "14263",
-//     "quantity": "9"
-// }
-console.log(orderId,orderItemId,productId)
-  const handleUpdateCartItem = (num) => {
-    const datas = {
-      data: { quantity: item.quantity + num },
-      cartItemId: item?._id,
-      jwt,
-    };
-    // console.log("update data ", data);
-    dispatch(updateCartItem(datas));
+  const handleRemoveItemFromCart = (data) => {
+    dispatch(RemoveCartItemNew(data))
   };
-// console.log(data,"data item",data.price[0].value)
+  const handleUpdateCartItem = useCallback((num) => {
+    const datas = { quantity: num, orderId, orderItemId, productId };
+    dispatch(updateCartItem(datas));
+  }, [dispatch, orderId, orderItemId, productId]);
 
+  useEffect(() => {
+    fetch(`${API_BASE_URL}product?partNumber=${item.partNumber}`)
+      .then((res) => res.json())
+      .then((res) => {
+        const data = res.catalogEntryView[0];
+        
+        setData(data);
+        setQty(+item.quantity);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [item.partNumber]);
+
+  const debouncedUpdateCartItem = useCallback(
+    debounce((num) => {
+      const datas = { quantity: num, orderId, orderItemId, productId };
+      dispatch(updateCartItem(datas));
+      console.log("qty changed")
+    }, 500),
+    [dispatch, orderId, orderItemId, productId]
+  );
+  // useEffect(() => {
+  //   debouncedUpdateCartItem(qty);
+  // }, [debouncedUpdateCartItem, qty]);
   return (<>
+  {data &&
    <div className="p-5 shadow-lg border rounded-md">
       <div className="flex items-center">
         <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem] ">
           <img
             className="w-full h-full object-cover object-top"
-            src={data.fullImage}
+            src={data?.fullImage}
             alt="img"
           />
         </div>
@@ -87,7 +83,7 @@ console.log(orderId,orderItemId,productId)
               ${data.price[0]?.value }
             </p> */}
             <p className="font-semibold text-lg">
-              {/* {data && `$ ${data?.price[0]?.value }`} */}
+              {data && `$ ${data?.price[0]?.value }`}
             </p>
             <p className="text-green-600 font-semibold">10% off</p>
           </div>
@@ -97,8 +93,11 @@ console.log(orderId,orderItemId,productId)
         <div className="lg:flex items-center lg:space-x-10 pt-4">
           <div className="flex items-center space-x-2 ">
             <IconButton
-              onClick={(e) => handleUpdateCartMinus(e, item.id, item.quantity)}
-              disabled={item?.quantity <= 1}
+              onClick={()=>{setQty(prev=>prev-1)
+                debouncedUpdateCartItem(qty);
+
+              }}
+              disabled={qty <= 1}
               color="primary"
               aria-label="add an alarm"
             >
@@ -106,10 +105,13 @@ console.log(orderId,orderItemId,productId)
             </IconButton>
 
             <span className="py-1 px-7 border rounded-sm">
-              {item?.quantity}
+              {qty}
             </span>
             <IconButton
-              onClick={(e) => handleUpdateCartPlus(e, item.id, item.quantity)}
+              onClick={()=>{setQty(prev=>prev+1)
+                debouncedUpdateCartItem(qty);
+
+              }}
               color="primary"
               aria-label="add an alarm"
             >
@@ -118,7 +120,7 @@ console.log(orderId,orderItemId,productId)
           </div>
           <div className="flex text-sm lg:text-base mt-5 lg:mt-0">
             <Button
-              onClick={(e) => handleRemoveItemFromCart(e, item.id)}
+              onClick={(e) => handleRemoveItemFromCart({orderId,orderItemId})}
               variant="contained"
               sx={{ bgcolor: grey[900] }}
             >
@@ -127,10 +129,21 @@ console.log(orderId,orderItemId,productId)
           </div>
         </div>
       )}
-    </div>
+    </div>}
   </>
    
   );
 };
 
 export default CartItem;
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
