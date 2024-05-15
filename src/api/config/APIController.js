@@ -14,10 +14,14 @@ export function get(endPoint) {
   return instance.get(endPoint);
 }
 
-export function deleteCall(endPoint) {
-  return instance.delete(endPoint);
+export function deleteCall(endPoint, params) {
+  return instance.delete(endPoint, {
+    data:params
+  });
 }
 
-export function putCall(endPoint, params) {
-  return instance.put(endPoint, params);
+export function putCall(endPoint, payload) {
+  return instance.put(endPoint, 
+    payload
+  );
 }

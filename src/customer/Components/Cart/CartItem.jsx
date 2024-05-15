@@ -12,6 +12,7 @@ import {
   RemoveCartItemNew,
   getCartItems,
   handleRemoveItemFromCart,
+  updateCartQtyNEW,
 } from "../../../action/cart";
 import { grey } from "@mui/material/colors";
 import { API_BASE_URL } from "../../../config/api";
@@ -31,11 +32,13 @@ const CartItem = ({
   const [qty, setQty] = useState(0);
   // const { cartItems } = useSelector((store) => store);
   const handleRemoveItemFromCart = (data) => {
+    
     dispatch(RemoveCartItemNew(data))
   };
   const handleUpdateCartItem = useCallback((num) => {
-    const datas = { quantity: num, orderId, orderItemId, productId };
-    dispatch(updateCartItem(datas));
+    
+    const datas = { quantity: num+"", orderId, orderItemId, productId };
+    dispatch(updateCartQtyNEW(datas));
   }, [dispatch, orderId, orderItemId, productId]);
 
   useEffect(() => {
@@ -55,7 +58,7 @@ const CartItem = ({
   const debouncedUpdateCartItem = useCallback(
     debounce((num) => {
       const datas = { quantity: num, orderId, orderItemId, productId };
-      dispatch(updateCartItem(datas));
+      updateCartQtyNEW(datas);
       console.log("qty changed")
     }, 500),
     [dispatch, orderId, orderItemId, productId]
@@ -83,7 +86,7 @@ const CartItem = ({
               ${data.price[0]?.value }
             </p> */}
             <p className="font-semibold text-lg">
-              {data && `$ ${data?.price[0]?.value }`}
+              {data && `$ ${data?.price?.[0]?.value }`}
             </p>
             <p className="text-green-600 font-semibold">10% off</p>
           </div>
@@ -93,10 +96,13 @@ const CartItem = ({
         <div className="lg:flex items-center lg:space-x-10 pt-4">
           <div className="flex items-center space-x-2 ">
             <IconButton
-              onClick={()=>{setQty(prev=>prev-1)
-                debouncedUpdateCartItem(qty);
-
-              }}
+               onClick={()=>{
+                setQty(prev => {
+                  const updatedQty = prev + 1;
+                  console.log(updatedQty, "increased");
+                  debouncedUpdateCartItem(updatedQty.toString());
+                  return updatedQty;
+              });}}
               disabled={qty <= 1}
               color="primary"
               aria-label="add an alarm"
@@ -108,10 +114,13 @@ const CartItem = ({
               {qty}
             </span>
             <IconButton
-              onClick={()=>{setQty(prev=>prev+1)
-                debouncedUpdateCartItem(qty);
-
-              }}
+              onClick={()=>{
+                setQty(prev => {
+                  const updatedQty = prev + 1;
+                  console.log(updatedQty, "increased");
+                  debouncedUpdateCartItem(updatedQty.toString());
+                  return updatedQty;
+              });}}
               color="primary"
               aria-label="add an alarm"
             >

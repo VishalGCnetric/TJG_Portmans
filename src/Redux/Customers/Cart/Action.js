@@ -108,12 +108,12 @@ export const removeCartItem = (reqData) => async (dispatch) => {
           "wtt":localStorage.getItem("wtt"),
           "Content-Type":"application/json"
         },
-        data:reqData
+       
       };
       console.log("req data ",reqData)
       const { data } = await axios.put(
         `${API_BASE_URL}cart`,
-        config
+        config,reqData
       );
   console.log("udated cartitem ",data)
   alert("qty updated successfully")
