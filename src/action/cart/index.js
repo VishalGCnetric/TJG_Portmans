@@ -89,10 +89,11 @@ export const getCutomerOrdersNew = () => {
   };
 };
 
-export const AddItemToCartNew = ({partNumber,quantity}) => {
+export const AddItemToCartNew = ({partNumber,quantity,id}) => {
   let data = {
     partNumber: partNumber,
     quantity: `${quantity}`,
+    uniqueID:`${id}`
   };
   // return (dispatch) => {
     return new Promise((resolve, reject) => {
