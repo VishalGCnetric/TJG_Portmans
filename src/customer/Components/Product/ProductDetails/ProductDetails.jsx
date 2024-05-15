@@ -3,8 +3,10 @@ import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductReviewCard from "./ProductReviewCard";
-import { Box, Button, Grid, LinearProgress, Rating } from "@mui/material";
+import { Box, Button, Grid, LinearProgress, Rating,IconButton } from "@mui/material";
 import HomeProductCard from "../../Home/HomeProductCard";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findProductById } from "../../../../Redux/Customers/Product/Action";
@@ -114,7 +116,7 @@ console.log(productDetails)
   return (
     <>
       <div style={{ marginTop: '10px', marginLeft: '100px' }}>
-        <Link to='/shops'>Product / {productDetails[0]?.name}</Link>
+        <Link to='/shops'>Product / {productDetails?.name}</Link>
       </div>
       <Container>
         {
@@ -175,11 +177,38 @@ console.log(productDetails)
                     })}
                   </ColorVariant>
                 </div>
-                <QuantityContainer>
+                {/* <QuantityContainer>
                   <QuantityButton disabled={qty == 1} onClick={() => setQty((pre) => pre - 1)}>-</QuantityButton>
                   <QuantityDisplay >{qty}</QuantityDisplay>
                   <QuantityButton onClick={() => setQty((pre) => pre + 1)}>+</QuantityButton>
-                </QuantityContainer>
+                </QuantityContainer> */}
+
+              
+        <div className="lg:flex items-center lg:space-x-10 pt-4">
+          <div className="flex items-center space-x-2 ">
+            <IconButton
+              onClick={() => setQty((pre) => pre - 1)}
+              disabled={qty <= 1}
+              color="primary"
+              aria-label="add an alarm"
+            >
+              <RemoveCircleOutlineIcon />
+            </IconButton>
+
+            <span className="py-1 px-7 border rounded-sm">
+              {qty}
+            </span>
+            <IconButton
+               onClick={() => setQty((pre) => pre + 1)}
+              color="primary"
+              aria-label="add an alarm"
+            >
+              <AddCircleOutlineIcon />
+            </IconButton>
+          </div>
+        
+        </div>
+
 
               </div>
              

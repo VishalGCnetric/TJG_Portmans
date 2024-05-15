@@ -27,6 +27,7 @@ export default function Checkout() {
 
 console.log("step",step)
 
+console.log(data)
 
   const handleNext = () => {
     let newSkipped = skipped;
