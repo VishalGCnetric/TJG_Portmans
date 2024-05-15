@@ -88,7 +88,7 @@ export default function ProductDetails() {
   const handleSetActiveImage = (image) => {
     setActiveImage(image);
   };
-
+// console.log(productDetails[0]?.uniqueID)
   const handleSubmit = (event) => {
     event.preventDefault();
     // const data = { id:productDetails.product?.variants[0]?.id, size: selectedSize.name };
@@ -102,9 +102,10 @@ export default function ProductDetails() {
     // dispatch(AddItemToCartNew(activeImage?.partNumber && activeImage.partNumber))
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
+    const id=productDetails[0]?.uniqueID
 
     if (partNumber) {
-      AddItemToCartNew({ partNumber, quantity })
+      AddItemToCartNew({ partNumber, quantity ,id })
         .then((res) => {
           console.log(res);
           dispatch(getCartItems());
@@ -163,6 +164,8 @@ export default function ProductDetails() {
   // useEffect(() => {
 
   // }, [cartItems?.cartItems?.cart?.lines.length]);
+
+  
 
   if (!productDetails) {
     return <LinearProgress />
@@ -242,8 +245,7 @@ export default function ProductDetails() {
               </div>
               {/* <AddToCartButton>
              <Link onClick={handleSubmit} to='/cart' >{cartView? "Add to Cart":"View Cart"}</Link> </AddToCartButton> */}
-
-              {(false) ? (
+              { true?
                 <Button
                   variant="contained"
                   type="submit"
@@ -252,10 +254,11 @@ export default function ProductDetails() {
                     marginTop: "2rem",
                     bgcolor: grey[900],
                   }}
+                  onClick={handleSubmit}
                 >
                   Add To Cart
                 </Button>
-              ) : (
+              : 
                 <Button
                   variant="contained"
                   type="submit"
@@ -270,7 +273,7 @@ export default function ProductDetails() {
                 >
                   View Cart
                 </Button>
-              )}
+              }
 
             </ProductDetail>
           </>
