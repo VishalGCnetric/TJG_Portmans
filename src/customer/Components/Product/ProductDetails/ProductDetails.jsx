@@ -18,60 +18,12 @@ import { grey } from "@mui/material/colors";
 import styled from "styled-components";
 import { SingleBedSharp } from "@mui/icons-material";
 
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "₹996",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    "This item might be useful if you're preparing for one of these exams",
-};
-const reviews = { href: "#", average: 4, totalCount: 117 };
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductDetails() {
+  const[checkCart,setCheckCart] = useState(false)
   const [qty, setQty] = useState(1)
   const [selectedSize, setSelectedSize] = useState();
   const [activeImage, setActiveImage] = useState(null);
@@ -80,7 +32,6 @@ export default function ProductDetails() {
   const { customersProduct, review, cartItems } = useSelector((store) => store);
   const { productId } = useParams();
   const jwt = localStorage.getItem("jwt");
-  // console.log("param",productId,customersProduct.product)
   const [productDetails, setProductDetails] = useState({});
 
   console.log(cartItems)
@@ -88,44 +39,30 @@ export default function ProductDetails() {
   const handleSetActiveImage = (image) => {
     setActiveImage(image);
   };
-// console.log(productDetails[0]?.uniqueID)
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const data = { id:productDetails.product?.variants[0]?.id, size: selectedSize.name };
-    // dispatch(addItemToCart({ data, jwt }));
-    // navigate("/cart");
-    // dispatch(AddItemToCartNew(productDetails.product?.variants[0]?.id))
-    // AddItemToCartNew(productDetails?.variants[productDetails?.variants?.length - 1]?.partNumber).then((res) => {
-    //   console.log(productDetails)
-    //   dispatch(getCartItems());
-    // });
-    // dispatch(AddItemToCartNew(activeImage?.partNumber && activeImage.partNumber))
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
-    const id=productDetails[0]?.uniqueID
 
     if (partNumber) {
-      AddItemToCartNew({ partNumber, quantity ,id })
+      AddItemToCartNew({ partNumber, quantity  })
         .then((res) => {
-          console.log(res);
+          alert("Added to Cart")
           dispatch(getCartItems());
         })
         .catch((error) => {
           console.error("Error adding item to cart:", error);
         });
     } else {
+      alert('Out of Stock')
       console.error("Part number is missing.");
     }
-    // console.log(activeImage?.partNumber && activeImage.partNumber)
-
-
-
+   
   };
 
   useEffect(() => {
-    // const data = { productId: productId, jwt };
-    // dispatch(findProductById(data));
-    // dispatch(getAllReviews(productId));
+  
     if (cartItems?.cartItems?.cart?.lines.length > 0) {
       dispatch(getCartItems());
     }
@@ -133,8 +70,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     receiveProductsById(productId).then((res) => {
-      // console.log("this is new details product page", res);
-      setProductDetails(res.catalogEntryView);
+      setProductDetails(res.catalogEntryView[0]);
     });
   }, [productId]);
 
@@ -145,32 +81,35 @@ export default function ProductDetails() {
       setTopProducts(data.hits);
     });
   }, []);
-
-
+console.log(productDetails)
+  useEffect(() => {
+    const checkItem = CheckCardItem(productDetails?.sKUs?.[0]?.partNumber);
+    console.log(checkItem);
+    setCheckCart(checkItem);
+  }, [cartItems, productDetails]);
+ 
   const CheckCardItem = (ID) => {
-    let checkcart = false;
-
-    let Cart = cartItems?.cartItems?.cart?.lines;
+    let Cart = cartItems?.cartItems?.orderItem;
+    let foundInCart = false;
     if (Cart && Cart.length > 0) {
       for (const cartItem of Cart) {
-        if (cartItem.productVariant.id === ID) {
-          checkcart = true;
+        console.log("cartItem---", cartItem.partNumber, "ID---", ID);
+ 
+        if (cartItem.partNumber === ID) {
+          foundInCart = true;
+          break;
         }
       }
     }
-    return checkcart;
+    setCheckCart(foundInCart);
+    return foundInCart;
   };
 
-  // useEffect(() => {
-
-  // }, [cartItems?.cartItems?.cart?.lines.length]);
-
-  
 
   if (!productDetails) {
     return <LinearProgress />
   }
-  console.log(productDetails[0]?.partNumber)
+
 
   return (
     <>
@@ -184,18 +123,18 @@ export default function ProductDetails() {
             <ProductImage>
               <img
                 //  src={productDetails[0]?.fullImage} h
-                src={activeImage ? activeImage.mainImage : productDetails[0]?.fullImage}
-                alt={productDetails[0]?.name} />
+                src={activeImage ? activeImage.mainImage : productDetails?.fullImage}
+                alt={productDetails?.name} />
             </ProductImage>
             <ProductDetail>
-              <Title>{productDetails[0]?.name}</Title>
-              <Details>{productDetails[0]?.longDescription}</Details>
+              <Title>{productDetails?.name}</Title>
+              <Details>{productDetails?.longDescription}</Details>
               <div style={{ marginBottom: '10px' }}>
                 {/* <span className="text-gray-600 text-sm">
             <del>${productDetails[0]?.price[0]?.value}</del>
           </span> */}
                 <span className="text-green-600 font-bold text-lg">
-                  ${productDetails[0]?.price[1]?.value}
+                  ${productDetails?.price?.[1]?.value}
                 </span>
               </div>
               <div style={{ marginTop: '12px' }}>
@@ -212,7 +151,7 @@ export default function ProductDetails() {
                 <label>Color:   {activeImage?.colour}</label>
                 <ColorVariant>
 
-                  {productDetails[0]?.variants && productDetails[0]?.variants.map((variant, index) => (
+                  {productDetails?.variants && productDetails?.variants.map((variant, index) => (
                     <ColorCircle key={index} onClick={() => setActiveImage(variant)} style={{ backgroundImage: `url(${variant?.smallImage})` }} />
                   ))}
                 </ColorVariant>
@@ -226,7 +165,7 @@ export default function ProductDetails() {
                     </label>
                   </div>
                   <ColorVariant>
-                    {productDetails[0]?.sizes && productDetails[0]?.sizes.map((size, index) => {
+                    {productDetails?.sizes && productDetails?.sizes.map((size, index) => {
                       const digits = size.match(/\d+/);
                       return (
                         <ColorCircle key={index} onClick={() => setSelectedSize(size)}>
@@ -243,37 +182,36 @@ export default function ProductDetails() {
                 </QuantityContainer>
 
               </div>
-              {/* <AddToCartButton>
-             <Link onClick={handleSubmit} to='/cart' >{cartView? "Add to Cart":"View Cart"}</Link> </AddToCartButton> */}
-              { true?
-                <Button
-                  variant="contained"
-                  type="submit"
-                  sx={{
-                    padding: ".8rem 2rem",
-                    marginTop: "2rem",
-                    bgcolor: grey[900],
-                  }}
-                  onClick={handleSubmit}
-                >
-                  Add To Cart
-                </Button>
-              : 
-                <Button
-                  variant="contained"
-                  type="submit"
-                  sx={{
-                    padding: ".8rem 2rem",
-                    marginTop: "2rem",
-                    bgcolor: grey[900],
-                  }}
-                  onClick={() => {
-                    navigate("/cart");
-                  }}
-                >
-                  View Cart
-                </Button>
-              }
+             
+             {!checkCart ? (
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{
+                        padding: ".8rem 2rem",
+                        marginTop: "2rem",
+                        bgcolor: grey[900],
+                      }}
+                      onClick={handleSubmit}
+                    >
+                      Add To Cart
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{
+                        padding: ".8rem 2rem",
+                        marginTop: "2rem",
+                        bgcolor: grey[900],
+                      }}
+                      onClick={() => {
+                        navigate("/cart");
+                      }}
+                    >
+                      View Cart
+                    </Button>
+                  )}
 
             </ProductDetail>
           </>
@@ -282,37 +220,6 @@ export default function ProductDetails() {
     </>
   );
 }
-
-
-// {!CheckCardItem(productDetails.product?.variants[0]?.id) ? (
-//   <Button
-//     variant="contained"
-//     type="submit"
-//     sx={{
-//       padding: ".8rem 2rem",
-//       marginTop: "2rem",
-//       bgcolor: grey[900],
-//     }}
-//   >
-//     Add To Cart
-//   </Button>
-// ) : (
-//   <Button
-//     variant="contained"
-//     type="submit"
-//     sx={{
-//       padding: ".8rem 2rem",
-//       marginTop: "2rem",
-//       bgcolor: grey[900],
-//     }}
-//     onClick={() => {
-//       navigate("/cart");
-//     }}
-//   >
-//     View Cart
-//   </Button>
-// )}
-
 
 
 const Container = styled.div`

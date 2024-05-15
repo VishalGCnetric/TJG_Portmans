@@ -37,52 +37,39 @@ export const filters = [
 
 export const singleFilter = [
   {
-    id: "keyboard",
-    name: "Keyboard",
+    id: "colour",
+    name: "Colour",
     options: [
-      { value: "Piano", label: "Piano" },
-      { value: "Keys", label: "Keys" },
-      { value: "Organ", label: "Organ" },
+      { value: "White", label: "White" },
+      { value: "Black", label: "Black" },
+      { value: "Blue", label: "Blue" },
       // { value: "1999-2999", label: "₹1999 To ₹2999" },
       // { value: "3999-4999", label: "₹3999 To ₹4999" },
     ],
   },
   {
-    id: "price",
-    name: "Price",
+    id: "tops",
+    name: "Tops",
     options: [
-      { value: "159-399", label: "₹159 To ₹399" },
-      { value: "399-999", label: "₹399 To ₹999" },
-      { value: "999-1999", label: "₹999 To ₹1999" },
-      { value: "1999-2999", label: "₹1999 To ₹2999" },
-      { value: "3999-4999", label: "₹3999 To ₹4999" },
+      { value: "Coats", label: "Coats" },
+      { value: "Jackets", label: "Jackets" },
+      { value: "Shirts", label: "Shirts" },
+      { value: "Blazer", label: "Blazer" },
+      
     ],
   },
   {
-    id: "disccout",
-    name: "Disccount Range",
+    id: "bottoms",
+    name: "Bottoms",
     options: [
       {
-        value: "10",
-        label: "10% And Above",
+        value: "Pants",
+        label: "Pants",
       },
-      { value: "20", label: "20% And Above" },
-      { value: "30", label: "30% And Above" },
-      { value: "40", label: "40% And Above" },
-      { value: "50", label: "50% And Above" },
-      { value: "60", label: "60% And Above" },
-      { value: "70", label: "70% And Above" },
-      { value: "80", label: "80% And Above" },
+      
     ],
   },
-  {
-    id: "stock",
-    name: "Availability",
-    options: [
-      { value: "in_stock", label: "In Stock" },
-      { value: "out_of_stock", label: "Out Of Stock" },
-    ],
-  },
+ 
 ];
 
 export const sortOptions = [

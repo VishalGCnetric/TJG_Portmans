@@ -52,7 +52,7 @@ const Cart = () => {
         <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (
+              {cartItems?.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}
