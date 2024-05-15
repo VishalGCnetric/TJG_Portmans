@@ -24,6 +24,8 @@ const OrderSummary = ({ data }) => {
   const jwt = localStorage.getItem("jwt");
   const { order, cartItems } = useSelector((state) => state);
 
+  console.log(cartItems.cartItems.orderItem[0])
+
   // console.log("orderId ", data);
 
   useEffect(() => {
@@ -47,15 +49,17 @@ const OrderSummary = ({ data }) => {
     });
   };
 
+
   return (
     <div className="space-y-5">
+    
       <div className="p-5 shadow-lg rounded-md border ">
         <AddressCard address={order.order?.shippingAddress} />
       </div>
       <div className="lg:grid grid-cols-3 relative justify-between">
         <div className="lg:col-span-2 ">
           <div className=" space-y-3">
-            {cartItems?.cartItems?.cart?.lines?.map((item) => (
+            {cartItems?.cartItems?.orderItem?.map((item) => (
               <>
                 <CartItem item={item} showButton={false} />
               </>
@@ -70,9 +74,9 @@ const OrderSummary = ({ data }) => {
             <div className="space-y-3 font-semibold">
               <div className="flex justify-between pt-3 text-black ">
                 <span>
-                  Price ({cartItems?.cartItems?.cart?.totalQuantity} item)
+                  {/* Price ({cartItems?.cartItems?.orderItems?.totalQuantity} item) */}
                 </span>
-                <span>{cartItems?.cartItems?.cart?.total / 100}</span>
+                {/* <span>{cartItems?.cartItems?.orderItems?.total / 100}</span> */}
               </div>
               <div className="flex justify-between">
                 <span>Discount</span>

@@ -31,6 +31,8 @@ const CartItem = ({
   const { orderId } = cart;
   const [qty, setQty] = useState(0);
   // const { cartItems } = useSelector((store) => store);
+  console.log(item,'sss')
+
   const handleRemoveItemFromCart = (data) => {
     
     dispatch(RemoveCartItemNew(data))
@@ -79,17 +81,17 @@ const CartItem = ({
         </div>
         <div className="ml-5 space-y-1">
           <p className="font-semibold">{data.name}</p>
-          {/* <p className="opacity-70">Size: {item?.size},White</p>
-          <p className="opacity-70 mt-2">Seller: {item?.product?.brand}</p> */}
+          <p className="opacity-70">Size: {item?.size}</p>
+          <p className="opacity-70 mt-2">Quantity: {item?.quantity}</p>
           <div className="flex space-x-2 items-center pt-3">
-            {/* <p className="opacity-50 line-through">
-              ${data.price[0]?.value }
-            </p> */}
+            <p className="opacity-50 line-through">
+              {/* ${data.price[0]?.value } */}
+            </p>
             <p className="font-semibold text-lg">
 
-              {/* {data && `$ ${data?.price?.[0]?.value }`} */}
-
               {data && `$ ${data?.price?.[0]?.value }`}
+
+              {/* {data && `$ ${data?.price?.[0]?.value }`} */}
 
             </p>
             <p className="text-green-600 font-semibold">10% off</p>
