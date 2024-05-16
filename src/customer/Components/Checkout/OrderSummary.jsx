@@ -25,6 +25,7 @@ const OrderSummary = ({ data }) => {
   const { order, cartItems } = useSelector((state) => state);
 
   console.log(cartItems.cartItems.orderItem[0])
+  let formattedPrice = +cartItems?.cartItems?.totalProductPrice;
 
   // console.log("orderId ", data);
 
@@ -90,7 +91,8 @@ const OrderSummary = ({ data }) => {
               <div className="flex justify-between font-bold text-lg">
                 <span>Total Amount</span>
                 <span className="text-green-700">
-                  ₹{cartItems?.cartItems?.cart?.total / 100}
+                  {/* ₹{cartItems?.cartItems?.cart?.total / 100} */}
+                  {formattedPrice.toFixed(2)}
                 </span>
               </div>
             </div>
