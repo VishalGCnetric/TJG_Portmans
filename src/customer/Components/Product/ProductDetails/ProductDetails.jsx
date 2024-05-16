@@ -35,8 +35,9 @@ export default function ProductDetails() {
   const { productId } = useParams();
   const jwt = localStorage.getItem("jwt");
   const [productDetails, setProductDetails] = useState({});
+  const [loading,setLoading] =useState(false)
 
-  console.log(cartItems)
+
 
   const handleSetActiveImage = (image) => {
     setActiveImage(image);
@@ -81,12 +82,12 @@ export default function ProductDetails() {
   useEffect(() => {
     receiveProducts().then((data) => {
       setTopProducts(data.hits);
+      setLoading(!loading)
     });
   }, []);
-console.log(productDetails)
+
   useEffect(() => {
     const checkItem = CheckCardItem(productDetails?.sKUs?.[0]?.partNumber);
-    console.log(checkItem);
     setCheckCart(checkItem);
   }, [cartItems, productDetails]);
  
@@ -107,10 +108,12 @@ console.log(productDetails)
     return foundInCart;
   };
 
+// console.log(productDetails)
+if(!loading){
+  return <LinearProgress/>
+}
+ 
 
-  if (!productDetails) {
-    return <LinearProgress />
-  }
 
 
   return (
@@ -150,23 +153,28 @@ console.log(productDetails)
 
 
               <div style={{ marginTop: '10px' }}>
+                {productDetails?.variants &&
+                <div>
                 <label>Color:   {activeImage?.colour}</label>
+                </div>}
                 <ColorVariant>
 
                   {productDetails?.variants && productDetails?.variants.map((variant, index) => (
                     <ColorCircle key={index} onClick={() => setActiveImage(variant)} style={{ backgroundImage: `url(${variant?.smallImage})` }} />
                   ))}
                 </ColorVariant>
+                {/* {productDetails?.variants &&
                 <div style={{ fontSize: '10px', color: `${activeImage?.partNumber && activeImage.partNumber ? "green" : "red"}` }}>
                   <span>{activeImage?.partNumber && activeImage.partNumber ? 'In Stock' : 'Out of Stock'}</span>
-                </div>
+                </div>} */}
                 <div style={{ marginTop: '10px' }}>
+                  {productDetails?.sizes &&
                   <div>
                     <label htmlFor="">
                       Size:
                     </label>
-                  </div>
-                  <ColorVariant>
+                  </div>}
+                 <ColorVariant>
                     {productDetails?.sizes && productDetails?.sizes.map((size, index) => {
                       const digits = size.match(/\d+/);
                       return (
@@ -343,6 +351,7 @@ const ColorCircle = styled.div`
   object-fit: contain;
   border:1px solid #c2c2c2;
   margin-right: 10px;
+  margin-top: 5px;
   &:hover{
     border:1.5px solid #000000;
   }

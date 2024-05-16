@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import AddDeliveryAddressForm from "./AddAddress";
 import { useLocation, useNavigate } from "react-router-dom";
 import OrderSummary from "./OrderSummary";
+import Payment from "./Payment";
 
 const steps = [
   // "Login",
@@ -97,7 +98,8 @@ console.log(data,"handleback")
           <div className="my-5">
             {step == 2? <OrderSummary data={data} handlePayment={handlePayment} handleNext={handleNext} />:step==3?<OrderSummary data={data}/>: <AddDeliveryAddressForm handleNext={handleNext} handleBack={handleBack} />}
           </div>
-
+   
+  <Payment/>
           {/* <AddDeliveryAddressForm handleNext={handleNext} /> */}
 
 

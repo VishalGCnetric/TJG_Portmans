@@ -150,7 +150,8 @@ const ContainerRoot = styled.header`
   box-sizing: border-box;
   top: 0;
   z-index: 99;
-  position: sticky;
+  /* position: sticky; */
+  background-color: white;
   max-width: 100%;
   text-align: left;
   font-size: 14px;
@@ -277,7 +278,7 @@ const DropdownMenu = styled.div`
   top: calc(100% + 1px); /* Position below the account icon */
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  z-index: 999; /* Ensure it's above other content */
+  z-index: 999; /* Ensure it's above other content */ 
   min-width: 150px; /* Set minimum width as needed */
   `;
 
@@ -285,9 +286,11 @@ const DropdownItem = styled.a`
   display: block;
   padding: 10px;
   color: #333;
+  z-index: 999;
   text-decoration: none;
   &:hover {
-    background-color: #gray;
+    background-color: gray;
+    z-index: 999;
   }
   `;
 

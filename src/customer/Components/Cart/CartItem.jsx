@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
+
 import { Button, Skeleton } from "@mui/material";
+// =======
+// import { Button, LinearProgress } from "@mui/material";
+// >>>>>>> main
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeCartItem,
@@ -61,6 +65,10 @@ const CartItem = ({
   // useEffect(() => {
   //   debouncedUpdateCartItem(qty);
   // }, [debouncedUpdateCartItem, qty]);
+if(!data){
+  return <LinearProgress/>
+}
+
   return (<>
    
       {loading ? ( // Render loading skeleton if data is still loading

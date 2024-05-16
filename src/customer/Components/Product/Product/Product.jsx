@@ -110,7 +110,7 @@ console.log(filters)
     param.lavelThree,
     colorValue,
     sizeValue,
-    price,
+    // price,
     disccount,
     sortValue,
     pageNumber,
