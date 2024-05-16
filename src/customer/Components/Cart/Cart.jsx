@@ -93,7 +93,7 @@ const Cart = () => {
               </div>
 
               <Button
-                onClick={() => navigate("/checkout?step=2")}
+                onClick={() => navigate("/checkout?step=1")}
                 variant="contained"
                 type="submit"
                 sx={{

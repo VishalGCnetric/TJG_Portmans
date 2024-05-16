@@ -35,7 +35,7 @@ const SignIn = lazy(() => import("../Pages/SignIn"));
 const MyAccount = lazy(() => import("../Pages/MyAccount"));
 
 const LoadingIndicator = () => {
-  return <Skeleton animation="wave" variant="rectangular" width="100%" height={1000} />;
+  return <Skeleton animation="wave" variant="rectangular" width="100%" height="auto" />;
 };
 
 const CustomerRoutes = () => {

@@ -225,9 +225,9 @@ export const updateCartQtyNEW = (reqdata) => {
 
 export const placeOrder = async (data) => {
 
-
+console.log(data)
   return new Promise((resolve, reject) => {
-    return post("checkout", data)
+    return post("setShipping", data)
       .then((res) => {
         getCartItems()
         resolve(res);

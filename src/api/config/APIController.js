@@ -4,8 +4,8 @@ import qs from 'qs';
 import instance from './Interceptor';
 export function post(endPoint, params, isStringfy = true) {
   return instance.post(
-    endPoint,
-    isStringfy ? JSON.stringify(params) : qs.stringify(params),
+    endPoint,params
+    // isStringfy ? JSON.stringify(params) : qs.stringify(params),
   );
 }
 

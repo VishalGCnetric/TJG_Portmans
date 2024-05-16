@@ -12,7 +12,7 @@ import { useState } from "react";
 import { grey } from "@mui/material/colors";
 import { checkoutStripePayemt } from "../../../action";
 
-const OrderSummary = ({ data }) => {
+const OrderSummary = ({ data,handleNext }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,7 +23,7 @@ const OrderSummary = ({ data }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { order, cartItems } = useSelector((state) => state);
-
+  const [shiping,setShipping]=useState({})
 
   console.log(cartItems?.cartItems?.orderItem?.[0])
 
@@ -40,16 +40,28 @@ const OrderSummary = ({ data }) => {
     // getCartItems().then((res) => {
     //   setCartData(res.cart);
     // });
-  }, []);
+    let setship={
+      shipModeId: cartItems?.cartItems?.shipModeId,
+      orderItemId: cartItems?.cartItems?.orderItemId,
+      addressId: data?.shippingAddress.addressId
+  }
+  setShipping(setship)
+  }, [cartItems]);
 
   const handleCreatePayment = () => {
-    // const data = { orderId: order.order?._id, jwt };
+  //   const datas = { orderId: data.orderId };
+  //   let setshiping={
+  //     shipModeId: cartItems?.cartItems?.shipModeId,
+  //     orderItemId: cartItems?.cartItems?.orderItemId,
+  //     addressId: data?.shippingAddress.addressId
+  // }
     // dispatch(createPayment(data));
-    placeOrder(data).then((res) => {
+    placeOrder(shiping).then((res) => {
       // dispatch(getCartItems());
       // checkoutStripePayemt(cartItems?.cartItems?.cart?.lines)
-      // navigate(`/payment/${res.data.orderId}`);
-      // console.log("this is order id ", res.data.orderId);
+      // navigate(`/payment/${datas.orderId}`);
+      handleNext()
+      console.log("this is order id ", res.data.orderId);
     });
   };
 
