@@ -11,7 +11,7 @@ import OrderSummary from "./OrderSummary";
 import Payment from "./Payment";
 
 const steps = [
-  "Login",
+  // "Login",
   "Delivery Adress",
   "Order Summary",
   "Payment",
@@ -32,8 +32,10 @@ console.log(data)
 
   const handleNext = () => {
     let newSkipped = skipped;
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    setActiveStep((prevActiveStep) =>prevActiveStep + 1);
     setSkipped(newSkipped);
+    navigate(`/checkout?step=${+step+1}`)
   };
 
   const handleBack = (datas) => {
@@ -81,7 +83,7 @@ console.log(data,"handleback")
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
-              disabled={step == 2}
+              disabled={step == 1}
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
@@ -94,7 +96,7 @@ console.log(data,"handleback")
           {/* <Typography sx={{ my: 6 }}>Title</Typography> */}
 
           <div className="my-5">
-            {step == 2? <AddDeliveryAddressForm handleNext={handleNext} handleBack={handleBack} />:<OrderSummary data={data}/>}
+            {step == 2? <OrderSummary data={data} handlePayment={handlePayment} handleNext={handleNext} />:step==3?<OrderSummary data={data}/>: <AddDeliveryAddressForm handleNext={handleNext} handleBack={handleBack} />}
           </div>
    
   <Payment/>

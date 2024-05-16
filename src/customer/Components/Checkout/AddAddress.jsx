@@ -55,7 +55,7 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
       email: formData.get("email"),
       countryCode: "AUS", 
     };
-
+   
     // Dispatch action to create order
     dispatch(createOrder({ address: addressData, navigate }));
 
@@ -65,7 +65,7 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
   };
 
   const handleCreateOrder = (item) => {
-    // dispatch(createOrder({ address: item,  navigate }));
+    dispatch(createOrder({ address: item,  navigate }));
     handleBack({ cartId: cartItems?.cartItems?.orderId, shippingAddress: item });
 
     handleNext();
