@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeCartItem,
@@ -67,6 +67,10 @@ const CartItem = ({
   // useEffect(() => {
   //   debouncedUpdateCartItem(qty);
   // }, [debouncedUpdateCartItem, qty]);
+if(!data){
+  return <LinearProgress/>
+}
+
   return (<>
   {data &&
    <div className="p-5 shadow-lg border rounded-md">
