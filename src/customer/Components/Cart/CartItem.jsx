@@ -31,17 +31,17 @@ const CartItem = ({
   const { orderId } = cart;
   const [qty, setQty] = useState(0);
   // const { cartItems } = useSelector((store) => store);
-  console.log(item,'sss')
+  // console.log(item,'sss')
 
   const handleRemoveItemFromCart = (data) => {
     
     dispatch(RemoveCartItemNew(data))
   };
-  const handleUpdateCartItem = useCallback((num) => {
+  // const handleUpdateCartItem = useCallback((num) => {
     
-    const datas = { quantity: num+"", orderId, orderItemId, productId };
-    dispatch(updateCartQtyNEW(datas));
-  }, [dispatch, orderId, orderItemId, productId]);
+  //   const datas = { quantity: num+"", orderId, orderItemId, productId };
+  //   dispatch(updateCartQtyNEW(datas));
+  // }, [dispatch, orderId, orderItemId, productId]);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}product?partNumber=${item.partNumber}`)
@@ -57,13 +57,12 @@ const CartItem = ({
       });
   }, [item.partNumber]);
 
-  const debouncedUpdateCartItem = useCallback(
-    debounce((num) => {
-      const datas = { quantity: num, orderId, orderItemId, productId };
-      updateCartQtyNEW(datas);
-      console.log("qty changed")
-    }, 500),
-    [dispatch, orderId, orderItemId, productId]
+  const debouncedUpdateCartItem = useCallback((num)=>{
+      const data = { quantity: num, orderId, orderItemId, productId };
+      updateCartQtyNEW(data);
+      dispatch(getCartItems());
+
+  },[dispatch, orderId, orderItemId, productId]
   );
   // useEffect(() => {
   //   debouncedUpdateCartItem(qty);
@@ -81,8 +80,8 @@ const CartItem = ({
         </div>
         <div className="ml-5 space-y-1">
           <p className="font-semibold">{data.name}</p>
-          <p className="opacity-70">Size: {item?.size}</p>
-          <p className="opacity-70 mt-2">Quantity: {item?.quantity}</p>
+          {/* <p className="opacity-70">Size: {item?.size}</p> */}
+          {/* <p className="opacity-70 mt-2">Quantity: {item?.quantity}</p> */}
           <div className="flex space-x-2 items-center pt-3">
             <p className="opacity-50 line-through">
               {/* ${data.price[0]?.value } */}
@@ -94,7 +93,7 @@ const CartItem = ({
               {/* {data && `$ ${data?.price?.[0]?.value }`} */}
 
             </p>
-            <p className="text-green-600 font-semibold">10% off</p>
+            {/* <p className="text-green-600 font-semibold">10% off</p> */}
           </div>
         </div>
       </div>
@@ -104,7 +103,7 @@ const CartItem = ({
             <IconButton
                onClick={()=>{
                 setQty(prev => {
-                  const updatedQty = prev + 1;
+                  const updatedQty = prev - 1;
                   console.log(updatedQty, "increased");
                   debouncedUpdateCartItem(updatedQty.toString());
                   return updatedQty;

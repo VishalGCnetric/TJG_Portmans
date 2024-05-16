@@ -1,29 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
-
+import { Skeleton } from "@mui/material"; // Import Skeleton from Material-UI
+import { API_BASE_URL } from "../../../config/api";
 
 const Container = styled.div`
-    padding:15px ;
+    padding: 15px;
     display: flex;
-    justify-content:center;
-    gap:30px;
-    letter-spacing:0.5px;
+    justify-content: center;
+    gap: 30px;
+    letter-spacing: 0.5px;
     font-size: 15px;
     @media(max-width: 1024px){
         display: none;
     }
-`
+`;
 
 const MainContainer = styled.div`
-  width:100%;
+  width: 100%;
   margin: auto;
-  border-bottom:1px solid #7c7c7c;
+  border-bottom: 1px solid #7c7c7c;
 `;
 
 const ListItem = styled.div`
-
   display: flex;
   justify-content: flex-end;
   padding: 10px; 
@@ -47,7 +46,7 @@ const ListItem = styled.div`
 const DropDown = styled.div`
     background-color: white;
     position: absolute;
-    padding:5px 100px; 
+    padding: 5px 100px; 
     box-sizing: border-box;
     width: 100%;
     height: 86vh;
@@ -62,45 +61,55 @@ const DropDown = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap:10px;
+        gap: 10px;
         img{
             width: 60%;
             height: 60%;
             object-fit: cover;
         }
     }
+`;
 
-`
-
-const url = 'http://49.206.253.146:2109/childCategories?categoryId=3074457345616679204'
+const url = `${API_BASE_URL}childCategories?categoryId=3074457345616679204`;
 
 const NavigationDropdown = () => {
-    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(url);
-                setData(response.data); 
+                setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchData(); 
-    }, [url]); 
-
-
+        fetchData();
+    }, [url]);
 
     return (
         <MainContainer>
             <Container>
-                {data.extraData?.map((el, index) => <div
-                    onMouseEnter={() => document.getElementById(`${el.name}`).style.display = 'block'}
-                    onMouseLeave={() => document.getElementById(`${el.name}`).style.display = 'none'}
-
-                    key={index}><a href="" style={{textTransform:'uppercase',textDecoration:'none',color:`${el.name=='SALE'?'red':'#333'}`}}>{el.name}</a>
-                    <DropDownHover childrenData={el} />
-                </div>)}
+                {loading ? ( // Display Skeleton while loading
+                    <Skeleton variant="rectangular" width='100%' height={40} />
+                ) : (
+                    data.extraData?.map((el, index) => (
+                        <div
+                            onMouseEnter={() => document.getElementById(`${el.name}`).style.display = 'block'}
+                            onMouseLeave={() => document.getElementById(`${el.name}`).style.display = 'none'}
+                            key={index}
+                        >
+                            <a href="" style={{ textTransform: 'uppercase', textDecoration: 'none', color: `${el.name == 'SALE' ? 'red' : '#333'}` }}>
+                                {el.name}
+                            </a>
+                            <DropDownHover childrenData={el} />
+                        </div>
+                    ))
+                )}
             </Container>
         </MainContainer>
     );
@@ -108,41 +117,33 @@ const NavigationDropdown = () => {
 
 export default NavigationDropdown;
 
-
 const DropDownHover = ({ childrenData }) => {
-
     return (
-        <DropDown
-            style={{ display: 'none', }}
-            id={childrenData.name}
-        >
-            <div style={{ display: 'flex', padding:'50px',justifyContent:'center',}}>
-                <ListItem style={{  display:`${childrenData?.image?.[0]?'block':'flex'}`,gap:`${childrenData?.image?.[0]?'0px':'100px'}`
-               
-               
-                 }}>
+        <DropDown style={{ display: 'none' }} id={childrenData.name}>
+            <div style={{ display: 'flex', padding: '50px', justifyContent: 'center' }}>
+                <ListItem style={{ display: `${childrenData?.image?.[0] ? 'block' : 'flex'}`, gap: `${childrenData?.image?.[0] ? '0px' : '100px'}` }}>
                     {childrenData?.children?.map((el, index) => (
                         <div key={index} >
                             <ul>
-                                <li style={{cursor:'pointer'}}>{el.name}</li>
+                                <li style={{ cursor: 'pointer' }}>{el.name}</li>
                                 <ul>
                                     {el.children?.map((child, i) => (
-                                        <li style={{cursor:'pointer'}} key={i}>{child.name}</li>
+                                        <li style={{ cursor: 'pointer' }} key={i}>{child.name}</li>
                                     ))}
                                 </ul>
                             </ul>
                         </div>
                     ))}
                 </ListItem>
-                {childrenData?.image &&  <div style={{border:'1px solid #7c7c7c',margin:'50px',marginLeft:'150px'}}></div>}
-               
+                {childrenData?.image && <div style={{ border: '1px solid #7c7c7c', margin: '50px', marginLeft: '150px' }}></div>}
+
                 {childrenData?.image &&
-                    <div className="imagecontainer" style={{cursor:'pointer'}}>
+                    <div className="imagecontainer" style={{ cursor: 'pointer' }}>
                         <img src={childrenData?.image?.[0]} alt="" />
                         <h5>{childrenData?.name}</h5>
                     </div>
                 }
             </div>
         </DropDown>
-    )
-}
+    );
+};

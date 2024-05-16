@@ -31,8 +31,6 @@ console.log(data)
 
   const handleNext = () => {
     let newSkipped = skipped;
-
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
@@ -43,7 +41,7 @@ console.log(data)
 
   };
 
-
+console.log(data,"handleback")
 
   const handleReset = () => {
     setActiveStep(0);
