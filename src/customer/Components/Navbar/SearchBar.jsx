@@ -114,13 +114,13 @@ const navigate = useNavigate();
       <PersonImg
         alt="User"
         src="/icon--account.svg"
-        onMouseOver={toggleDropdown}
         onClick={toggleDropdown}
+        
       />
       {isDropdownVisible && (
-        <DropdownMenu>
+        <DropdownMenu onMouseLeave={toggleDropdown} >
           {data.map((link, index) => (
-            <DropdownItem key={index}>
+            <DropdownItem key={index} >
               <Link to={link.href} onClick={() => handleDropdownItemClick(link)}>
                 {link.text}
               </Link>
@@ -274,9 +274,9 @@ const SearchContainer = styled.div`
 const DropdownMenu = styled.div`
   position: absolute;
   right: 0; /* Adjust as needed */
-  top: calc(100% + 5px); /* Position below the account icon */
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  top: calc(100% + 1px); /* Position below the account icon */
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 999; /* Ensure it's above other content */
   min-width: 150px; /* Set minimum width as needed */
   `;
@@ -287,7 +287,7 @@ const DropdownItem = styled.a`
   color: #333;
   text-decoration: none;
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #gray;
   }
   `;
 

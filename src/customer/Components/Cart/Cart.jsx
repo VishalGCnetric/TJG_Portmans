@@ -19,15 +19,15 @@ const Cart = () => {
   // const formattedPrice = totalPrice ? totalPrice.toFixed(2) : "";
   let formattedPrice = +cartItems?.cartItems?.totalProductPrice;
   
-  useEffect(() => {
-    dispatch(getCartItems());
-    const totalPrice = cartItems && cartItems?.cartItems && cartItems?.cartItems?.totalProductPrice;
-    if (typeof totalPrice === "number") {
-      formattedPrice = totalPrice.toFixed(2);
-    } else {
-      console.error("Total price is not a number:", totalPrice);
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getCartItems());
+  //   const totalPrice = cartItems && cartItems?.cartItems && cartItems?.cartItems?.totalProductPrice;
+  //   if (typeof totalPrice === "number") {
+  //     formattedPrice = totalPrice.toFixed(2);
+  //   } else {
+  //     console.error("Total price is not a number:", totalPrice);
+  //   }
+  // }, [dispatch]);
 
   const handleRemoveItemFromCart = (data) => {
     dispatch(RemoveCartItemNew(data))

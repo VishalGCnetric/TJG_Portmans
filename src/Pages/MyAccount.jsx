@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { API_BASE_URL } from '../config/api';
+import Skeleton from '@mui/material/Skeleton';
 
 const Container = styled.div`
   display: flex;
@@ -124,19 +125,18 @@ const Card = styled.div`
 
 const MyAccount = () => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [profile,setProfile]=useState({});
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState({});
   const { user } = useSelector((state) => state.auth);
   const wt = localStorage.getItem('wt');
   const wtt = localStorage.getItem('wtt');
-const fullname = user?.firstName + " " + user?.lastName;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(!wt && !wtt){
-          alert("you need to login first")
-        }else{
-          console.log(user?.WCTrustedToken===wtt,wt===user?.WCToken,wt,wtt)
+        if (!wt && !wtt) {
+          alert('you need to login first');
+        } else {
           const response = await axios.get(`${API_BASE_URL}info`, {
             headers: {
               wt: wt || user?.WCToken,
@@ -145,9 +145,8 @@ const fullname = user?.firstName + " " + user?.lastName;
           });
           const data = response.data;
           setProfile(data);
-          console.log('req User ', data);
-       
         }
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.log('Error', error);
       }
@@ -189,6 +188,10 @@ const fullname = user?.firstName + " " + user?.lastName;
             <option value="signout">Sign Out</option>
           </select>
         </SelectBar>
+        {loading ? (
+          <Skeleton variant="rectangular" width="100%" height={40} />
+        ) : (
+          <>
         <div style={{ backgroundColor: '#e7e7e7', padding: '10px', marginBottom: '10px' }}>
           <h2>Account Home - My Details</h2>
         </div>
@@ -210,6 +213,7 @@ const fullname = user?.firstName + " " + user?.lastName;
             </Card>
           </RightPanel>
         </div>
+        </>)}
       </MainContent>
     </Container>
   );

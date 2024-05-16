@@ -60,12 +60,14 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
     dispatch(createOrder({ address: addressData, navigate }));
 
     // Perform other operations
+    handleBack({ cartId: cartItems?.cartItems?.orderId, shippingAddress: addressData });
     handleNext();
-    handleBack({ cartId: cartItems?.cartItems?.cart?.id, shippingAddress: addressData });
   };
 
   const handleCreateOrder = (item) => {
-    dispatch(createOrder({ address: item, jwt, navigate }));
+    // dispatch(createOrder({ address: item,  navigate }));
+    handleBack({ cartId: cartItems?.cartItems?.orderId, shippingAddress: item });
+
     handleNext();
   };
 console.log(addresses);

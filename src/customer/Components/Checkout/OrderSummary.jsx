@@ -24,9 +24,9 @@ const OrderSummary = ({ data }) => {
   const jwt = localStorage.getItem("jwt");
   const { order, cartItems } = useSelector((state) => state);
 
-  console.log(cartItems.cartItems.orderItem[0])
+  console.log(cartItems?.cartItems?.orderItem?.[0])
 
-  // console.log("orderId ", data);
+  console.log("orderId ", data);
 
   useEffect(() => {
     // dispatch(getOrderById(orderId))
@@ -54,7 +54,7 @@ const OrderSummary = ({ data }) => {
     <div className="space-y-5">
     
       <div className="p-5 shadow-lg rounded-md border ">
-        <AddressCard address={order.order?.shippingAddress} />
+        <AddressCard address={data?.shippingAddress} />
       </div>
       <div className="lg:grid grid-cols-3 relative justify-between">
         <div className="lg:col-span-2 ">

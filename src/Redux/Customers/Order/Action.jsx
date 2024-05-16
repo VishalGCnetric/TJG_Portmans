@@ -32,9 +32,9 @@ export const createOrder = (reqData) => async (dispatch) => {
       reqData.address,
     );
 console.log("address data ", data);
-    // if (data._id) {
-    //   reqData.navigate({ search: `step=3&order_id=${data._id}` });
-    // }
+    if (data.userId) {
+      reqData.navigate({ search: `step=3&order_id=${data.userId}` });
+    }
     console.log("created order - ", data);
     dispatch({
       type: CREATE_ORDER_SUCCESS,
