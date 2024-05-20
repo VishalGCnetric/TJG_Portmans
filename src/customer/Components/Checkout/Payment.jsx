@@ -3,18 +3,20 @@ import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { TextField, Grid, Button, Typography, Card, CardContent, Box } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import MobileNumberInput from '../../../Pages/Mobile';
 import { CheckoutReq, placeOrder, preCheckout } from '../../../action/cart';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const Payment = ({handleNext}) => {
+const Payment = ({ handleNext }) => {
   const [formData, setFormData] = useState({
     cvc: '',
     expiry: '',
     name: '',
     number: '',
+    focus: '',
   });
   const { grandTotal } = useSelector((state) => state.cartItems.cartItems);
   const navigate = useNavigate();
@@ -26,7 +28,11 @@ const Payment = ({handleNext}) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async () => {
+  const handleFocusChange = (e) => {
+    setFormData({ ...formData, focus: e.target.name });
+  };
+
+  const handleSubmit = async (values) => {
     try {
       const orderResponse = await placeOrder(grandTotal);
       await preCheckout();
@@ -36,14 +42,24 @@ const Payment = ({handleNext}) => {
       handleNext();
       setTimeout(() => {
         navigate(`/payment/orderId=${orderResponse.data.orderId}`);
-      })
-      // navigate(`/payment/orderId=${orderResponse.data.orderId}`);
+      }, 1000);
     } catch (error) {
       toast.error("Error placing order");
-    } finally {
-      // setSubmitting(false);
     }
   };
+
+  const validationSchema = Yup.object().shape({
+    number: Yup.string()
+      .matches(/^[0-9]{16}$/, "Card number is not valid")
+      .required("Card number is required"),
+    name: Yup.string().required("Cardholder name is required"),
+    expiry: Yup.string()
+      .matches(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/, "Expiry date is not valid")
+      .required("Expiry date is required"),
+    cvc: Yup.string()
+      .matches(/^[0-9]{3,4}$/, "CVC is not valid")
+      .required("CVC is required"),
+  });
 
   return (
     <Card maxWidth="sm" variant="outlined" sx={{ padding: 2 }}>
@@ -56,19 +72,19 @@ const Payment = ({handleNext}) => {
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField value={shippingData?.firstName} label="First name" variant="outlined" fullWidth />
+                <TextField value={addAddress ? (shippingData?.firstName) : ""} label="First name" variant="outlined" fullWidth />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField value={shippingData?.lastName} label="Last name" variant="outlined" fullWidth />
+                <TextField value={addAddress ? (shippingData?.lastName) : ''} label="Last name" variant="outlined" fullWidth />
               </Grid>
               <Grid item xs={12}>
-                <TextField value={shippingData?.addressLine} label="Address" variant="outlined" fullWidth />
+                <TextField value={addAddress ? (shippingData?.addressLine) : ''} label="Address" variant="outlined" fullWidth />
               </Grid>
               <Grid item xs={12}>
-                <TextField value={shippingData?.email1} label="Email" variant="outlined" fullWidth />
+                <TextField value={addAddress ? (shippingData?.email1) : ''} label="Email" variant="outlined" fullWidth />
               </Grid>
               <Grid item xs={12}>
-                <MobileNumberInput num={shippingData?.phone1} />
+                <MobileNumberInput num={addAddress ? shippingData?.phone1 : ''} />
               </Grid>
               <Grid item xs={12}>
                 <Box display="flex" alignItems="center">
@@ -116,6 +132,15 @@ const Payment = ({handleNext}) => {
       </Box>
 
       <Box sx={{ mb: 4 }}>
+        <Cards
+          cvc={formData.cvc}
+          expiry={formData.expiry}
+          focused={formData.focus}
+          name={formData.name}
+          number={formData.number}
+        />
+      </Box>
+
       <Card variant="outlined">
         <CardContent>
           <Typography variant="h5" gutterBottom>
@@ -128,63 +153,109 @@ const Payment = ({handleNext}) => {
               expiry: '',
               cvc: '',
             }}
-            
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
-            <Form onSubmit={handleSubmit}>
-              <TextField
-                type="number"
-                name="number"
-                label="Card Number"
-                variant="outlined"
-                fullWidth
-                onChange={handleInputChange}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                type="text"
-                name="name"
-                label="Cardholder Name"
-                variant="outlined"
-                fullWidth
-                onChange={handleInputChange}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                type="text"
-                name="expiry"
-                label="Expiry Date (MM/YY)"
-                variant="outlined"
-                fullWidth
-                onChange={handleInputChange}
-                inputProps={{ maxLength: 5 }}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                type="tel"
-                name="cvc"
-                label="CVC"
-                variant="outlined"
-                fullWidth
-                onChange={handleInputChange}
-                sx={{ mb: 2 }}
-              />
-              <Button type="submit" 
-              onClick={handleSubmit}
-              style={{backgroundColor:'#333',color:'white',':hover': {
-              backgroundColor: 'white',
-              color: '#515050',
-    // Add any other hover styles you want
-  }}} fullWidth>
-                Pay Now
-              </Button>
-            </Form>
+            {({ handleChange, handleBlur, values }) => (
+              <Form>
+                <Field
+                  as={TextField}
+                  type="text"
+                  name="number"
+                  label="Card Number"
+                  variant="outlined"
+                  fullWidth
+                  onChange={(e) => {
+                    handleChange(e);
+                    handleInputChange(e);
+                  }}
+                  onBlur={(e) => {
+                    handleBlur(e);
+                    handleFocusChange(e);
+                  }}
+                  value={values.number}
+                  sx={{ mb: 2 }}
+                />
+                <ErrorMessage name="number" component="div" style={{ color: 'red' }} />
+                <Field
+                  as={TextField}
+                  type="text"
+                  name="name"
+                  label="Cardholder Name"
+                  variant="outlined"
+                  fullWidth
+                  onChange={(e) => {
+                    handleChange(e);
+                    handleInputChange(e);
+                  }}
+                  onBlur={(e) => {
+                    handleBlur(e);
+                    handleFocusChange(e);
+                  }}
+                  value={values.name}
+                  sx={{ mb: 2 }}
+                />
+                <ErrorMessage name="name" component="div" style={{ color: 'red' }} />
+                <Field
+                  as={TextField}
+                  type="text"
+                  name="expiry"
+                  label="Expiry Date (MM/YY)"
+                  variant="outlined"
+                  fullWidth
+                  onChange={(e) => {
+                    handleChange(e);
+                    handleInputChange(e);
+                  }}
+                  onBlur={(e) => {
+                    handleBlur(e);
+                    handleFocusChange(e);
+                  }}
+                  value={values.expiry}
+                  inputProps={{ maxLength: 5 }}
+                  sx={{ mb: 2 }}
+                />
+                <ErrorMessage name="expiry" component="div" style={{ color: 'red' }} />
+                <Field
+                  as={TextField}
+                  type="tel"
+                  name="cvc"
+                  label="CVC"
+                  variant="outlined"
+                  fullWidth
+                  onChange={(e) => {
+                    handleChange(e);
+                    handleInputChange(e);
+                  }}
+                  onBlur={(e) => {
+                    handleBlur(e);
+                    handleFocusChange(e);
+                  }}
+                  value={values.cvc}
+                  sx={{ mb: 2 }}
+                />
+                <ErrorMessage name="cvc" component="div" style={{ color: 'red' }} />
+                <Button
+                  type="submit"
+                  sx={{
+                    backgroundColor: '#333',
+                    color: 'white',
+                    ':hover': {
+                      backgroundColor: 'white',
+                      color: '#515050',
+                    },
+                  }}
+                  fullWidth
+                >
+                  Pay Now
+                </Button>
+              </Form>
+            )}
           </Formik>
         </CardContent>
       </Card>
-    
-</Box>
-</Card>
-   );
+    </Card>
+  );
 };
 
 export default Payment;

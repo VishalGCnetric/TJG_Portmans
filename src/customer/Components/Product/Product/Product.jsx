@@ -261,8 +261,10 @@ console.log(products,searchProducts)
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>
+                 
 
                   {/* Filters */}
+                  
                   <form className="mt-4 border-t border-gray-200">
                     {filters.map((section) => (
                       <Disclosure
@@ -292,6 +294,7 @@ console.log(products,searchProducts)
                                 </span>
                               </Disclosure.Button>
                             </h3>
+                            
                             <Disclosure.Panel className="pt-6">
                               <div className="space-y-6">
                                 {section.children.map((option, optionIdx) => (
