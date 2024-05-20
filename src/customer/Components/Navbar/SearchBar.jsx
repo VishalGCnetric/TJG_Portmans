@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import OpenHumburger from "./OpenHumburger"
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../Redux/Auth/Action';
-// const DROPDOWN_LINKS = [
-//   { text: 'Sign In', href: '/sign-in' },
-//   { text: 'My Account', href: '/my-account' },
-//   { text: 'Create Account', href: '/sign-up' },
-//   { text: 'Account Help', href: '#' }
-// //  { text: 'Sign Out', href: '' }
-// ];
-
+import { Toaster, toast } from 'react-hot-toast';
+import { Button } from '@mui/material';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { getCartItems } from '../../../action/cart';
+import { AutoFixHighTwoTone } from '@mui/icons-material';
 
 const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,18 +17,25 @@ const SearchBar = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.auth);
+  const {  cart, newUser, cartItems } = useSelector((store) => store);
+  const totalQuantity = cartItems?.cartItems?.orderItem?.length || 0;
+
+  console.log(cartItems,"quantity")
 const navigate = useNavigate();
   const DROPDOWN_LINKS = [
     { text: 'Sign In', href: '/sign-in' },
-    // { text: 'My Account', href: '/my-account' },
     { text: 'Create Account', href: '/sign-up' },
     { text: 'Account Help', href: '#' }
-  //  { text: 'Sign Out', href: '' }
   ];
+  useEffect(() => {
+    if (auth) {
+      dispatch(getCartItems());
+    }
+
+  }, []);
+
   const DROPDOWN_LINKS_auth = [
-    // { text: 'Sign In', href: '/sign-in' },
     { text: 'My Profile', href: '/my-account' },
-    // { text: 'Create Account', href: '/sign-up' },
     { text: 'Account Help', href: '#' },
    { text: 'Sign Out', href: '#' }
   ];
@@ -48,6 +52,7 @@ const navigate = useNavigate();
   const handleDropdownItemClick = (option) => {
     if(option.text=='Sign Out'){
       dispatch(logout());
+      toast.success("Logged out successfully");
 
     }else{
       navigate(option.href);
@@ -58,6 +63,7 @@ const navigate = useNavigate();
 
   return (
     <ContainerRoot>
+      <Toaster />
       <HamburgerIcon>
         <div>
           {isOpen ? (
@@ -107,7 +113,7 @@ const navigate = useNavigate();
       )}
       <LogoContainer>
         <Link to ="/">
-        <img alt="portmans" src="./PortmonLogo.png" style={{ height: "28px", width: "198.4px" }} />
+        <img alt="portmans" src="/ajoWZ801.svg" style={{ height: "28px", width: "198.4px" }} />
         </Link>
       </LogoContainer>
       <SvgContainer>
@@ -129,7 +135,24 @@ const navigate = useNavigate();
         </DropdownMenu>
       )}
       <img alt="fevorite" src="/icon--wishlist.svg" />
-     <Link to="/cart"> <img alt="shopping-cart" src="/icon--bag.svg" /></Link>
+     {/* <Link to="/cart">
+       
+     <span className="ml-2 text-sm font-medium  text-gray-800">
+                      {newUser?.newUser?.user?.name
+                        ? cartItems?.cartItems?.cart?.totalQuantity
+                        : 0}
+                    </span>
+                    <img alt="shopping-cart" src="/icon--bag.svg" />
+     </Link> */}
+   
+     <Link to="/cart" className="relative inline-block">
+      <img alt="shopping-cart" src="/icon--bag.svg" className="w-6 h-6" />
+        <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold">
+          {totalQuantity}
+        </span>
+    
+    </Link>
+               
     </SvgContainer>
     
       <OpenHumburger drawer={isOpen} setDrawer={setIsOpen}/>
@@ -149,7 +172,7 @@ const ContainerRoot = styled.header`
   padding: 8px 12px 8px 0px;
   box-sizing: border-box;
   top: 0;
-  z-index: 99;
+  z-index: 999;
   /* position: sticky; */
   background-color: white;
   max-width: 100%;
@@ -167,7 +190,7 @@ const SearchButton = styled.div`
   padding: 25px;
   margin-left: 10px;
   &:hover {
-    opacity: 0.8; /* Reduce opacity on hover */
+    opacity: 0.8; 
   }
   @media screen and (max-width: 1024px) {
     display: none;
@@ -185,27 +208,11 @@ const LogoContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   &:hover {
-    opacity: 0.8; /* Reduce opacity on hover */
+    opacity: 0.8; 
   }
 `;
 
-// const SvgContainer = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: flex-end;
-//   gap: 50px;
-//   margin-right: 20px;
-// `;
 
-// const PersonImg = styled.img`
-//   width: 25px;
-//   height: 25px;
-//   cursor: pointer;
-//   @media screen and (max-width: 1024px) {
-//     display: none;
-//   }
-// `;
 
 const HamburgerIcon = styled.div`
   display: none;
@@ -251,31 +258,11 @@ const SearchContainer = styled.div`
   }
  
 `;
-
-// const DropdownMenu = styled.div`
-//   position: absolute;
-//   right: 5%;
-//   top: 50%;
-//   background-color: #fff;
-//   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-//   @media screen and (max-width: 1024px) {
-//     display: none;
-//   }
-// `;
-
-// const DropdownItem = styled.a`
-//   display: block;
-//   padding: 20px;
-//   color: #333;
-//   text-decoration: none;
-//   &:hover {
-//     background-color: #f0f0f0;
-//   }
-// `;
 const DropdownMenu = styled.div`
   position: absolute;
-  right: 0; /* Adjust as needed */
-  top: calc(100% + 1px); /* Position below the account icon */
+  right: -6px; /* Adjust as needed */
+  top: calc(100% - 3px); /* Position below the account icon */
+  // top:1px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 999; /* Ensure it's above other content */ 
@@ -284,7 +271,7 @@ const DropdownMenu = styled.div`
 
 const DropdownItem = styled.a`
   display: block;
-  padding: 10px;
+  padding: 4px;
   color: #333;
   z-index: 999;
   text-decoration: none;

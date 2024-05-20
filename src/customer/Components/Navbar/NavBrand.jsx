@@ -1,6 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 
+
+/**
+ * Renders a component that displays a set of brand icons that can be clicked to open the corresponding brand's website in a new tab.
+ */
+const NavBrand = () => {
+  const brands = [
+    { url: "https://justjeans.jgl.com.au/", icon: "/svg2.svg" },
+    // { url: "https://portmans.jgl.com.au/", icon: "/icon--mbportmans.svg" },
+    { url: "https://dotti.jgl.com.au/", icon: "/svg9.svg" },
+    { url: "https://jayjays.jgl.com.au/", icon: "/svg10.svg" },
+    { url: "https://jacquie.jgl.com.au/", icon: "/svg11.svg" },
+  ];
+
+  const handleBrandClick = (url) => {
+    window.open(url, "_blank");
+  };
+
+  return (
+    <BrandContainer>
+      <BrandsWrapper>
+        {brands.map((brand, index) => (
+          <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
+            <BrandIcon src={brand.icon} alt="" />
+          </BrandItem>
+        ))}
+      </BrandsWrapper>
+    </BrandContainer>
+  );
+};
+
+export default NavBrand;
+
+
 const BrandContainer = styled.div`
 width: 100%;
 background-color: #e5e5e5;
@@ -53,31 +86,3 @@ const BrandIcon = styled.img`
   width: auto;
   height: 90%;
 `;
-
-const NavBrand = () => {
-  const brands = [
-    { url: "https://justjeans.jgl.com.au/", icon: "/svg2.svg" },
-    // { url: "https://portmans.jgl.com.au/", icon: "/icon--mbportmans.svg" },
-    { url: "https://dotti.jgl.com.au/", icon: "/svg9.svg" },
-    { url: "https://jayjays.jgl.com.au/", icon: "/svg10.svg" },
-    { url: "https://jacquie.jgl.com.au/", icon: "/svg11.svg" },
-  ];
-
-  const handleBrandClick = (url) => {
-    window.open(url, "_blank");
-  };
-
-  return (
-    <BrandContainer>
-      <BrandsWrapper>
-        {brands.map((brand, index) => (
-          <BrandItem key={index} onClick={() => handleBrandClick(brand.url)}>
-            <BrandIcon src={brand.icon} alt="" />
-          </BrandItem>
-        ))}
-      </BrandsWrapper>
-    </BrandContainer>
-  );
-};
-
-export default NavBrand;

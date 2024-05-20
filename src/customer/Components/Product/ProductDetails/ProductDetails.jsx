@@ -19,6 +19,7 @@ import { AddItemToCartNew, getCartItems } from "../../../../action/cart";
 import { grey } from "@mui/material/colors";
 import styled from "styled-components";
 import { SingleBedSharp } from "@mui/icons-material";
+import  { toast,Toaster } from "react-hot-toast";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -36,7 +37,8 @@ export default function ProductDetails() {
   const jwt = localStorage.getItem("jwt");
   const [productDetails, setProductDetails] = useState({});
   const [loading,setLoading] =useState(false)
-
+  const  {auth}= useSelector((store) => store.auth);
+  const [topProducts, setTopProducts] = useState([]);
 
 
   const handleSetActiveImage = (image) => {
@@ -47,18 +49,21 @@ export default function ProductDetails() {
     event.preventDefault();
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
-
+    if(!auth){
+      navigate("/sign-in");
+    }
     if (partNumber) {
-      AddItemToCartNew({ partNumber, quantity  })
+      AddItemToCartNew({partNumber,quantity})
         .then((res) => {
-          alert("Added to Cart")
+          // alert("Added to Cart")
+          toast.success("Product Added To Cart")
           dispatch(getCartItems());
         })
         .catch((error) => {
           console.error("Error adding item to cart:", error);
         });
     } else {
-      alert('Out of Stock')
+      toast.error("out of Stock")
       console.error("Part number is missing.");
     }
    
@@ -77,7 +82,6 @@ export default function ProductDetails() {
     });
   }, [productId]);
 
-  const [topProducts, setTopProducts] = useState([]);
 
   useEffect(() => {
     receiveProducts().then((data) => {
@@ -96,7 +100,7 @@ export default function ProductDetails() {
     let foundInCart = false;
     if (Cart && Cart.length > 0) {
       for (const cartItem of Cart) {
-        console.log("cartItem---", cartItem.partNumber, "ID---", ID);
+        // console.log("cartItem---", cartItem.partNumber, "ID---", ID);
  
         if (cartItem.partNumber === ID) {
           foundInCart = true;
@@ -108,16 +112,17 @@ export default function ProductDetails() {
     return foundInCart;
   };
 
-// console.log(productDetails)
-if(!loading){
-  return <LinearProgress/>
-}
+// // console.log(productDetails)
+// if(!loading){
+//   return <LinearProgress/>
+// }
  
 
 
 
   return (
     <>
+    <Toaster/>
       <div style={{ marginTop: '10px', marginLeft: '100px' }}>
         <Link to='/shops'>Product / {productDetails?.name}</Link>
       </div>

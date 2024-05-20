@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { Button, Skeleton } from "@mui/material";
+import { Button, LinearProgress, Skeleton } from "@mui/material";
 // =======
 // import { Button, LinearProgress } from "@mui/material";
 // >>>>>>> main
@@ -20,11 +20,12 @@ import {
 } from "../../../action/cart";
 import { grey } from "@mui/material/colors";
 import { API_BASE_URL } from "../../../config/api";
-
+import toast from "react-hot-toast";
 const CartItem = ({
   item,
   showButton,
-  
+  handleUpdateCartQty,
+  handleRemoveItemFromCart
 }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
@@ -36,9 +37,9 @@ const CartItem = ({
   const [qty, setQty] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const handleRemoveItemFromCart = (data) => {
-    dispatch(RemoveCartItemNew(data))
-  };
+  // const handleRemoveItemFromCart = (data) => {
+  //   handleRemoveItemFromCart(data)
+  // };
 
   useEffect(() => {
     fetch(`${API_BASE_URL}product?partNumber=${item.partNumber}`)
@@ -55,19 +56,15 @@ const CartItem = ({
       });
   }, [item.partNumber]);
 
-  const debouncedUpdateCartItem = useCallback((num)=>{
+  const debouncedUpdateCartItem = (num)=>{
       const data = { quantity: num, orderId, orderItemId, productId };
-      updateCartQtyNEW(data);
-      dispatch(getCartItems());
+      handleUpdateCartQty(data);
+     
+      // dispatch(getCartItems());
 
-  },[dispatch, orderId, orderItemId, productId]
-  );
-  // useEffect(() => {
-  //   debouncedUpdateCartItem(qty);
-  // }, [debouncedUpdateCartItem, qty]);
-if(!data){
-  return <LinearProgress/>
-}
+  }
+ 
+
 
   return (<>
    

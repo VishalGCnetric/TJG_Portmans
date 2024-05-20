@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderById } from "../../../Redux/Customers/Order/Action";
 import AddressCard from "../adreess/AdreessCard";
 import { createPayment } from "../../../Redux/Customers/Payment/Action";
-import { getCartItems, placeOrder } from "../../../action/cart";
+import { ShipingInfoOrder, getCartItems, placeOrder } from "../../../action/cart";
 import { useState } from "react";
 import { grey } from "@mui/material/colors";
 import { checkoutStripePayemt } from "../../../action";
@@ -21,16 +21,13 @@ const OrderSummary = ({ data,handleNext }) => {
 
   const [CartData, setCartData] = useState([]);
   const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
   const { order, cartItems } = useSelector((state) => state);
   const [shiping,setShipping]=useState({})
 
-  console.log(cartItems?.cartItems?.orderItem?.[0])
 
   let formattedPrice = +cartItems?.cartItems?.totalProductPrice;
 
 
-  console.log("orderId ", data);
 
   useEffect(() => {
     // dispatch(getOrderById(orderId))
@@ -41,9 +38,8 @@ const OrderSummary = ({ data,handleNext }) => {
     //   setCartData(res.cart);
     // });
     let setship={
-      shipModeId: cartItems?.cartItems?.shipModeId,
       orderItemId: cartItems?.cartItems?.orderItemId,
-      addressId: data?.shippingAddress.addressId
+      addressId: data?.shippingAddress?.addressId
   }
   setShipping(setship)
   }, [cartItems]);
@@ -56,13 +52,15 @@ const OrderSummary = ({ data,handleNext }) => {
   //     addressId: data?.shippingAddress.addressId
   // }
     // dispatch(createPayment(data));
-    placeOrder(shiping).then((res) => {
+    ShipingInfoOrder(shiping).then((res) => {
       // dispatch(getCartItems());
       // checkoutStripePayemt(cartItems?.cartItems?.cart?.lines)
-      // navigate(`/payment/${datas.orderId}`);
+      // navigate(`/payment/${res.data.orderId}`);
       handleNext()
-      console.log("this is order id ", res.data.orderId);
+      // console.log("this is order id ", res.data.orderId);
     });
+    handleNext()
+
   };
 
 

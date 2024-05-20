@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -6,72 +6,62 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import AddDeliveryAddressForm from "./AddAddress";
-import { useLocation, useNavigate } from "react-router-dom";
 import OrderSummary from "./OrderSummary";
 import Payment from "./Payment";
+import { useLocation, useNavigate } from "react-router-dom";
+import PaymentPage from "./PaymentPage";
 
-const steps = [
-  // "Login",
-  "Delivery Adress",
-  "Order Summary",
-  "Payment",
-];
+const steps = ["login", "Delivery Address", "Order Summary", "Payment"];
 
 export default function Checkout() {
-  const [activeStep, setActiveStep] = React.useState(1);
-  const [skipped, setSkipped] = React.useState(new Set());
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  const step = queryParams.get('step');
-  const navigate=useNavigate();
-  const [data,setData]=React.useState({})
+  const stepParam = queryParams.get("step");
 
-console.log("step",step)
+  const initialStep = stepParam ? +stepParam : 1; // Default to step 1 if no stepParam
+  const [activeStep, setActiveStep] = React.useState(initialStep);
+  const [data, setData] = React.useState({});
 
-console.log(data)
+  React.useEffect(() => {
+    setActiveStep(initialStep);
+  }, [initialStep]);
 
   const handleNext = () => {
-    let newSkipped = skipped;
-
-    setActiveStep((prevActiveStep) =>prevActiveStep + 1);
-    setSkipped(newSkipped);
-    navigate(`/checkout?step=${+step+1}`)
+    const nextStep = activeStep < steps.length ? activeStep + 1 : steps.length;
+    setActiveStep(nextStep);
+    navigate(`/checkout?step=${nextStep}`);
   };
 
   const handleBack = (datas) => {
-    setData(datas)
-    navigate(`/checkout?step=${step-1}`)
-
+    setData(datas);
+    const prevStep = activeStep > 1 ? activeStep - 1 : 1;
+    setActiveStep(prevStep);
+    navigate(`/checkout?step=${prevStep}`);
   };
-
-console.log(data,"handleback")
 
   const handleReset = () => {
-    setActiveStep(0);
+    setActiveStep(1);
+    navigate(`/checkout?step=1`);
   };
 
-  const handlePayment=()=>{
-    console.log("handle payment")
-  }
+  const handlePayment = () => {
+    console.log("handle payment");
+  };
 
   return (
-    <Box className="mt-10 px-5 lg:px-32 " sx={{ width: "100%" }}>
-      <Stepper activeStep={step}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
+    <Box className="mt-10 px-5 lg:px-32" sx={{ width: "100%" }}>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
       </Stepper>
       {activeStep === steps.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+            All steps completed - you're finished
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
@@ -83,26 +73,23 @@ console.log(data,"handleback")
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
-              disabled={step == 1}
-              onClick={handleBack}
+              disabled={activeStep === 1}
+              onClick={() => handleBack(data)}
               sx={{ mr: 1 }}
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-
-
           </Box>
-          {/* <Typography sx={{ my: 6 }}>Title</Typography> */}
-
           <div className="my-5">
-            {step == 2? <OrderSummary data={data} handlePayment={handlePayment} handleNext={handleNext} />:step==3?<OrderSummary data={data}/>: <AddDeliveryAddressForm handleNext={handleNext} handleBack={handleBack} />}
+            {activeStep === 1 && (
+              <AddDeliveryAddressForm handleNext={handleNext} handleBack={handleBack} />
+            )}
+            {activeStep === 2 && (
+              <OrderSummary data={data} handlePayment={handlePayment} handleNext={handleNext} />
+            )}
+            {activeStep === 3 && <PaymentPage handleNext={handleNext} />}
           </div>
-   
-  <Payment/>
-          {/* <AddDeliveryAddressForm handleNext={handleNext} /> */}
-
-
         </React.Fragment>
       )}
     </Box>

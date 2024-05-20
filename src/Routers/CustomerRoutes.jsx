@@ -1,31 +1,32 @@
 import React, { lazy, Suspense } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Button, Skeleton } from "@mui/material";
-import { customTheme, customerTheme } from "../Admin/them/customeThem";
-import NotFound from "../Pages/Notfound"; // Corrected import path
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { Backdrop, CircularProgress, Skeleton } from "@mui/material";
+import { customerTheme } from "../Admin/them/customeThem";
+import NotFound from "../Pages/Notfound";
 import NavBrand from "../customer/Components/Navbar/NavBrand";
 import Navbar from "../customer/Components/Navbar/Navbar";
-import Footer from "../customer/Components/footer/Footer"; // Corrected import path
+import Footer from "../customer/Components/footer/Footer";
+import { useSelector } from "react-redux";
+import { Toaster } from 'react-hot-toast'; // Importing Toaster for notifications
 
-// Lazy load your components
 const ProductDetails = lazy(() =>
   import("../customer/Components/Product/ProductDetails/ProductDetails")
 );
 const Product = lazy(() => import("../customer/Components/Product/Product/Product"));
 const Contact = lazy(() => import("../Pages/Contact"));
-const TermsCondition = lazy(() => import("../Pages/TearmsCondition")); // Corrected import path
+const TermsCondition = lazy(() => import("../Pages/TearmsCondition"));
 const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy"));
 const About = lazy(() => import("../Pages/About"));
 const Homepage = lazy(() => import("../Pages/Homepage"));
 const Cart = lazy(() => import("../customer/Components/Cart/Cart"));
-const Order = lazy(() => import("../customer/Components/orders/Order")); // Corrected import path
+const Order = lazy(() => import("../customer/Components/orders/Order"));
 const OrderDetails = lazy(() =>
-  import("../customer/Components/orders/OrderDetails") // Corrected import path
+  import("../customer/Components/orders/OrderDetails")
 );
 const Checkout = lazy(() => import("../customer/Components/Checkout/Checkout"));
 const PaymentSuccess = lazy(() =>
-  import("../customer/Components/paymentSuccess/PaymentSuccess") 
+  import("../customer/Components/paymentSuccess/PaymentSuccess")
 );
 const RateProduct = lazy(() =>
   import("../customer/Components/ReviewProduct/RateProduct")
@@ -35,43 +36,66 @@ const SignIn = lazy(() => import("../Pages/SignIn"));
 const MyAccount = lazy(() => import("../Pages/MyAccount"));
 
 const LoadingIndicator = () => {
-  return <Skeleton animation="wave" variant="rectangular" width="100%" height="auto" />;
+  return (
+    <>
+      <Skeleton animation="wave" variant="rectangular" width="100%" height="100vh" />
+      <Backdrop
+        sx={{
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          width: '100vw',
+          height: '100vh',
+        }}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </>
+  );
+};
+
+const PrivateRoute = ({ children }) => {
+  const isAuthenticated = useSelector(state => state.auth.auth);
+  const location = useLocation();
+
+  return isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/sign-in" state={{ from: location }} replace />
+  );
 };
 
 const CustomerRoutes = () => {
   const location = useLocation();
-
-  // Only show Navigation component when not on the NotFound page
   const showNavigation = location.pathname !== "*";
 
   return (
     <div>
       <ThemeProvider theme={customerTheme}>
+        <Toaster /> {/* Adding Toaster for notifications */}
         <NavBrand />
         <Navbar />
-        {/* {showNavigation && <Navigation />} */}
         <Routes>
-          {/* Wrap the lazy-loaded components with Suspense */}
-          
-            <Route path="/" element={<Suspense fallback={<LoadingIndicator />}><Homepage /></Suspense>} />
-            <Route path="/home" element={<Suspense fallback={<LoadingIndicator />}><Homepage /></Suspense>} />
-            <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About /></Suspense>} />
-            <Route path="/privacy-policy" element={<Suspense fallback={<LoadingIndicator />}><PrivacyPolicy /></Suspense>} />
-            <Route path="/terms-condition" element={<Suspense fallback={<LoadingIndicator />}><TermsCondition /></Suspense>} />
-            <Route path="/sign-up" element={<Suspense fallback={<LoadingIndicator />}><SignUp /></Suspense>} />
-            <Route path="/sign-in" element={<Suspense fallback={<LoadingIndicator />}><SignIn /></Suspense>} />
-            <Route path="/my-account" element={<Suspense fallback={<LoadingIndicator />}><MyAccount /></Suspense>} />
-            <Route path="/contact" element={<Suspense fallback={<LoadingIndicator />}><Contact /></Suspense>} />
-            <Route path="/:lavelOne/:lavelTwo/:lavelThree" element={<Suspense fallback={<LoadingIndicator />}><Product /></Suspense>} />
-            <Route path="/product/:productId" element={<Suspense fallback={<LoadingIndicator />}><ProductDetails /></Suspense>} />
-            <Route path="/cart" element={<Suspense fallback={<LoadingIndicator />}><Cart /></Suspense>} />
-            <Route path="/account/order" element={<Suspense fallback={<LoadingIndicator />}><Order /></Suspense>} />
-            <Route path="/account/order/:orderId" element={<Suspense fallback={<LoadingIndicator />}><OrderDetails /></Suspense>} />
-            <Route path="/checkout" element={<Suspense fallback={<LoadingIndicator />}><Checkout /></Suspense>} />
-            <Route path="/payment/:orderId" element={<Suspense fallback={<LoadingIndicator />}><PaymentSuccess /></Suspense> }/>
-            <Route path="/shops" element={<Suspense fallback={<LoadingIndicator />}><Product /></Suspense>} />
-            <Route path="*" element={<Suspense fallback={<LoadingIndicator />}><NotFound/></Suspense>} />
-          
+          <Route path="/" element={<Suspense fallback={<LoadingIndicator />}><Homepage /></Suspense>} />
+          <Route path="/home" element={<Suspense fallback={<LoadingIndicator />}><Homepage /></Suspense>} />
+          <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About /></Suspense>} />
+          <Route path="/privacy-policy" element={<Suspense fallback={<LoadingIndicator />}><PrivacyPolicy /></Suspense>} />
+          <Route path="/terms-condition" element={<Suspense fallback={<LoadingIndicator />}><TermsCondition /></Suspense>} />
+          <Route path="/sign-up" element={<Suspense fallback={<LoadingIndicator />}><SignUp /></Suspense>} />
+          <Route path="/sign-in" element={<Suspense fallback={<LoadingIndicator />}><SignIn /></Suspense>} />
+          {/* Private routes */}
+          <Route path="/my-account" element={<PrivateRoute><Suspense fallback={<LoadingIndicator />}><MyAccount /></Suspense></PrivateRoute>} />
+          <Route path="/contact" element={<Suspense fallback={<LoadingIndicator />}><Contact /></Suspense>} />
+          <Route path="/:lavelOne/:lavelTwo/:lavelThree" element={<PrivateRoute><Suspense fallback={<LoadingIndicator />}><Product /></Suspense></PrivateRoute>} />
+          <Route path="/product/:productId" element={<Suspense fallback={<LoadingIndicator />}><ProductDetails /></Suspense>} />
+          <Route path="/cart" element={<PrivateRoute><Suspense fallback={<LoadingIndicator />}><Cart /></Suspense></PrivateRoute>} />
+          <Route path="/account/order" element={<Suspense fallback={<LoadingIndicator />}><Order /></Suspense>} />
+          <Route path="/account/order/:orderId" element={<PrivateRoute><Suspense fallback={<LoadingIndicator />}><OrderDetails /></Suspense></PrivateRoute>} />
+          <Route path="/checkout" element={<PrivateRoute><Suspense fallback={<LoadingIndicator />}><Checkout /></Suspense></PrivateRoute>} />
+          <Route path="/payment/:orderId" element={<Suspense fallback={<LoadingIndicator />}><PaymentSuccess /></Suspense>} />
+          <Route path="/shops" element={<Suspense fallback={<LoadingIndicator />}><Product /></Suspense>} />
+          {/* Not found route */}
+          <Route path="*" element={<Suspense fallback={<LoadingIndicator />}><NotFound /></Suspense>} />
         </Routes>
         <Footer />
       </ThemeProvider>

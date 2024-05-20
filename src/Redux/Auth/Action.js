@@ -19,16 +19,18 @@ import { WidthWideOutlined } from '@mui/icons-material';
 export const registerRequest = () => ({ type: REGISTER_REQUEST });
 export const registerSuccess = (user) => ({ type: REGISTER_SUCCESS, payload: user });
 export const registerFailure = error => ({ type: REGISTER_FAILURE, payload: error });
-export const register = userData => async dispatch => {
+export const register = (userData, toast) => async dispatch => {
   dispatch(registerRequest());
   try {
     // console.log(userData,"register");
     const response = await axios.post(`${API_BASE_URL}signup`, userData);
     const user = response.data;
     // localStorage.setItem("jwt", user.jwt);
+    toast.success("registration successful", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
     alert("registration successful")
     dispatch(registerSuccess(user));
   } catch (error) {
+    toast.error("something went wrong, please try again", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
     dispatch(registerFailure(error.errorMessage));
   }
 };
@@ -37,24 +39,51 @@ export const register = userData => async dispatch => {
 export const loginRequest = () => ({ type: LOGIN_REQUEST });
 export const loginSuccess = user => ({ type: LOGIN_SUCCESS, payload: user });
 export const loginFailure = error => ({ type: LOGIN_FAILURE, payload: error });
-export const login = userData => async dispatch => {
+export const login = (userData, navigate, from,toast) => async dispatch => {
   dispatch(loginRequest());
   try {
     const response = await axios.post(`${API_BASE_URL}login`, userData);
     const user = response.data;
-    console.log(user,"user");
+
+    // Assuming tokens are stored in the user object returned from the API
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
+toast.success("Login successful", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
+    // Dispatch actions to update user state
     dispatch(getUser());
     dispatch(loginSuccess(user));
-    alert("login successful");
+
+    // Navigate to the original destination
+    navigate(from, { replace: true });
+
     return Promise.resolve(response);
   } catch (error) {
-    // alert("email or password mismatched, please check");
+    // Properly handle errors
+    toast.error("Login failed, please check credentials", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
+    alert("Email or password mismatched, please check");
     dispatch(loginFailure(error.message));
     return Promise.reject(error);
   }
 };
+// export const login = (userData,navigate,from) => async dispatch => {
+//   dispatch(loginRequest());
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}login`, userData);
+//     const user = response.data;
+//     console.log(user,"user");
+//     localStorage.setItem("wt", user.WCToken);
+//     localStorage.setItem("wtt", user.WCTrustedToken);
+//     dispatch(getUser());
+//     dispatch(loginSuccess(user));
+//     navigate(from, { replace: true });
+//     alert("login successful");
+//     return Promise.resolve(response);
+//   } catch (error) {
+//     // alert("email or password mismatched, please check");
+//     dispatch(loginFailure(error.message));
+//     return Promise.reject(error);
+//   }
+// };
 
 
 // export const login = userData => async dispatch => {
@@ -102,5 +131,7 @@ export const getUser = () => async dispatch => {
 // Logout action creator
 export const logout = () => async dispatch => {
   dispatch({ type: LOGOUT });
-  localStorage.clear();
+  // localStorage.clear();
+  localStorage.removeItem('wt')
+  localStorage.removeItem('wtt')
 };

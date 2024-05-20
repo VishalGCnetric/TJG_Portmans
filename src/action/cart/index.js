@@ -1,5 +1,6 @@
 // import { get } from "../api/APIController";
 
+import toast from "react-hot-toast";
 import { getOrdersSuccess } from "../../Redux/Admin/Orders/ActionCreator";
 import store from "../../Redux/Store";
 import { deleteCall, get, post, putCall } from "../../api/config/APIController";
@@ -73,7 +74,7 @@ export const getCutomerOrdersNew = () => {
       get("orders")
         .then((response) => {
           if (response.status === 200) {
-            // console.log("this getCutomerOrdersNew", response.data);
+            console.log("this getCutomerOrdersNew", response.data);
             dispatch({
               type: "GET_ORDER_HISTORY_NEW",
               order: response?.data,
@@ -89,7 +90,7 @@ export const getCutomerOrdersNew = () => {
   };
 };
 
-export const AddItemToCartNew = ({partNumber,quantity,}) => {
+export const AddItemToCartNew = ({partNumber,quantity}) => {
   let data = {
     partNumber: partNumber,
     quantity: `${quantity}`,
@@ -98,8 +99,8 @@ export const AddItemToCartNew = ({partNumber,quantity,}) => {
     return new Promise((resolve, reject) => {
       post("cart", data)
         .then((response) => {
-          if (response.status === 200) {
-            // console.log("this getCutomerOrdersNew", response.data);
+          if (response.status === 201) {
+            // toast.success("Item added to cart");
             store.dispatch({
               type: "GET_ORDER_HISTORY_NEW",
               order: response?.data,
@@ -148,7 +149,6 @@ export const RemoveCartItemNew = (reqdata) => {
   let url = `cart`;
   const {orderId,orderItemId}=reqdata;
   const data = { orderId, orderItemId };
-  console.log(data, "remove cart item");
 
   return (dispatch) => { // Return a function that accepts dispatch
     return deleteCall(url, data)
@@ -156,20 +156,22 @@ export const RemoveCartItemNew = (reqdata) => {
         if (response.status === 200) {
           // Dispatch an action to update the cart after item removal
           dispatch(getCartItems());
-          alert("Item has been removed from cart");
+          toast.success("Item has been removed from cart");
         } else {
           // Handle other status codes if needed
+          toast.error("Failed to remove item from cart");
           console.error("Failed to remove item from cart:", response.data);
         }
       })
       .catch((error) => {
         // Log or handle the error
+        toast.error("Failed to remove item from cart");
         console.error("Error removing item from cart:", error);
       });
   };
 };
 
-export const updateCartQtyNEW = (reqdata) => {
+export const updateCartQtyNEW = (reqdata,toast) => {
   const { orderId, orderItemId, productId, quantity } = reqdata;
   const payload = {
     orderId: orderId,
@@ -177,11 +179,10 @@ export const updateCartQtyNEW = (reqdata) => {
     productId: productId,
     quantity: quantity,
   };
-
   return new Promise((resolve, reject) => {
     putCall(`cart`, payload)
       .then((response) => {
-        if (response.ok) {
+        if (response.status==200) {
           resolve(response.data);
         } else {
           reject(new Error('Failed to update cart quantity'));
@@ -189,6 +190,7 @@ export const updateCartQtyNEW = (reqdata) => {
       })
       .catch((error) => {
         console.error('Error updating cart quantity:', error);
+        toast.error("Failed to update cart quantity");
         reject(error);
       });
   });
@@ -221,16 +223,58 @@ export const updateCartQtyNEW = (reqdata) => {
 //   }
 // };
 
+export const ShipingInfoOrder = async (reqData) => {
+  //   let setship={
+  //     shipModeId: cartItems?.cartItems?.shipModeId,
+  //     orderItemId: cartItems?.cartItems?.orderItemId,
+  //     addressId: data?.shippingAddress?.addressId
+  // }
+  const { orderItemId,addressId } = reqData;
+  const data = {
+    shipModeId: "715852384",
+    orderItemId: orderItemId,
+    addressId: addressId,
+  };
+  console.log(data,"setshipingData");
+    return new Promise((resolve, reject) => {
+      return putCall("setShipping", data)
+        .then((res) => {
+          getCartItems()
+          resolve(res);
+          // getCustomerLoginCart();
+        })
+        .catch((error) => {
+          reject(false);
+          console.log(error);
+        })
+        .finally();
+    });
+  };
 
-
-export const placeOrder = async (data) => {
-
-console.log(data)
+export const placeOrder = async (grandTotal) => {
+//   let setship={
+//     shipModeId: cartItems?.cartItems?.shipModeId,
+//     orderItemId: cartItems?.cartItems?.orderItemId,
+//     addressId: data?.shippingAddress?.addressId
+// }
+// const { shipModeId,orderItemId,addressId } = reqData;
+const data = {
+  "piAmount": grandTotal,
+  "billing_address_id": "3074457365572057425",
+  "payMethodId": "MasterCard",
+  "account": "5425233430109903",
+  "expire_month": "04",
+  "expire_year": "2026",
+  "cc_cvc": "123",
+  "cc_brand": "MasterCard"
+}
   return new Promise((resolve, reject) => {
-    return post("setShipping", data)
+    return post("payment", data)
       .then((res) => {
-        getCartItems()
-        resolve(res);
+        toast.success("payment sucessful")
+        
+           resolve(res);
+       
         // getCustomerLoginCart();
       })
       .catch((error) => {
@@ -240,3 +284,35 @@ console.log(data)
       .finally();
   });
 };
+
+export const preCheckout=()=>{
+  return new Promise((resolve, reject) => {
+    return putCall("preCheckout", )
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((error) => {
+      reject(false);
+      console.log(error);
+    })
+    .finally();
+
+  })
+   
+}
+
+export const CheckoutReq=()=>{
+  return new Promise((resolve, reject) => {
+    return post("checkout")
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((error) => {
+      reject(false);
+      console.log(error);
+    })
+    .finally();
+
+  })
+   
+}
