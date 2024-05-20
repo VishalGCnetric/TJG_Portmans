@@ -111,7 +111,7 @@ export default function Product() {
     param.lavelThree,
     colorValue,
     sizeValue,
-    // price,
+    price,
     disccount,
     sortValue,
     pageNumber,
@@ -160,7 +160,7 @@ export default function Product() {
     const query = searchParams.toString();
     navigate({ search: `?${query}` });
   };
-
+  
   useEffect(() => {
     if (customersProduct.loading) {
       setIsLoaderOpen(true);
@@ -215,6 +215,7 @@ export default function Product() {
     // Call the debounced search function with the current search value
     debouncedSearch(searchValue);
   }, [searchValue]);
+  
   console.log(products, searchProducts)
   return (
     <div className="bg-white -z-20 ">

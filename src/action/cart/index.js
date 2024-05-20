@@ -251,7 +251,7 @@ export const ShipingInfoOrder = async (reqData) => {
     });
   };
 
-export const placeOrder = async (grandTotal) => {
+export const placeOrder = async (grandTotal,addressId) => {
 //   let setship={
 //     shipModeId: cartItems?.cartItems?.shipModeId,
 //     orderItemId: cartItems?.cartItems?.orderItemId,
@@ -260,7 +260,7 @@ export const placeOrder = async (grandTotal) => {
 // const { shipModeId,orderItemId,addressId } = reqData;
 const data = {
   "piAmount": grandTotal,
-  "billing_address_id": "3074457365572057425",
+  "billing_address_id": addressId || "3074457365572057425",
   "payMethodId": "MasterCard",
   "account": "5425233430109903",
   "expire_month": "04",
