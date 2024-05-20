@@ -26,11 +26,11 @@ export const register = (userData, toast) => async dispatch => {
     const response = await axios.post(`${API_BASE_URL}signup`, userData);
     const user = response.data;
     // localStorage.setItem("jwt", user.jwt);
-    toast.success("registration successful", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
-    alert("registration successful")
+    toast.success("Registration Successful");
+    // alert("registration successful")
     dispatch(registerSuccess(user));
   } catch (error) {
-    toast.error("something went wrong, please try again", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
+    toast.error("Something Went Wrong, Please Try Again");
     dispatch(registerFailure(error.errorMessage));
   }
 };
@@ -48,7 +48,7 @@ export const login = (userData, navigate, from,toast) => async dispatch => {
     // Assuming tokens are stored in the user object returned from the API
     localStorage.setItem("wt", user.WCToken);
     localStorage.setItem("wtt", user.WCTrustedToken);
-toast.success("Login successful", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
+toast.success("Login Successful" );
     // Dispatch actions to update user state
     dispatch(getUser());
     dispatch(loginSuccess(user));
@@ -59,8 +59,8 @@ toast.success("Login successful", {position: "top-right", autoClose: 3000, hideP
     return Promise.resolve(response);
   } catch (error) {
     // Properly handle errors
-    toast.error("Login failed, please check credentials", {position: "top-right", autoClose: 3000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,});
-    alert("Email or password mismatched, please check");
+    toast.error("Login failed, please check credentials");
+    // alert("Email or password mismatched, please check");
     dispatch(loginFailure(error.message));
     return Promise.reject(error);
   }

@@ -22,6 +22,7 @@ const Payment = ({ handleNext }) => {
   const navigate = useNavigate();
   const [addAddress, setAddress] = useState(false);
   const shippingData = JSON.parse(localStorage.getItem("shippingAddress"));
+  const addressId= shippingData?.addressId;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +35,7 @@ const Payment = ({ handleNext }) => {
 
   const handleSubmit = async (values) => {
     try {
-      const orderResponse = await placeOrder(grandTotal);
+      const orderResponse = await placeOrder(grandTotal,addressId);
       await preCheckout();
       toast.success("PreCheckout done successfully!");
       await CheckoutReq();

@@ -49,6 +49,7 @@ export default function ProductDetails() {
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
     if(!auth){
+      toast.error("Please Login First")
       navigate("/sign-in");
     }
     if (partNumber) {
@@ -62,7 +63,7 @@ export default function ProductDetails() {
           console.error("Error adding item to cart:", error);
         });
     } else {
-      toast.error("out of Stock")
+      // toast.error("out of Stock")
       console.error("Part number is missing.");
     }
    
