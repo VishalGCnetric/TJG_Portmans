@@ -5,6 +5,7 @@ import "./HomeProductSection.css";
 import { Button } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const HomeProductSection = ({ section, data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -41,7 +42,13 @@ const HomeProductSection = ({ section, data }) => {
 
   return (
     <div className=" w-full relative px-4 sm:px-6 lg:px-8 " >
-      <h2 className="text-2xl font-extrabold text-gray-900 py-5">{section}</h2>
+      {/* <h2 className="text-#333 text-bold text-center border-b-2 ">{section}</h2> */}
+      <div className="text-#333 text-center font-semibold cursor-pointer text-#333 mt-3 mb-3">
+            <span className=" text-#333 text-bold text-center border-b-2 border-#333">
+              <Link to="/shop">
+{section}</Link>
+            </span>
+            </div>
       <div className=" border  relative  p-5" >
         <AliceCarousel
           disableButtonsControls

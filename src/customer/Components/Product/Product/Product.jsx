@@ -335,8 +335,8 @@ console.log(products,searchProducts)
         <main className="mx-auto px-4 lg:px-14 ">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-2">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900
-            mt-6">
-              Product
+            mt-8">
+              Products
             </h1>
 
             <div className="flex items-center">

@@ -197,8 +197,15 @@ const [loading,setloading]=useState(false);
           <div className="space-y-1 py-2 w-full">
             {loading? (
               <Skeleton animation="wave" variant="rectangular" width="100%" height={500} />
-            ) : (
-              <LazyHomeProductSection data={topProducts?.slice(0, 8)} section={"Top Products"} />
+            ) : (<>
+            {/* <div className="text-#333 text-center font-semibold cursor-pointer text-#333 mt-3 mb-3">
+            <span className=" text-#333 text-bold text-center border-b-2 border-#333">
+              <Link to="/shop">
+Choose your classy wardrobe with Portmans</Link>
+            </span>
+          </div> */}
+              <LazyHomeProductSection data={topProducts?.slice(0, 8)} section={"CHOOSE YOUR CLASSY WARDROBE WITH PORTMANS"} />
+              </>
             )}
            
           </div>

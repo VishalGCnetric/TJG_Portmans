@@ -3,7 +3,7 @@ import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductReviewCard from "./ProductReviewCard";
-import { Box, Button, Grid, LinearProgress, Rating,IconButton } from "@mui/material";
+import { Box, Button, Grid, LinearProgress, Rating,IconButton, Skeleton } from "@mui/material";
 import HomeProductCard from "../../Home/HomeProductCard";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
@@ -39,7 +39,6 @@ export default function ProductDetails() {
   const [loading,setLoading] =useState(false)
   const  {auth}= useSelector((store) => store.auth);
   const [topProducts, setTopProducts] = useState([]);
-
 
   const handleSetActiveImage = (image) => {
     setActiveImage(image);
@@ -77,7 +76,9 @@ export default function ProductDetails() {
   }, [cartItems?.cartItems?.cart?.lines.length]);
 
   useEffect(() => {
+    setLoading(true)
     receiveProductsById(productId).then((res) => {
+      setLoading(false);
       setProductDetails(res.catalogEntryView[0]);
     });
   }, [productId]);
@@ -95,6 +96,7 @@ export default function ProductDetails() {
     setCheckCart(checkItem);
   }, [cartItems, productDetails]);
  
+  
   const CheckCardItem = (ID) => {
     let Cart = cartItems?.cartItems?.orderItem;
     let foundInCart = false;
@@ -118,7 +120,9 @@ export default function ProductDetails() {
 // }
  
 
-
+if(loading){
+  return <Skeleton variant="rectangular" width="100%" height={500} />
+}
 
   return (
     <>

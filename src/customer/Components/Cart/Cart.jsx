@@ -16,7 +16,7 @@ const Cart = () => {
  
   
   let foramattedPrice = useSelector((store) => store.cartItems.cartItems.totalProductPrice);
-  let total = +foramattedPrice;
+  let total = +foramattedPrice || 0;
   useEffect(() => {
     dispatch(getCartItems());
   }, []);
@@ -27,7 +27,7 @@ const Cart = () => {
 
   const handleUpdateCartQty = (data) => {
     updateCartQtyNEW(data,toast).then(() => {
-      toast.success('quantity updated suceesfully');
+      toast.success('Quantity Updated Suceesfully');
       dispatch(getCartItems());
     });
   };
@@ -37,14 +37,14 @@ const Cart = () => {
       <Toaster/>
       {cartItems?.cartItems?.orderitems ? <div className="px-5 sticky top-0 w-[100%] h-[10vh] mt-5 lg:mt-0">
           <div className="border p-5 bg-white shadow-lg rounded-md">
-           <div>cart is empty</div>
+           <div>Cart Is Empty</div>
         </div>
         </div>:<><div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems?.cartItems?.orderItem?.length === 0? <div className="border p-5 bg-white shadow-lg rounded-md">
-                <h1 className="text-2xl text-center font-bold">cart is empty</h1>
-              <img src="./empty.jpg" alt="empty cart"/>
+              {cartItems?.cartItems?.orderItem === undefined ? <div className="border p-5 bg-white shadow-lg display-flex flex-col justify-center align-center text-center rounded-md">
+                <h1 className="text-2xl font-bold opacity-60 pb-4">Cart Is Empty</h1>
+              {/* <img src="./empty.jpg" height={"300px"} width={"300px"}  alt="empty cart"/> */}
               </div>: cartItems?.cartItems?.orderItem?.map((item) => (
                 <CartItem
                   key={item.id}
@@ -69,7 +69,7 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Discount</span>
-                  <span className="text-green-700">₹0</span>
+                  <span className="text-green-700">₹ 0</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Delivery Charges</span>
