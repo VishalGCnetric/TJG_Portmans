@@ -50,6 +50,8 @@ export default function Product() {
   const [searchValue, setSearchValue] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [min,setMin]= useState(0)
+  const [max,setMax]= useState(1000)
 
   useEffect(() => {
     fetch(`${API_BASE_URL}filters/portmans`).then((res) => res.json()).then((res) => {
@@ -168,6 +170,15 @@ export default function Product() {
       setIsLoaderOpen(false);
     }
   }, [customersProduct.loading]);
+
+  const handlePriceMinMax = () => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("minPrice", min);
+    searchParams.set("maxPrice", max);
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+    // fetchData();
+  };
 
   const TextFielData = (e) => {
     setSearchValue(e.target.value);
@@ -424,42 +435,68 @@ export default function Product() {
                     sx={{
                       border: '1px solid #ccc',
                       zIndex: 10000,
-                      padding: 1, // Smaller padding
+                      padding: 0.5,
                       backgroundColor: 'white',
-                      borderRadius: 1, // Smaller border radius
+                      borderRadius: 2,
+                      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Improved shadow
+                      width: 'fit-content',
+                      maxWidth: '100%', // Added to ensure responsiveness
                     }}
                   >
-                    <Typography variant="h6" sx={{ fontSize: '1rem', mb: 1 }}> {/* Smaller font size */}
-                      Price
+                    <Typography variant="h6" sx={{ fontSize: '1rem', mb: 1, color: '#333', }}> {/* Improved text color */}
+                      Price 
                     </Typography>
-                    <Grid container spacing={1} alignItems="center">
-                      <Grid item xs={4} md={3}> {/* Adjusted grid size for smaller inputs */}
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item xs={12} sm={5}> {/* Adjusted grid size for better responsiveness */}
                         <input
-                          type="number"
-                          placeholder="min"
-                          style={{ width: '100%', padding: '6px', border: '1px solid gray' }} // Adjusted padding
+                          onChange={(e)=>setMin(e.target.value)}
+                          type="text"
+                          inputmode="numeric"
+                          placeholder="Min"
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)',
+                            boxSizing: 'border-box',
+                            appearance: 'textfield'
+                          }}
                         />
                       </Grid>
-                      <Typography variant="subtitle1">To</Typography> {/* Smaller font size */}
-                      <Grid item xs={4} md={3}> {/* Adjusted grid size for smaller inputs */}
+                      <span style={{textAlign:'center',marginLeft:'10px',marginTop:'10px'}}>To</span>
+                      <Grid item xs={12} sm={5}> {/* Adjusted grid size for better responsiveness */}
                         <input
-                          type="number"
-                          placeholder="max"
-                          style={{ width: '100%', padding: '6px', border: '1px solid gray' }} // Adjusted padding
+                          onChange={(e)=>setMax(e.target.value)}
+                          type="text"
+                          inputmode="numeric"
+                          placeholder="Max"
+                          style={{
+                            border:'1px solid green',
+                            width: '100%',
+                            padding: '8px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)',
+                            boxSizing: 'border-box',
+                            appearance: 'textfield'
+                          }}
                         />
                       </Grid>
-                      <Grid item xs={4} md={3}> {/* Adjusted grid size for smaller button */}
+                      <Grid item xs={12} sm={12}> {/* Adjusted grid size for better responsiveness */}
                         <Button
+                          onClick={handlePriceMinMax}
                           variant="contained"
                           color="primary"
-                          size="small" // Adjusted button size to small
-                          sx={{ height: 'fit-content', padding: '6px 12px' }} // Adjusted button padding
+                          size="medium"
+                          sx={{ textTransform: 'none', borderRadius: '4px', width: '100%' }} // Improved button width
                         >
                           Go
                         </Button>
                       </Grid>
                     </Grid>
                   </Box>
+
                   {singleFilter.map((section) => (
                     <Disclosure
                       as="div"
