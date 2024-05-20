@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCartItems, RemoveCartItemNew, updateCartQtyNEW } from "../../../action/cart";
 import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from 'react-hot-toast';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -12,47 +13,39 @@ const Cart = () => {
   const { cartItems } = useSelector((store) => store);
   const {auth} = useSelector((store) => store.auth);
   const cart =useSelector((store) => store.cartItems.cartItems);
-  // console.log("cart",cart)
-  const [data,setData]=useState([]);
-  const {orderId}=cartItems;
+ 
   
-  // const formattedPrice = totalPrice ? totalPrice.toFixed(2) : "";
-  let formattedPrice = +cartItems?.cartItems?.totalProductPrice;
-  
-  // useEffect(() => {
-  //   dispatch(getCartItems());
-  //   const totalPrice = cartItems && cartItems?.cartItems && cartItems?.cartItems?.totalProductPrice;
-  //   if (typeof totalPrice === "number") {
-  //     formattedPrice = totalPrice.toFixed(2);
-  //   } else {
-  //     console.error("Total price is not a number:", totalPrice);
-  //   }
-  // }, [dispatch]);
+  let foramattedPrice = useSelector((store) => store.cartItems.cartItems.totalProductPrice);
+  let total = +foramattedPrice;
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, []);
 
   const handleRemoveItemFromCart = (data) => {
     dispatch(RemoveCartItemNew(data))
   };
 
-  const handleUpdateCartQty = (lineId, qty) => {
-    dispatch(updateCartQtyNEW(lineId, qty)).then(() => {
+  const handleUpdateCartQty = (data) => {
+    updateCartQtyNEW(data,toast).then(() => {
+      toast.success('quantity updated suceesfully');
       dispatch(getCartItems());
     });
   };
   
-  console.log(formattedPrice)
   return (
     <div>
-      {cartItems?.cartItems?.orderitems ? <div className="px-5 sticky top-0 w-[60%] h-[10vh] mt-5 lg:mt-0">
+      <Toaster/>
+      {cartItems?.cartItems?.orderitems ? <div className="px-5 sticky top-0 w-[100%] h-[10vh] mt-5 lg:mt-0">
           <div className="border p-5 bg-white shadow-lg rounded-md">
            <div>cart is empty</div>
         </div>
-        </div>:<></>
-        }
-      {auth  && (
-        <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
+        </div>:<><div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems?.cartItems && cartItems?.cartItems?.orderItem?.map((item) => (
+              {cartItems?.cartItems?.orderItem?.length === 0? <div className="border p-5 bg-white shadow-lg rounded-md">
+                <h1 className="text-2xl text-center font-bold">cart is empty</h1>
+              <img src="./empty.jpg" alt="empty cart"/>
+              </div>: cartItems?.cartItems?.orderItem?.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}
@@ -72,7 +65,7 @@ const Cart = () => {
                 <div className="flex justify-between pt-3 text-black ">
                   <span>Price ({cartItems?.cartItems?.orderItem?.length} item)</span>
                   {/* <span>{cartItems?.cartItems?.totalProductPrice }</span> */}
-                  <span>{formattedPrice.toFixed(2)}</span>
+                  <span>{total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Discount</span>
@@ -87,7 +80,7 @@ const Cart = () => {
                   <span>Total Amount</span>
                   <span className="text-green-700">
                   {/* {cartItems?.cartItems?.totalProductPrice} */}
-                  {formattedPrice.toFixed(2)}
+                  {total && total.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -108,7 +101,9 @@ const Cart = () => {
             </div>
           </div>
         </div>
-      )}
+        </>
+        }
+  
     </div>
   );
 };

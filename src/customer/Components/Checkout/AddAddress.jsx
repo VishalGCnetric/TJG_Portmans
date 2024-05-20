@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, Button, Box } from "@mui/material";
+import { Grid, TextField, Button, Box, Paper, Typography, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../../Redux/Customers/Order/Action";
@@ -7,11 +7,26 @@ import AddressCard from "../adreess/AdreessCard"; // Corrected import path
 import { grey } from "@mui/material/colors";
 import axios from "axios";
 import { API_BASE_URL } from "../../../config/api";
+import { Toaster, toast } from "react-hot-toast";
+
+const defaultAddress = {
+  lastName: "Garcia",
+  zipCode: "12345",
+  firstName: "Juan",
+  email1: "juang@example.com",
+  city: "Mexico City",
+  addressType: "ShippingAndBilling",
+  nickName: "Juan",
+  state: "Mexico City",
+  addressLine: ["Av. Insurgentes Sur 123", "Col. Condesa", ""],
+  addressId: "3074457365572057425",
+  primary: "false",
+  phone1: "5543219876",
+};
 
 export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
   const { cartItems } = useSelector((store) => store);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -19,19 +34,19 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
   useEffect(() => {
     const fetchAddresses = async () => {
       const wt = localStorage.getItem("wt");
-      const wtt =localStorage.getItem("wtt");
+      const wtt = localStorage.getItem("wtt");
       try {
-        const res = await axios.get(`${API_BASE_URL}addresses`,{
+        const res = await axios.get(`${API_BASE_URL}addresses`, {
           headers: {
             wt: wt,
             wtt: wtt,
           },
         });
-        // console.log(res.data);
         const add = res.data.contact;
-        setAddresses(add);
+        setAddresses(add.length > 0 ? add : [defaultAddress]);
       } catch (error) {
         console.error("Error fetching addresses:", error);
+        setAddresses([defaultAddress]);
       }
     };
 
@@ -40,7 +55,6 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Extract form data
     const formData = new FormData(event.currentTarget);
     const addressData = {
       firstName: formData.get("firstName"),
@@ -53,36 +67,35 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
       postalCode: formData.get("zip"),
       phoneNumber: formData.get("phoneNumber"),
       email: formData.get("email"),
-      countryCode: "AUS", 
+      countryCode: "AUS",
     };
-   
-    // Dispatch action to create order
-    dispatch(createOrder({ address: addressData, navigate }));
 
-    // Perform other operations
+    dispatch(createOrder({ address: addressData, navigate, toast }));
+    localStorage.setItem("shippingAddress", JSON.stringify(addressData));
     handleBack({ cartId: cartItems?.cartItems?.orderId, shippingAddress: addressData });
     handleNext();
   };
 
   const handleCreateOrder = (item) => {
-    dispatch(createOrder({ address: item,  navigate }));
+    dispatch(createOrder({ address: item, navigate, toast }));
+    localStorage.setItem("shippingAddress", JSON.stringify(item));
     handleBack({ cartId: cartItems?.cartItems?.orderId, shippingAddress: item });
-
     handleNext();
   };
-console.log(addresses);
+
   return (
     <Grid container spacing={4}>
+      <Toaster />
       <Grid item xs={12} lg={5}>
         <Box className="border rounded-md shadow-md h-[32.5rem] overflow-y-scroll">
           {addresses?.map((address) => (
             <div
-              key={address.id}
+              key={address.addressId}
               onClick={() => setSelectedAddress(address)}
-              className="p-5 py-7 border-b cursor-pointer"
+              className={`p-5 py-7 border-b cursor-pointer ${selectedAddress?.addressId === address.addressId ? "bg-gray-200" : ""}`}
             >
               <AddressCard address={address} />
-              {selectedAddress?.id === address.id && (
+              {selectedAddress?.addressId === address.addressId && (
                 <Button
                   sx={{ mt: 2 }}
                   size="large"
@@ -126,9 +139,9 @@ console.log(addresses);
                   required
                   id="nickName"
                   name="nickName"
-                  label="nickName"
+                  label="Nickname"
                   fullWidth
-                  autoComplete="nickName"
+                  autoComplete="nickname"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -136,7 +149,7 @@ console.log(addresses);
                   required
                   id="email"
                   name="email"
-                  label="email"
+                  label="Email"
                   fullWidth
                   autoComplete="email"
                 />
@@ -202,7 +215,7 @@ console.log(addresses);
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  sx={{ padding: ".9rem 1.5rem", bgcolor: grey[900], }}
+                  sx={{ padding: ".9rem 1.5rem", bgcolor: grey[900] }}
                   size="large"
                   type="submit"
                   variant="contained"

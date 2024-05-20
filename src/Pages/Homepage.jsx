@@ -119,10 +119,10 @@ const LazyHomeProductSection = lazy(() => import("../customer/Components/Home/Ho
 const Homepage = () => {
   const [topProducts, setTopProducts] = useState([]);
   const [banners, setBanners] = useState([]);
-
+const [loading,setloading]=useState(false);
   // Fetch top products on component mount
   useEffect(() => {
-    receiveProducts()
+    receiveProducts(setloading)
       .then((data) => {
         setTopProducts(data.hits);
       })
@@ -141,12 +141,11 @@ const Homepage = () => {
         console.error("Error fetching banners:", error);
       });
   }, []);
-
   return (
     <div className="">
       {/* Display HomeCarousel */}
       <div className="flex flex-col justify-center items-center m-1">
-        <Suspense fallback={<Skeleton animation="wave" variant="rectangular" width="100%" height={400} />}>
+        <Suspense fallback={<Skeleton animation="wave" variant="rectangular" width="100%" height={500} />}>
           <LazyHomeCarousel images={banners} />
         </Suspense>
       </div>
@@ -196,9 +195,12 @@ const Homepage = () => {
           </div>
           {/* Display HomeProductSection */}
           <div className="space-y-1 py-2 w-full">
-            <Suspense fallback={<Skeleton animation="wave" variant="rectangular" width="100%" height={400} />}>
+            {loading? (
+              <Skeleton animation="wave" variant="rectangular" width="100%" height={500} />
+            ) : (
               <LazyHomeProductSection data={topProducts?.slice(0, 8)} section={"Top Products"} />
-            </Suspense>
+            )}
+           
           </div>
           <div className="text-#333 font-semibold cursor-pointer text-#333">
             <span className=" text-#333 border-b-2 border-#333">

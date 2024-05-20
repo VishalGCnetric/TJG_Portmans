@@ -6,6 +6,30 @@ import { ImCross } from "react-icons/im";
 import { useSelector } from 'react-redux';
 
 
+
+/**
+ * Renders the open hamburger menu component.
+ * 
+ */
+const OpenHamburger = ({ drawer, setDrawer }) => {
+  const [showSearchInput, setShowSearchInput] = useState(false);
+  const auth = useSelector(state => state.auth.auth);
+  return (
+    <MainContainer show={drawer}>
+      {drawer && <CrossBtn onClick={() => setDrawer(!drawer)}><ImCross /></CrossBtn>}
+      <StyledDiv show={drawer}>
+        <Container>
+          <CustomAccordion drawer={drawer} setDrawer={setDrawer} />
+        </Container>
+      </StyledDiv>
+    </MainContainer>
+  );
+};
+
+export default OpenHamburger;
+
+
+
 const MainContainer = styled.div`
   position: fixed;
   top: 0;
@@ -81,22 +105,3 @@ const SearchContainer = styled.div`
   }
  
 `;
-
-
-const OpenHamburger = ({ drawer, setDrawer }) => {
-  const [showSearchInput, setShowSearchInput] = useState(false);
-  const auth =useSelector(state => state.auth.auth);
-  console.log("user loged in ",auth);
-  return (
-    <MainContainer show={drawer}>
-      {drawer && <CrossBtn onClick={() => setDrawer(!drawer)}><ImCross/></CrossBtn>}
-      <StyledDiv show={drawer}>
-        <Container>
-          <CustomAccordion drawer={drawer} setDrawer={setDrawer}/>
-        </Container>
-      </StyledDiv>
-    </MainContainer>
-  );
-};
-
-export default OpenHamburger;

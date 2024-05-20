@@ -5,6 +5,7 @@ import { register } from '../Redux/Auth/Action';
 import { TextField, InputAdornment } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import MobileNumberInput from './Mobile';
+import { Toaster, toast } from 'react-hot-toast';
 
 const Container = styled.div`
   margin-top: 20px;
@@ -106,7 +107,10 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const { error } = useSelector(state => state.auth);
   const [formError, setFormError] = useState(null);
-
+  const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -119,7 +123,7 @@ const SignUp = () => {
     };
 
     try {
-      await dispatch(register(userData));
+      await dispatch(register(userData,toast));
       setFormError(null);
       alert("Account created successfully");
       // navigate("/"); // Redirect upon successful registration
@@ -140,8 +144,7 @@ const SignUp = () => {
     window.open(url, "_blank");
   };
 
-  const [firstName, setFirstName] = useState('');
-  const [firstNameError, setFirstNameError] = useState('');
+  
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -154,9 +157,6 @@ const SignUp = () => {
       setFirstNameError('');
     }
   };
-
-  const [lastName, setLastName] = useState('');
-  const [lastNameError, setLastNameError] = useState('');
 
   const handleLastNameChange = (event) => {
     setLastName(event.target.value);
@@ -223,6 +223,7 @@ const SignUp = () => {
         ))}
       </div>
       <CenteredText>
+        <Toaster/>
       </CenteredText>
       <Title>
         <div>

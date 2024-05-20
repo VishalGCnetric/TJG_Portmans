@@ -4,6 +4,104 @@ import styled from "styled-components";
 import { Skeleton } from "@mui/material"; // Import Skeleton from Material-UI
 import { API_BASE_URL } from "../../../config/api";
 
+
+const url = `${API_BASE_URL}childCategories?categoryId=3074457345616679204`;
+
+/**
+ * Renders a navigation dropdown component that fetches and displays data from an API.
+ * The component displays a list of navigation items, and when the user hovers over an item,
+ * a dropdown menu is shown with additional information related to that item.
+ *
+ * @returns {JSX.Element} The navigation dropdown component.
+ */
+const NavigationDropdown = () => {
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(url);
+                setData(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [url]);
+
+    return (
+        <MainContainer>
+            <Container>
+                {loading ? ( // Display Skeleton while loading
+                    <Skeleton variant="rectangular" width='100%' height={40} />
+                ) : (
+                    data.extraData?.map((el, index) => (
+                        <div
+                            onMouseEnter={() => document.getElementById(`${el.name}`).style.display = 'block'}
+                            onMouseLeave={() => document.getElementById(`${el.name}`).style.display = 'none'}
+                            key={index}
+                        >
+                            <a href="" style={{ textTransform: 'uppercase', textDecoration: 'none', color: `${el.name == 'SALE' ? 'red' : '#333'}` }}>
+                                {el.name}
+                            </a>
+                            <DropDownHover childrenData={el} />
+                        </div>
+                    ))
+                )}
+            </Container>
+        </MainContainer>
+    );
+};
+
+export default NavigationDropdown;
+
+/**
+ * Renders a dropdown menu with a list of child items and an optional image.
+ *
+ * @param {Object} childrenData - The data for the child items in the dropdown.
+ * @param {string} childrenData.name - The name of the dropdown.
+ * @param {Object[]} childrenData.children - The child items in the dropdown.
+ * @param {string} childrenData.children[].name - The name of the child item.
+ * @param {Object[]} childrenData.children[].children - The grandchild items of the child item.
+ * @param {string} childrenData.children[].children[].name - The name of the grandchild item.
+ * @param {string[]} childrenData.image - The URLs of the images to display in the dropdown.
+ */
+const DropDownHover = ({ childrenData }) => {
+    return (
+        <DropDown style={{ display: 'none' }} id={childrenData.name}>
+            <div style={{ display: 'flex', padding: '50px', justifyContent: 'center' }}>
+                <ListItem style={{ display: `${childrenData?.image?.[0] ? 'block' : 'flex'}`, gap: `${childrenData?.image?.[0] ? '0px' : '100px'}` }}>
+                    {childrenData?.children?.map((el, index) => (
+                        <div key={index} >
+                            <ul>
+                                <li style={{ cursor: 'pointer' }}>{el.name}</li>
+                                <ul>
+                                    {el.children?.map((child, i) => (
+                                        <li style={{ cursor: 'pointer' }} key={i}>{child.name}</li>
+                                    ))}
+                                </ul>
+                            </ul>
+                        </div>
+                    ))}
+                </ListItem>
+                {childrenData?.image && <div style={{ border: '1px solid #7c7c7c', margin: '50px', marginLeft: '150px' }}></div>}
+
+                {childrenData?.image &&
+                    <div className="imagecontainer" style={{ cursor: 'pointer' }}>
+                        <img src={childrenData?.image?.[0]} alt="" />
+                        <h5>{childrenData?.name}</h5>
+                    </div>
+                }
+            </div>
+        </DropDown>
+    );
+};
+
+
 const Container = styled.div`
     padding: 15px;
     display: flex;
@@ -69,81 +167,3 @@ const DropDown = styled.div`
         }
     }
 `;
-
-const url = `${API_BASE_URL}childCategories?categoryId=3074457345616679204`;
-
-const NavigationDropdown = () => {
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(url);
-                setData(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [url]);
-
-    return (
-        <MainContainer>
-            <Container>
-                {loading ? ( // Display Skeleton while loading
-                    <Skeleton variant="rectangular" width='100%' height={40} />
-                ) : (
-                    data.extraData?.map((el, index) => (
-                        <div
-                            onMouseEnter={() => document.getElementById(`${el.name}`).style.display = 'block'}
-                            onMouseLeave={() => document.getElementById(`${el.name}`).style.display = 'none'}
-                            key={index}
-                        >
-                            <a href="" style={{ textTransform: 'uppercase', textDecoration: 'none', color: `${el.name == 'SALE' ? 'red' : '#333'}` }}>
-                                {el.name}
-                            </a>
-                            <DropDownHover childrenData={el} />
-                        </div>
-                    ))
-                )}
-            </Container>
-        </MainContainer>
-    );
-};
-
-export default NavigationDropdown;
-
-const DropDownHover = ({ childrenData }) => {
-    return (
-        <DropDown style={{ display: 'none' }} id={childrenData.name}>
-            <div style={{ display: 'flex', padding: '50px', justifyContent: 'center' }}>
-                <ListItem style={{ display: `${childrenData?.image?.[0] ? 'block' : 'flex'}`, gap: `${childrenData?.image?.[0] ? '0px' : '100px'}` }}>
-                    {childrenData?.children?.map((el, index) => (
-                        <div key={index} >
-                            <ul>
-                                <li style={{ cursor: 'pointer' }}>{el.name}</li>
-                                <ul>
-                                    {el.children?.map((child, i) => (
-                                        <li style={{ cursor: 'pointer' }} key={i}>{child.name}</li>
-                                    ))}
-                                </ul>
-                            </ul>
-                        </div>
-                    ))}
-                </ListItem>
-                {childrenData?.image && <div style={{ border: '1px solid #7c7c7c', margin: '50px', marginLeft: '150px' }}></div>}
-
-                {childrenData?.image &&
-                    <div className="imagecontainer" style={{ cursor: 'pointer' }}>
-                        <img src={childrenData?.image?.[0]} alt="" />
-                        <h5>{childrenData?.name}</h5>
-                    </div>
-                }
-            </div>
-        </DropDown>
-    );
-};

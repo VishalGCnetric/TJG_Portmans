@@ -1,79 +1,56 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Card, CardContent } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import StarIcon from "@mui/icons-material/Star";
 
-const OrderCard = ({ item, order }) => {
+const OrderCard = ({ order }) => {
+  const { grandTotal, orderId, placedDate, orderStatus } = order;
   const navigate = useNavigate();
-  // console.log("items fsfs", order);
+  const total = +grandTotal;
+
   return (
-    <Box
-      className="p-2 shadow-lg hover:shadow-2xl border  cursor-pointer "
-      onClick={() => navigate(`/account/order/${order?.orderId}`)}
+    <Card
+      className="shadow-lg hover:shadow-2xl cursor-pointer"
+      onClick={() => navigate(`/account/order/${orderId}`)}
     >
-      <Grid spacing={2} container sx={{ justifyContent: "space-between" }}>
-        <Grid item xs={2}>
-          <div>
-            {/* <img
-              className="w-[5rem] h-[5rem] object-cover object-top"
-              src={item?.images[0]}
-              alt=""
-            /> */}
-            <p className="mb-2">#{order?.orderId}</p>
-            {/* <div className="ml-5">
-              <p className="mb-2">{item?.productName}</p>
-              <p className="opacity-50 text-xs font-semibold space-x-5">
-                <span>Size: {item?.quantity}</span>
-              </p>
-            </div> */}
-          </div>
+      <CardContent>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} md={3}>
+            <Typography variant="subtitle1" fontWeight="bold">
+              Order ID: #{orderId}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={2}>
+            <Typography variant="h6" color="primary">
+              ₹{total.toFixed(2)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Typography variant="body1" color="textSecondary">
+              Placed on: {new Date(placedDate).toLocaleDateString()}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={2}>
+            <Typography variant="body1">
+              Status: {orderStatus === "M" ? "Pending" : "Delivered"}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={2}>
+            <Box display="flex" alignItems="center">
+              {orderStatus === "M" ? (
+                <AdjustIcon color="error" />
+              ) : (
+                <FiberManualRecordIcon color="success" />
+              )}
+              <Typography variant="body2" marginLeft={1}>
+                {orderStatus === "M" ? "Pending" : "Delivered"}
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={2}>
-          <p>₹{order.totalAmount / 100}</p>
-        </Grid>
-
-        <Grid item xs={3}>
-          <p>₹{order?.orderDate}</p>
-        </Grid>
-        <Grid item xs={3}>
-          <p>{order?.status}</p>
-        </Grid>
-        {/* <Grid item xs={4}>
-          <p className="space-y-2 font-semibold">
-            {order?.status === "Delivered" ? (
-              <>
-                <FiberManualRecordIcon
-                  sx={{ width: "15px", height: "15px" }}
-                  className="text-green-600 p-0 mr-2 text-sm"
-                />
-
-              </>
-            ) : (
-              <>
-                <AdjustIcon
-                  sx={{ width: "15px", height: "15px" }}
-                  className="text-green-600 p-0 mr-2 text-sm"
-                />
-                <span>Delivered </span>
-              </>
-            )}
-          </p>
-          <p className="text-xs">Your Item Has Been Delivered</p>
-
-        </Grid> */}
-        {/* {item.status === "Delivered" && (
-            <div
-              onClick={() => navigate(`/account/rate/{id}`)}
-              className="flex items-center text-blue-600 cursor-pointer"
-            >
-              <StarIcon sx={{ fontSize: "2rem" }} className="px-2 text-5xl" />
-              <span>Rate & Review Product</span>
-            </div>
-          )} */}
-      </Grid>
-    </Box>
+      </CardContent>
+    </Card>
   );
 };
 

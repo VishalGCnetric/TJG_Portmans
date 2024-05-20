@@ -37,7 +37,6 @@ export default function Navigation() {
   const jwt = localStorage.getItem("jwt");
   const location = useLocation();
 
-  console.log("this is auth", auth.user);
 
   useEffect(() => {
     if (jwt) {
