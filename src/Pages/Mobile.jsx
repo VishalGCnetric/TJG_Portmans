@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 
 const MobileNumberInput = ({num}) => {
   const [countryCode, setCountryCode] = React.useState('+61');
-  const [mobileNumber, setMobileNumber] = React.useState(num);
+  const [mobileNumber, setMobileNumber] = React.useState(num || '');
 
   const handleCountryCodeChange = (event) => {
     setCountryCode(event.target.value);
@@ -23,7 +23,7 @@ const MobileNumberInput = ({num}) => {
         label="Mobile Number"
         variant="outlined"
         fullWidth
-        value={mobileNumber}
+        value={num}
         onChange={handleMobileNumberChange}
         InputProps={{
           startAdornment: (

@@ -123,10 +123,10 @@ export default function ProductDetails() {
   return (
     <>
     <Toaster/>
-      <div style={{ marginTop: '10px', marginLeft: '100px' }}>
-        <Link to='/shops'>Product / {productDetails?.name}</Link>
+      <div style={{ marginTop: '20px', marginLeft: '100px',marginBottom:'20px' }}>
+        <Link to='/shops'> <b>Product /</b> {productDetails?.name}</Link>
       </div>
-      <Container>
+      <Container >
         {
           productDetails && <>
 
@@ -138,7 +138,7 @@ export default function ProductDetails() {
             </ProductImage>
             <ProductDetail>
               <Title>{productDetails?.name}</Title>
-              <Details>{productDetails?.longDescription}</Details>
+              
               <div style={{ marginBottom: '10px' }}>
                 {/* <span className="text-gray-600 text-sm">
             <del>${productDetails[0]?.price[0]?.value}</del>
@@ -254,7 +254,10 @@ export default function ProductDetails() {
                       View Cart
                     </Button>
                   )}
-
+             <div>
+              <h2 style={{marginTop:'20px'}}> <b>Description</b> </h2>
+             </div>
+            <Details style={{marginTop:'10px'}}>{productDetails?.longDescription}</Details>
             </ProductDetail>
           </>
         }
@@ -267,7 +270,7 @@ export default function ProductDetails() {
 const Container = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 10px 50px;
+  padding: 20px 50px;
   border-radius: 10px;
   background-color: white;
 
