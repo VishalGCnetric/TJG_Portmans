@@ -16,7 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Pagination from "@mui/material/Pagination";
 
-import {  singleFilter, sortOptions } from "./FilterData";
+import { singleFilter, sortOptions } from "./FilterData";
 import ProductCard from "../ProductCard/ProductCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { productdata } from "../../../../data";
@@ -27,7 +27,7 @@ import {
   findProductsByCategory,
 } from "../../../../Redux/Customers/Product/Action";
 import { deepPurple } from "@mui/material/colors";
-import { Backdrop, CircularProgress, Grid, Skeleton, TextField } from "@mui/material";
+import { Backdrop, Box, Button, CircularProgress, Grid, Skeleton, TextField, Typography } from "@mui/material";
 import BackdropComponent from "../../BackDrop/Backdrop";
 import { receiveProducts, receiveProductsSearch } from "../../../../action";
 import HomeProductCard from "../../Home/HomeProductCard";
@@ -49,17 +49,18 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
-const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState([]);
 
-useEffect(() => {
-fetch(`${API_BASE_URL}filters/portmans`).then((res) => res.json()).then((res) => {
-  setFilters(res.filters);}).catch((err) => {
-  console.log(err);
-  })
+  useEffect(() => {
+    fetch(`${API_BASE_URL}filters/portmans`).then((res) => res.json()).then((res) => {
+      setFilters(res.filters);
+    }).catch((err) => {
+      console.log(err);
+    })
 
 
-}, [])
-console.log(filters)
+  }, [])
+  console.log(filters)
   const handleLoderClose = () => {
     setIsLoaderOpen(false);
   };
@@ -74,7 +75,7 @@ console.log(filters)
   const sortValue = searchParams.get("sort");
   const pageNumber = searchParams.get("page") || 1;
   const stock = searchParams.get("stock");
-const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // console.log("location - ", colorValue, sizeValue,price,disccount);
 
   const handleSortChange = (value) => {
@@ -120,7 +121,7 @@ const [loading, setLoading] = useState(false);
   useEffect(() => {
     receiveProducts(setLoading).then((data) => {
       setProducts(data.hits);
-      console.log("this  is useEffect data", data,products);
+      console.log("this  is useEffect data", data, products);
       setSearchProducts(data.hits);
     });
   }, []);
@@ -199,7 +200,7 @@ const [loading, setLoading] = useState(false);
   //   }
   // }, [searchValue.length]);
 
-  
+
   // Debounce the search input to limit API calls while typing
   const debouncedSearch = debounce((value) => {
     if (value) {
@@ -214,10 +215,11 @@ const [loading, setLoading] = useState(false);
     // Call the debounced search function with the current search value
     debouncedSearch(searchValue);
   }, [searchValue]);
-console.log(products,searchProducts)
+  console.log(products, searchProducts)
   return (
     <div className="bg-white -z-20 ">
       <div>
+
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
@@ -260,11 +262,13 @@ console.log(products,searchProducts)
                       <span className="sr-only">Close menu</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
+
                   </div>
-                 
+
 
                   {/* Filters */}
-                  
+
+
                   <form className="mt-4 border-t border-gray-200">
                     {filters.map((section) => (
                       <Disclosure
@@ -294,9 +298,10 @@ console.log(products,searchProducts)
                                 </span>
                               </Disclosure.Button>
                             </h3>
-                            
+
                             <Disclosure.Panel className="pt-6">
                               <div className="space-y-6">
+
                                 {section.children.map((option, optionIdx) => (
                                   <div
                                     key={option.value}
@@ -316,7 +321,7 @@ console.log(products,searchProducts)
                                     <label
                                       htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
                                       className="ml-3 min-w-0 flex-1 text-gray-500"
-                                      // onClick={()=>handleFilter(option.value,section.id)}
+                                    // onClick={()=>handleFilter(option.value,section.id)}
                                     >
                                       {option.name}
                                     </label>
@@ -414,8 +419,47 @@ console.log(products,searchProducts)
             <div>
               <h2 className="py-5 font-semibold opacity-60 text-lg">Filters</h2>
               <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
-                <form className="hidden lg:block border rounded-md p-5">
-                 
+                <form className="hidden lg:block border rounded-md p-5 ">
+                  <Box
+                    sx={{
+                      border: '1px solid #ccc',
+                      zIndex: 10000,
+                      padding: 1, // Smaller padding
+                      backgroundColor: 'white',
+                      borderRadius: 1, // Smaller border radius
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontSize: '1rem', mb: 1 }}> {/* Smaller font size */}
+                      Price
+                    </Typography>
+                    <Grid container spacing={1} alignItems="center">
+                      <Grid item xs={4} md={3}> {/* Adjusted grid size for smaller inputs */}
+                        <input
+                          type="number"
+                          placeholder="min"
+                          style={{ width: '100%', padding: '6px', border: '1px solid gray' }} // Adjusted padding
+                        />
+                      </Grid>
+                      <Typography variant="subtitle1">To</Typography> {/* Smaller font size */}
+                      <Grid item xs={4} md={3}> {/* Adjusted grid size for smaller inputs */}
+                        <input
+                          type="number"
+                          placeholder="max"
+                          style={{ width: '100%', padding: '6px', border: '1px solid gray' }} // Adjusted padding
+                        />
+                      </Grid>
+                      <Grid item xs={4} md={3}> {/* Adjusted grid size for smaller button */}
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small" // Adjusted button size to small
+                          sx={{ height: 'fit-content', padding: '6px 12px' }} // Adjusted button padding
+                        >
+                          Go
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
                   {singleFilter.map((section) => (
                     <Disclosure
                       as="div"
@@ -487,16 +531,16 @@ console.log(products,searchProducts)
                     />
                   </Grid>
                   <div className="flex flex-wrap justify-center bg-white border py-5 rounded-md ">
-                   
-                    {loading ? <Skeleton variant="rectangular" width='100%' height={500} />:<>
-{ 
- searchProducts?.map((item) => (
-  <div className="w-[15rem] border m-3 transition-all cursor-pointer hover:scale-105">
-  <HomeProductCard product={item} />
-  </div>
-))}
-</>
-}
+
+                    {loading ? <Skeleton variant="rectangular" width='100%' height={500} /> : <>
+                      {
+                        searchProducts?.map((item) => (
+                          <div className="w-[15rem] border m-3 transition-all cursor-pointer hover:scale-105">
+                            <HomeProductCard product={item} />
+                          </div>
+                        ))}
+                    </>
+                    }
                     {/* <ProductCard product={products} /> */}
                   </div>
                 </div>
