@@ -17,7 +17,7 @@ console.log(newOrder?.orderNew?.Order)
     <Box>
       <Grid item xs={9}>
         <Box className="space-y-5">
-          <p className="text-2xl font-bold text-center mt-2">MY ORDERS</p>
+          <p className="text-2xl font-bold text-center mt-4">MY ORDERS</p>
           {newOrder?.orderNew?.Order?.length > 0 ? (
             newOrder.orderNew.Order.map((order, orderIndex) =>(
             

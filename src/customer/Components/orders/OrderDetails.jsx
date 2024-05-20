@@ -44,13 +44,13 @@ const OrderDetails = () => {
   }
 
   return (
-    <Box className="px-4 lg:px-24 space-y-6">
+    <Box className="px-4 mt-6 lg:px-24 space-y-6">
       <Box className="p-4 shadow-md bg-white rounded-md mt-2">
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={12} md={9}>
             <OrderTracker
               activeStep={
-                orderDetails.orderStatus === "PLACED"
+                orderDetails.orderStatus === "M"
                   ? 1
                   : orderDetails.orderStatus === "CONFIRMED"
                   ? 2

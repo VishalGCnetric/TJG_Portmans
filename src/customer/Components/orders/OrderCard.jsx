@@ -32,19 +32,26 @@ const OrderCard = ({ order }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} md={2}>
+
             <Typography variant="body1">
-              Status: {orderStatus === "M" ? "Pending" : "Delivered"}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <Box display="flex" alignItems="center">
+              Status : 
               {orderStatus === "M" ? (
                 <AdjustIcon color="error" />
               ) : (
                 <FiberManualRecordIcon color="success" />
               )}
+               {orderStatus === "M" ? "Pending" : "Delivered"}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={2}>
+            <Box display="flex" alignItems="center">
+              {/* {orderStatus === "M" ? (
+                <AdjustIcon color="error" />
+              ) : (
+                <FiberManualRecordIcon color="success" />
+              )} */}
               <Typography variant="body2" marginLeft={1}>
-                {orderStatus === "M" ? "Pending" : "Delivered"}
+                {/* {orderStatus === "M" ? "Pending" : "Delivered"} */}
               </Typography>
             </Box>
           </Grid>
