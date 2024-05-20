@@ -41,7 +41,7 @@ const Payment = ({ handleNext }) => {
       toast.success("Checkout done, order placed successfully!");
       handleNext();
       setTimeout(() => {
-        navigate(`/payment/orderId=${orderResponse.data.orderId}`);
+        navigate(`/payment/${orderResponse.data.orderId}`);
       }, 1000);
     } catch (error) {
       toast.error("Error placing order");

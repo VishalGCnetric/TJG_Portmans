@@ -59,7 +59,7 @@ export const getOrderById = (orderId) => async (dispatch) => {
     dispatch({ type: GET_ORDER_BY_ID_REQUEST });
 
     const { data } = await api.get(
-      `/api/orders/${orderId}`,
+      `/order?orderId=${orderId}`,
 
     );
     console.log("order by id ", data);
