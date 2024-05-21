@@ -55,6 +55,26 @@ export default function Product() {
   const [searchValue, setSearchValue] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
   const [filters, setFilters] = useState([]);
+// <<<<<<< similerproducts
+//   const [min,setMin]= useState(0)
+//   const [max,setMax]= useState(1000)
+
+//   useEffect(() => {
+//     fetch(`${API_BASE_URL}filters/portmans`).then((res) => res.json()).then((res) => {
+//       setFilters(res.filters);
+//     }).catch((err) => {
+//       console.log(err);
+//     })
+
+
+//   }, [])
+//   // console.log(customersProduct)
+//   const handleLoderClose = () => {
+//     setIsLoaderOpen(false);
+//   };
+
+//   // const filter = decodeURIComponent(location.search);
+// =======
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(1000);
   const [priceChange,setPriceChange] = useState(false);
