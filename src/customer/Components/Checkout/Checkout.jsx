@@ -11,7 +11,7 @@ import Payment from "./Payment";
 import { useLocation, useNavigate } from "react-router-dom";
 import PaymentPage from "./PaymentPage";
 
-const steps = ["login", "Delivery Address", "Order Summary", "Payment"];
+const steps = ["Login", "Delivery Address", "Order Summary", "Payment"];
 
 export default function Checkout() {
   const location = useLocation();

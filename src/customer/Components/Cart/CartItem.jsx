@@ -64,7 +64,7 @@ const CartItem = ({
 
   }
  
-console.log(data)
+console.log(data,item)
 
   return (<>
    
@@ -82,12 +82,15 @@ console.log(data)
           </div>
           <div className="ml-5 space-y-1">
             <p className="font-semibold">{data.name}</p>
+
             {/* <p className="opacity-70">Size: {item?.size}</p> */}
+
             <p className="opacity-70 mt-2">Quantity: {qty}</p>
             {/* <div className="flex space-x-2 items-center pt-3"> */}
               <p className="opacity-70 mt-2">
   
                Price: {data && `$ ${data?.price?.[0]?.value }`}
+
   
                 {/* {data && `$ ${data?.price?.[0]?.value }`} */}
   
