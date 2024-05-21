@@ -37,7 +37,7 @@ export const findProducts = (reqData) => async (dispatch) => {
     dispatch({ type: FIND_PRODUCTS_BY_CATEGORY_REQUEST });
 
     const { data } = await api.get(
-      `/api/products?color=${colors}&size=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}&minDiscount=${minDiscount}&category=${category}&stock=${stock}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `/filters/portmans?color=${colors}&size=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}&minDiscount=${minDiscount}&category=${category}&stock=${stock}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
 
     console.log("get product by category - ", data);
@@ -55,6 +55,7 @@ export const findProducts = (reqData) => async (dispatch) => {
     });
   }
 };
+
 
 export const findProductById = (reqData) => async (dispatch) => {
   try {
@@ -78,6 +79,36 @@ export const findProductById = (reqData) => async (dispatch) => {
   }
 };
 
+export const findProductsbyPrice = (reqData) => {
+  const { minPrice, maxPrice } = reqData;
+
+  return (dispatch) => {
+    dispatch({ type: FIND_PRODUCTS_BY_CATEGORY_REQUEST });
+
+    return new Promise((resolve, reject) => {
+      api.get(`/filters/portmans/price?minPrice=${minPrice}&maxPrice=${maxPrice}`)
+        .then(response => {
+          const { data } = response;
+          console.log("get product by price - ", data);
+          dispatch({
+            type: FIND_PRODUCTS_BY_CATEGORY_SUCCESS,
+            payload: data
+          });
+          resolve(data);
+        })
+        .catch(error => {
+          const errorMsg = error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+          dispatch({
+            type: FIND_PRODUCTS_BY_CATEGORY_FAILURE,
+            payload: errorMsg
+          });
+          reject(errorMsg);
+        });
+    });
+  };
+};
 export const createProduct = (product) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_PRODUCT_REQUEST });
