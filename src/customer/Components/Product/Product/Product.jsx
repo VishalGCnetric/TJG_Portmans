@@ -105,7 +105,7 @@ useEffect(()=>{
   useEffect(() => {
     const [minPrice, maxPrice] = price === null ? [0, 0] : price.split("-").map(Number);
     if(price){
-      handlePriceMinMax()
+      // handlePriceMinMax()
     }else{
       const data = {
         category: param.lavelThree,
@@ -182,7 +182,7 @@ useEffect(()=>{
         setMax(()=>null)
         setMin(()=>null)
         console.log(min,max)
-        alert("filter applied successfully")
+        
       })
       .catch(error => {
         setSearchProducts(null)
@@ -190,7 +190,8 @@ useEffect(()=>{
         setMin(()=>null)
         console.error('Error retrieving products:', error);
       });
-     
+      setMax(()=>null)
+        setMin(()=>null)
     // navigate({ search: `?${query}` });
   };
 // useEffect(()=>{
