@@ -83,24 +83,22 @@ console.log(data)
           <div className="ml-5 space-y-1">
             <p className="font-semibold">{data.name}</p>
             {/* <p className="opacity-70">Size: {item?.size}</p> */}
-            <p className="opacity-70 mt-2">Quantity: {parseInt(data.quantity).toFixed(0)} 
-</p>
-            <div className="flex space-x-2 items-center pt-3">
-              <p className="opacity-50 ">
-                {/* ${data.price[0]?.value } */}
-                Unit Price: $ {parseInt(data.unitPrice).toFixed(2)}
-
+            <p className="opacity-70 mt-2">Quantity: {qty}</p>
+            {/* <div className="flex space-x-2 items-center pt-3"> */}
+              <p className="opacity-70 mt-2">
+  
+               Price: {data && `$ ${data?.price?.[0]?.value }`}
+  
+                {/* {data && `$ ${data?.price?.[0]?.value }`} */}
+  
               </p>
-              <p className="font-semibold text-lg">
-              Total Price: $ {parseInt(data.quantity).toFixed(0)*parseInt(data.unitPrice).toFixed(2)}
+              <p className="font-semibold text-lg ">
+                {/* ${data.price[0]?.value } */}
+                Total Price: $ {(data?.price?.[0]?.value)*qty}
 
-                {/* {data && `$ ${data?.price?.[0]?.value }`} */}
-  
-                {/* {data && `$ ${data?.price?.[0]?.value }`} */}
-  
               </p>
               {/* <p className="text-green-600 font-semibold">10% off</p> */}
-            </div>
+            {/* </div> */}
           </div>
         </div>
         {showButton && (
