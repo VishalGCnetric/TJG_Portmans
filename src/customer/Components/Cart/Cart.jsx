@@ -37,9 +37,10 @@ const Cart = () => {
     <div>
       <Toaster/>
       <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
-          <div className="lg:col-span-2 lg:px-5 bg-white">
+          <div className=" lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems?.cartItems?.orderItem === undefined ?<EmptyCart/>: cartItems?.cartItems?.orderItem?.map((item) => (<>
+              {cartItems?.cartItems?.orderItem === undefined ?<div style={{display:'flex',justifyContent:'center',alignItems:'center',width:"100%",height:"50vh"}} className="lg:col-span-3"><EmptyCart/></div>: cartItems?.cartItems?.orderItem?.map((item) => (
+              <div className="lg:col-span-3">
                 <CartItem
                   key={item.id}
                   item={item}
@@ -92,7 +93,7 @@ const Cart = () => {
               </Button>
             </div>
           </div>
-              </>
+              </div>
                
               ))}
             </div>

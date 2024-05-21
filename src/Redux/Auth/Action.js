@@ -134,4 +134,5 @@ export const logout = () => async dispatch => {
   // localStorage.clear();
   localStorage.removeItem('wt')
   localStorage.removeItem('wtt')
+  localStorage.removeItem("state")
 };

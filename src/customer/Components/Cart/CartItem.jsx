@@ -82,7 +82,7 @@ const CartItem = ({
           </div>
           <div className="ml-5 space-y-1">
             <p className="font-semibold">{data.name}</p>
-            <p className="opacity-70">Quantity: {qty}</p>
+            {/* <p className="opacity-70">Quantity: {qty}</p>
             {/* <p className="opacity-70 mt-2"> {qty*(data?.price?.[0]?.value)}</p> */}
             <div className="flex space-x-2 items-center pt-3">
               <p className="opacity-50 line-through">
@@ -94,7 +94,7 @@ const CartItem = ({
   
                 {/* {data && `$ ${data?.price?.[0]?.value }`} */}
   
-              </p>
+              </p> */
               {/* <p className="text-green-600 font-semibold">10% off</p> */}
             </div>
           </div>

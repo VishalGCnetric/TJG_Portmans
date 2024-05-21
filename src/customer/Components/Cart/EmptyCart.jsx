@@ -2,7 +2,7 @@ import React from "react";
 import { IoCartOutline } from "react-icons/io5";
 const EmptyCart = () => {
   return (
-    <div className="flex flex-col items-center justify-center mt-20">
+    <div className="flex flex-col items-center justify-center   mt-20">
       {/* <svg
         className="w-16 h-16 text-gray-400 mb-4"
         fill="none"
