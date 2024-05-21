@@ -169,6 +169,7 @@ useEffect(()=>{
   // }, [customersProduct.loading]);
 
   // Handling price range filter and updating products and URL
+
   const handlePriceMinMax = () => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("price", `${min}-${max}`);
@@ -182,7 +183,7 @@ useEffect(()=>{
         setMax(()=>null)
         setMin(()=>null)
         console.log(min,max)
-        alert("filter applied successfully")
+        // alert("filter applied successfully")
       })
       .catch(error => {
         setSearchProducts(null)
@@ -444,7 +445,7 @@ useEffect(()=>{
                       <Grid item xs={12} sm={5}> {/* Adjusted grid size for better responsiveness */}
                         <input
                           onChange={(e)=>setMin(e.target.value)}
-                          value={min}
+                          value={min || "" }
                           type="text"
                           inputmode="numeric"
                           placeholder="Min"
@@ -463,7 +464,7 @@ useEffect(()=>{
                       <Grid item xs={12} sm={5}> {/* Adjusted grid size for better responsiveness */}
                         <input
                           onChange={(e)=>setMax(e.target.value)}
-                          value={max}
+                          value={max || ''}
                           type="text"
                           inputmode="numeric"
                           placeholder="Max"
