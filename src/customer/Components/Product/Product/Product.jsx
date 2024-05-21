@@ -55,8 +55,8 @@ export default function Product() {
   const [searchValue, setSearchValue] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
   const [filters, setFilters] = useState([]);
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(1000);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
   const [priceChange,setPriceChange] = useState(false);
   const [loading, setLoading] = useState(false);
   const [singleFilter,setSinglefilter] = useState([])
@@ -179,11 +179,18 @@ useEffect(()=>{
         console.log(data, 'data')
         setProducts(data.hits);
         setSearchProducts(data.hits);
+        setMax(()=>null)
+        setMin(()=>null)
+        console.log(min,max)
+        alert("filter applied successfully")
       })
       .catch(error => {
         setSearchProducts(null)
+        setMax(()=>null)
+        setMin(()=>null)
         console.error('Error retrieving products:', error);
       });
+     
     // navigate({ search: `?${query}` });
   };
 // useEffect(()=>{
@@ -437,6 +444,7 @@ useEffect(()=>{
                       <Grid item xs={12} sm={5}> {/* Adjusted grid size for better responsiveness */}
                         <input
                           onChange={(e)=>setMin(e.target.value)}
+                          value={min}
                           type="text"
                           inputmode="numeric"
                           placeholder="Min"
@@ -455,6 +463,7 @@ useEffect(()=>{
                       <Grid item xs={12} sm={5}> {/* Adjusted grid size for better responsiveness */}
                         <input
                           onChange={(e)=>setMax(e.target.value)}
+                          value={max}
                           type="text"
                           inputmode="numeric"
                           placeholder="Max"
@@ -525,7 +534,7 @@ useEffect(()=>{
                                     control={<Radio />}
                                     label={option.name}
                                     onChange={(e) =>
-                                      handleRadioFilterChange(e, section.id)
+                                      handleRadioFilterChange(e, section.name)
                                     }
                                   />
                                 ))}
