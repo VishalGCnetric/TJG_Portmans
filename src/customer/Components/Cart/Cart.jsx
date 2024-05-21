@@ -36,6 +36,7 @@ const Cart = () => {
     <div>
       <Toaster />
       <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
+
       <div className={`lg:px-5 bg-white ${cart?.orderItem === undefined ? 'lg:col-span-3' : 'lg:col-span-2'}`}>
 
           <div className="space-y-3">
@@ -59,6 +60,7 @@ const Cart = () => {
           <div className="border p-5 bg-white shadow-lg rounded-md">
             <p className="font-bold opacity-60 pb-4">PRICE DETAILS</p>
             <hr />
+
 
             <div className="space-y-3 font-semibold">
               <div className="flex justify-between pt-3 text-black">

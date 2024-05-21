@@ -17,6 +17,7 @@ const PaymentSuccess = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const order = useSelector((state) => state.order.order); // Adjusted to match the Redux state structure
+  // const [order,setOrder]=useState({})
   const address = JSON.parse(localStorage.getItem("shippingAddress"));
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -39,6 +40,7 @@ const PaymentSuccess = () => {
 
     fetchOrderDetails();
   }, [orderId]);
+  console.log(orderDetails, "orderDetails");
   if (loading) {
     return <BackdropComponent open={loading} />;
   }
@@ -85,7 +87,7 @@ const PaymentSuccess = () => {
           </Grid>
         </Grid>
       <Grid container spacing={3} mt={5}>
-        {order?.orderItem?.map((item) =>{
+        {orderDetails?.orderItem?.map((item) =>{
         const product = products.find((product) => product.partNumber === item.partNumber);
 
           return (
