@@ -310,11 +310,24 @@ margin-top: 50px;
 
 const SimilarProductsContainer = styled.div`
   display: grid;
-  
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding: 20px 150px; /* Adjusted padding for a more typical layout */
-  /* Optional: Uncomment if background color is desired */
+  padding: 20px 150px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px 100px;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px 50px;
+  }
+
+  /* @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    padding: 20px 20px;
+  } */
 `;
 
 
