@@ -71,7 +71,7 @@ export default function AddDeliveryAddressForm({ handleNext, handleBack }) {
     };
 
     dispatch(createOrder({ address: addressData, navigate, toast }));
-    localStorage.setItem("shippingAddress", JSON.stringify(addressData));
+    // localStorage.setItem("shippingAddress", JSON.stringify(addressData));
     handleBack({ cartId: cartItems?.cartItems?.orderId, shippingAddress: addressData });
     handleNext();
   };
