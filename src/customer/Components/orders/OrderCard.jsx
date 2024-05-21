@@ -23,7 +23,7 @@ const OrderCard = ({ order }) => {
           </Grid>
           <Grid item xs={12} md={2}>
             <Typography variant="h6" color="primary">
-              ₹{total.toFixed(2)}
+              ${total.toFixed(2)}
             </Typography>
           </Grid>
           <Grid item xs={12} md={3}>

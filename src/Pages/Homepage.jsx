@@ -249,7 +249,7 @@ Choose your classy wardrobe with Portmans</Link>
             </Link>
           </div>
           {/* BIG DAY SELL */}
-          <div className="text-#333 font-semibold cursor-pointer text-#333 mt-3 mb-3">
+          {/* <div className="text-#333 font-semibold cursor-pointer text-#333 mt-3 mb-3">
             <span className=" text-#333 border-b-2 border-#333 ">
               <Link to="/shop">BIG DAY SELL</Link>
             </span>
@@ -258,7 +258,7 @@ Choose your classy wardrobe with Portmans</Link>
             <Link to="/shops">
               <img src={banners[9]?.url} alt={banners[9]?.title} />
             </Link>
-          </div>
+          </div> */}
         </div>
       )}
 
