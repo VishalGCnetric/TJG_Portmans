@@ -283,7 +283,7 @@ export default function ProductDetails() {
 
       </Container>
       <Div>
-          <h1 style={{textAlign:'center',fontSize:"24px"}}> <b>Similer Products</b></h1>
+          <h1 style={{textAlign:'center',fontSize:"24px"}}> <b>Similar Products</b></h1>
         <SimilarProductsContainer>
           {topProducts &&
             topProducts
