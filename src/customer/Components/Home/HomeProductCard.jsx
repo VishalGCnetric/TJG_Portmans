@@ -117,7 +117,6 @@ const HomeProductCard = ({ product }) => {
               </span> */}
               <span className="text-purple-600 font-bold text-sm">
                 $ {product?.price[1]?.value}
-                
               </span>
             </div>
             {/* <div className="mt-2 text-sm text-gray-700">

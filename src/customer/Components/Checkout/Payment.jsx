@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
-import { TextField, Grid, Button, Typography, Card, CardContent, Box } from '@mui/material';
+import { TextField, Grid, Typography, Card, CardContent, Box } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import MobileNumberInput from '../../../Pages/Mobile';
@@ -9,6 +9,7 @@ import { CheckoutReq, placeOrder, preCheckout } from '../../../action/cart';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Payment = ({ handleNext }) => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const Payment = ({ handleNext }) => {
   const navigate = useNavigate();
   const [addAddress, setAddress] = useState(false);
   const shippingData = JSON.parse(localStorage.getItem("shippingAddress"));
-  const addressId= shippingData?.addressId;
+  const addressId = shippingData?.addressId;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +36,7 @@ const Payment = ({ handleNext }) => {
 
   const handleSubmit = async (values) => {
     try {
-      const orderResponse = await placeOrder(grandTotal,addressId);
+      const orderResponse = await placeOrder(grandTotal, addressId);
       await preCheckout();
       toast.success("PreCheckout done successfully!");
       await CheckoutReq();
@@ -236,18 +237,7 @@ const Payment = ({ handleNext }) => {
                   sx={{ mb: 2 }}
                 />
                 <ErrorMessage name="cvc" component="div" style={{ color: 'red' }} />
-                <Button
-                  type="submit"
-                  sx={{
-                    backgroundColor: '#333',
-                    color: 'white',
-                    ':hover': {
-                      backgroundColor: 'white',
-                      color: '#515050',
-                    },
-                  }}
-                  fullWidth
-                >
+                <Button type="submit">
                   Pay Now
                 </Button>
               </Form>
@@ -260,3 +250,20 @@ const Payment = ({ handleNext }) => {
 };
 
 export default Payment;
+
+
+const Button = styled.button`
+  background-color: #333;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: #555;
+    color: #ccc;
+  }
+`;
