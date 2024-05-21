@@ -3,7 +3,7 @@ import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductReviewCard from "./ProductReviewCard";
-import { Box, Button, Grid, LinearProgress, Rating,IconButton, Skeleton } from "@mui/material";
+import { Box, Button, Grid, LinearProgress, Rating, IconButton, Skeleton } from "@mui/material";
 import HomeProductCard from "../../Home/HomeProductCard";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
@@ -18,17 +18,18 @@ import { receiveProducts, receiveProductsById } from "../../../../action";
 import { AddItemToCartNew, getCartItems } from "../../../../action/cart";
 import { grey } from "@mui/material/colors";
 import styled from "styled-components";
-import { SingleBedSharp } from "@mui/icons-material";
-import  { toast,Toaster } from "react-hot-toast";
+import { SignalWifiStatusbarNull, SingleBedSharp } from "@mui/icons-material";
+import { toast, Toaster } from "react-hot-toast";
+import SimilerProducts from "./SimilerProducts";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductDetails() {
-  const[checkCart,setCheckCart] = useState(false)
+  const [checkCart, setCheckCart] = useState(false)
   const [qty, setQty] = useState(1)
-  const [selectedSize, setSelectedSize] = useState();
+  const [selectedSize, setSelectedSize] = useState(null);
   const [activeImage, setActiveImage] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,9 +37,13 @@ export default function ProductDetails() {
   const { productId } = useParams();
   const jwt = localStorage.getItem("jwt");
   const [productDetails, setProductDetails] = useState({});
-  const [loading,setLoading] =useState(false)
-  const  {auth}= useSelector((store) => store.auth);
+  const [loading, setLoading] = useState(false)
+  const { auth } = useSelector((store) => store.auth);
   const [topProducts, setTopProducts] = useState([]);
+
+
+
+  console.log(topProducts)
 
   const handleSetActiveImage = (image) => {
     setActiveImage(image);
@@ -48,11 +53,11 @@ export default function ProductDetails() {
     event.preventDefault();
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
-    if(!auth){
+    if (!auth) {
       navigate("/sign-in");
     }
     if (partNumber) {
-      AddItemToCartNew({partNumber,quantity})
+      AddItemToCartNew({ partNumber, quantity })
         .then((res) => {
           // alert("Added to Cart")
           toast.success("Product Added To Cart")
@@ -65,11 +70,11 @@ export default function ProductDetails() {
       toast.error("out of Stock")
       console.error("Part number is missing.");
     }
-   
+
   };
 
   useEffect(() => {
-  
+
     if (cartItems?.cartItems?.cart?.lines.length > 0) {
       dispatch(getCartItems());
     }
@@ -84,26 +89,29 @@ export default function ProductDetails() {
   }, [productId]);
 
 
+
   useEffect(() => {
-    receiveProducts().then((data) => {
+    receiveProducts(setLoading).then((data) => {
       setTopProducts(data.hits);
       setLoading(!loading)
     });
   }, []);
 
+
+
   useEffect(() => {
     const checkItem = CheckCardItem(productDetails?.sKUs?.[0]?.partNumber);
     setCheckCart(checkItem);
   }, [cartItems, productDetails]);
- 
-  
+
+
   const CheckCardItem = (ID) => {
     let Cart = cartItems?.cartItems?.orderItem;
     let foundInCart = false;
     if (Cart && Cart.length > 0) {
       for (const cartItem of Cart) {
         // console.log("cartItem---", cartItem.partNumber, "ID---", ID);
- 
+
         if (cartItem.partNumber === ID) {
           foundInCart = true;
           break;
@@ -114,21 +122,24 @@ export default function ProductDetails() {
     return foundInCart;
   };
 
-// // console.log(productDetails)
-// if(!loading){
-//   return <LinearProgress/>
-// }
- 
+  // // console.log(productDetails)
+  // if(!loading){
+  //   return <LinearProgress/>
+  // }
+  const cleanSize = (size) => {
+    return size.replace(/\D/g, ''); // Remove all non-digit characters
+  };
 
-if(loading){
-  return <Skeleton variant="rectangular" width="100%" height={500} />
-}
+  console.log(selectedSize)
+  if (loading) {
+    return <Skeleton variant="rectangular" width="100%" height={500} />
+  }
 
   return (
     <>
-    <Toaster/>
-      <div style={{ marginTop: '20px', marginLeft: '100px',marginBottom:'20px' }}>
-        <Link to='/shops'> <b>Product /</b> {productDetails?.name}</Link>
+      <Toaster />
+      <div style={{ marginTop: '20px', marginLeft: '100px', marginBottom: '20px' }}>
+        <Link to='/shops'> <b>Products /</b> {productDetails?.name}</Link>
       </div>
       <Container >
         {
@@ -142,7 +153,7 @@ if(loading){
             </ProductImage>
             <ProductDetail>
               <Title>{productDetails?.name}</Title>
-              
+
               <div style={{ marginBottom: '10px' }}>
                 {/* <span className="text-gray-600 text-sm">
             <del>${productDetails[0]?.price[0]?.value}</del>
@@ -163,9 +174,9 @@ if(loading){
 
               <div style={{ marginTop: '10px' }}>
                 {productDetails?.variants &&
-                <div>
-                <label>Color:   {activeImage?.colour}</label>
-                </div>}
+                  <div>
+                    <label>Color:   {activeImage?.colour}</label>
+                  </div>}
                 <ColorVariant>
 
                   {productDetails?.variants && productDetails?.variants.map((variant, index) => (
@@ -178,16 +189,17 @@ if(loading){
                 </div>} */}
                 <div style={{ marginTop: '10px' }}>
                   {productDetails?.sizes &&
-                  <div>
-                    <label htmlFor="">
-                      Size:
-                    </label>
-                  </div>}
-                 <ColorVariant>
+                    <div>
+                      <label htmlFor="">
+                        Size: {selectedSize && selectedSize}
+                      </label>
+                    </div>}
+                  <ColorVariant>
                     {productDetails?.sizes && productDetails?.sizes.map((size, index) => {
                       const digits = size.match(/\d+/);
                       return (
-                        <ColorCircle key={index} onClick={() => setSelectedSize(size)}>
+                        <ColorCircle key={index} onClick={() => setSelectedSize(cleanSize(size))}>
+
                           {digits && digits[0]}
                         </ColorCircle>
                       );
@@ -200,75 +212,107 @@ if(loading){
                   <QuantityButton onClick={() => setQty((pre) => pre + 1)}>+</QuantityButton>
                 </QuantityContainer> */}
 
-              
-        <div className="lg:flex items-center lg:space-x-10 pt-4">
-          <div className="flex items-center space-x-2 ">
-            <IconButton
-              onClick={() => setQty((pre) => pre - 1)}
-              disabled={qty <= 1}
-              color="primary"
-              aria-label="add an alarm"
-            >
-              <RemoveCircleOutlineIcon />
-            </IconButton>
 
-            <span className="py-1 px-7 border rounded-sm">
-              {qty}
-            </span>
-            <IconButton
-               onClick={() => setQty((pre) => pre + 1)}
-              color="primary"
-              aria-label="add an alarm"
-            >
-              <AddCircleOutlineIcon />
-            </IconButton>
-          </div>
-        
-        </div>
+                <div className="lg:flex items-center lg:space-x-10 pt-4">
+                  <div className="flex items-center space-x-2 ">
+                    <IconButton
+                      onClick={() => setQty((pre) => pre - 1)}
+                      disabled={qty <= 1}
+                      color="primary"
+                      aria-label="add an alarm"
+                    >
+                      <RemoveCircleOutlineIcon />
+                    </IconButton>
+
+                    <span className="py-1 px-7 border rounded-sm">
+                      {qty}
+                    </span>
+                    <IconButton
+                      onClick={() => setQty((pre) => pre + 1)}
+                      color="primary"
+                      aria-label="add an alarm"
+                    >
+                      <AddCircleOutlineIcon />
+                    </IconButton>
+                  </div>
+
+                </div>
 
 
               </div>
-             
-             {!checkCart ? (
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      sx={{
-                        padding: ".8rem 2rem",
-                        marginTop: "2rem",
-                        bgcolor: grey[900],
-                      }}
-                      onClick={handleSubmit}
-                    >
-                      Add To Cart
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      sx={{
-                        padding: ".8rem 2rem",
-                        marginTop: "2rem",
-                        bgcolor: grey[900],
-                      }}
-                      onClick={() => {
-                        navigate("/cart");
-                      }}
-                    >
-                      View Cart
-                    </Button>
-                  )}
-             <div>
-              <h2 style={{marginTop:'20px'}}> <b>Description</b> </h2>
-             </div>
-            <Details style={{marginTop:'10px'}}>{productDetails?.longDescription}</Details>
+
+              {!checkCart ? (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    padding: ".8rem 2rem",
+                    marginTop: "2rem",
+                    bgcolor: grey[900],
+                  }}
+                  onClick={handleSubmit}
+                >
+                  Add To Cart
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    padding: ".8rem 2rem",
+                    marginTop: "2rem",
+                    bgcolor: grey[900],
+                  }}
+                  onClick={() => {
+                    navigate("/cart");
+                  }}
+                >
+                  View Cart
+                </Button>
+              )}
+              <div>
+                <h2 style={{ marginTop: '20px' }}> <b>Description</b> </h2>
+              </div>
+              <Details style={{ marginTop: '10px' }}>{productDetails?.longDescription}</Details>
             </ProductDetail>
           </>
         }
+
       </Container>
+      <Div>
+          <h1 style={{textAlign:'center',fontSize:"24px"}}> <b>Similer Products</b></h1>
+        <SimilarProductsContainer>
+          {topProducts &&
+            topProducts
+              .sort(() => Math.random() - 0.5) // Shuffle the array randomly
+              .slice(0, 4) // Take the first four elements
+              .map((product, index) => (
+                <HomeProductCard key={index} product={product} />
+              ))}
+        </SimilarProductsContainer>
+        </Div>
     </>
   );
 }
+
+
+const Div =styled.div`
+margin-top: 50px;
+   background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Add more styles as needed */
+`
+
+const SimilarProductsContainer = styled.div`
+  display: grid;
+  
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px 150px; /* Adjusted padding for a more typical layout */
+  /* Optional: Uncomment if background color is desired */
+`;
 
 
 const Container = styled.div`

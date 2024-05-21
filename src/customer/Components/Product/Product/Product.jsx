@@ -62,7 +62,7 @@ export default function Product() {
 
 
   }, [])
-  console.log(filters)
+  // console.log(customersProduct)
   const handleLoderClose = () => {
     setIsLoaderOpen(false);
   };
