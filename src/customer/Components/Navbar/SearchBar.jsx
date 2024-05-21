@@ -20,7 +20,7 @@ const SearchBar = () => {
   const {  cart, newUser, cartItems } = useSelector((store) => store);
   const totalQuantity = cartItems?.cartItems?.orderItem?.length || 0;
 
-  console.log(cartItems,"quantity")
+  // console.log(cartItems,"quantity")
 const navigate = useNavigate();
   const DROPDOWN_LINKS = [
     { text: 'Sign In', href: '/sign-in' },

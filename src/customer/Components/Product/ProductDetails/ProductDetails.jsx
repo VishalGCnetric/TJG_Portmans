@@ -20,7 +20,7 @@ import { grey } from "@mui/material/colors";
 import styled from "styled-components";
 import { SignalWifiStatusbarNull, SingleBedSharp } from "@mui/icons-material";
 import { toast, Toaster } from "react-hot-toast";
-import SimilerProducts from "./SimilerProducts";
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -53,7 +53,9 @@ export default function ProductDetails() {
     event.preventDefault();
     const partNumber = activeImage && activeImage.partNumber;
     const quantity = qty;
-    if (!auth) {
+
+    if(!auth){
+      toast.error("Please Login First")
       navigate("/sign-in");
     }
     if (partNumber) {
@@ -67,7 +69,7 @@ export default function ProductDetails() {
           console.error("Error adding item to cart:", error);
         });
     } else {
-      toast.error("out of Stock")
+      // toast.error("out of Stock")
       console.error("Part number is missing.");
     }
 
@@ -436,4 +438,3 @@ const AddToCartButton = styled.button`
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
   }
 `;
-

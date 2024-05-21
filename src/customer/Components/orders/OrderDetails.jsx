@@ -50,18 +50,18 @@ const OrderDetails = () => {
           <Grid item xs={12} md={9}>
             <OrderTracker
               activeStep={
-                orderDetails.orderStatus === "M"
+                orderDetails?.orderStatus === "M"
                   ? 1
-                  : orderDetails.orderStatus === "CONFIRMED"
+                  : orderDetails?.orderStatus === "CONFIRMED"
                   ? 2
-                  : orderDetails.orderStatus === "SHIPPED"
+                  : orderDetails?.orderStatus === "SHIPPED"
                   ? 3
                   : 5
               }
             />
           </Grid>
           <Grid item>
-            {orderDetails.orderStatus === "DELIVERED" ? (
+            {orderDetails?.orderStatus === "DELIVERED" ? (
               <Button color="error" variant="outlined">
                 Return
               </Button>
@@ -74,7 +74,7 @@ const OrderDetails = () => {
         </Grid>
       </Box>
       <Grid container spacing={4}>
-        {orderDetails.orderItem.map((item, index) => {
+        {orderDetails?.orderItem.map((item, index) => {
           const product = products.find((product) => product.partNumber === item.partNumber);
           return (
             <Grid item xs={12} key={index}>

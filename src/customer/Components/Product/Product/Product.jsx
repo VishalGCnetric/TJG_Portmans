@@ -16,7 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Pagination from "@mui/material/Pagination";
 
-import { singleFilter, sortOptions } from "./FilterData";
+import {  sortOptions } from "./FilterData";
 import ProductCard from "../ProductCard/ProductCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { productdata } from "../../../../data";
@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import {
   findProducts,
   findProductsByCategory,
+  findProductsbyPrice,
 } from "../../../../Redux/Customers/Product/Action";
 import { deepPurple } from "@mui/material/colors";
 import { Backdrop, Box, Button, CircularProgress, Grid, Skeleton, TextField, Typography } from "@mui/material";
@@ -38,36 +39,29 @@ function classNames(...classes) {
 }
 
 export default function Product() {
+  // State for managing mobile filters visibility
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // React router hooks for navigation, dispatching actions, and accessing parameters
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
   const param = useParams();
-  const { customersProduct } = useSelector((store) => store);
   const location = useLocation();
+
+  // State for storing JWT token, loader visibility, products, search value, and filters
+  const jwt = localStorage.getItem("jwt");
   const [isLoaderOpen, setIsLoaderOpen] = useState(!false);
   const [products, setProducts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchProducts, setSearchProducts] = useState([]);
   const [filters, setFilters] = useState([]);
-  const [min,setMin]= useState(0)
-  const [max,setMax]= useState(1000)
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}filters/portmans`).then((res) => res.json()).then((res) => {
-      setFilters(res.filters);
-    }).catch((err) => {
-      console.log(err);
-    })
-
-
-  }, [])
-  // console.log(customersProduct)
-  const handleLoderClose = () => {
-    setIsLoaderOpen(false);
-  };
-
-  // const filter = decodeURIComponent(location.search);
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(1000);
+  const [priceChange,setPriceChange] = useState(false);
+  // State for loading indicator
+  const [loading, setLoading] = useState(false);
+const [singleFilter,setSinglefilter] = useState([])
+  // Extracting search parameters from the URL
   const decodedQueryString = decodeURIComponent(location.search);
   const searchParams = new URLSearchParams(decodedQueryString);
   const colorValue = searchParams.get("color");
@@ -77,15 +71,31 @@ export default function Product() {
   const sortValue = searchParams.get("sort");
   const pageNumber = searchParams.get("page") || 1;
   const stock = searchParams.get("stock");
-  const [loading, setLoading] = useState(false);
-  // console.log("location - ", colorValue, sizeValue,price,disccount);
 
+  // Closing the loader
+  // const handleLoderClose = () => {
+  //   setIsLoaderOpen(false);
+  // };
+
+  // Handling sort change and updating URL
   const handleSortChange = (value) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("sort", value);
     const query = searchParams.toString();
     navigate({ search: `?${query}` });
   };
+// filter data component
+const fetchfilters = () => {
+  fetch(`${API_BASE_URL}filters/portmans`).then((response) => {
+    return response.json();
+  }).then((res)=>{
+    console.log(res)
+    setSinglefilter(res.filters)}).catch((err)=>{console.log(err)})
+}
+useEffect(()=>{
+  fetchfilters()
+},[])
+  // Handling pagination change and updating URL
   const handlePaginationChange = (event, value) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", value);
@@ -93,68 +103,56 @@ export default function Product() {
     navigate({ search: `?${query}` });
   };
 
+  // Fetching products based on filters, sorting, and pagination from URL parameters
   useEffect(() => {
-    const [minPrice, maxPrice] =
-      price === null ? [0, 0] : price.split("-").map(Number);
-    const data = {
-      category: param.lavelThree,
-      colors: colorValue || [],
-      sizes: sizeValue || [],
-      minPrice: minPrice || 0,
-      maxPrice: maxPrice || 10000,
-      minDiscount: disccount || 0,
-      sort: sortValue || "price_low",
-      pageNumber: pageNumber,
-      pageSize: 10,
-      stock: stock,
-    };
-    dispatch(findProducts(data));
-  }, [
-    param.lavelThree,
-    colorValue,
-    sizeValue,
-    // price,
-    disccount,
-    sortValue,
-    pageNumber,
-    stock,
-  ]);
+    const [minPrice, maxPrice] = price === null ? [0, 0] : price.split("-").map(Number);
+    if(price){
+      handlePriceMinMax()
+    }else{
+      const data = {
+        category: param.lavelThree,
+        colors: colorValue || [],
+        sizes: sizeValue || [],
+        minDiscount: disccount || 0,
+        sort: sortValue || "price_low",
+        pageNumber: pageNumber,
+        pageSize: 10,
+        stock: stock,
+      };
+      dispatch(findProducts(data));
+    }
+    
+    console.log(1)
+  }, [param.lavelThree, colorValue, sizeValue, disccount, sortValue, pageNumber, stock]);
 
+  // Initial fetch of products without filters
   useEffect(() => {
     receiveProducts(setLoading).then((data) => {
       setProducts(data.hits);
-      console.log("this  is useEffect data", data, products);
       setSearchProducts(data.hits);
     });
   }, []);
 
+  // Handling checkbox filter change and updating URL
   const handleFilter = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
-
     let filterValues = searchParams.getAll(sectionId);
 
     if (filterValues.length > 0 && filterValues[0].split(",").includes(value)) {
-      filterValues = filterValues[0]
-        .split(",")
-        .filter((item) => item !== value);
+      filterValues = filterValues[0].split(",").filter((item) => item !== value);
       if (filterValues.length === 0) {
         searchParams.delete(sectionId);
       }
-      console.log("includes");
     } else {
-      // Remove all values for the current section
-      // searchParams.delete(sectionId);
       filterValues.push(value);
     }
 
-    if (filterValues.length > 0)
-      searchParams.set(sectionId, filterValues.join(","));
-
-    // history.push({ search: searchParams.toString() });
+    if (filterValues.length > 0) searchParams.set(sectionId, filterValues.join(","));
     const query = searchParams.toString();
     navigate({ search: `?${query}` });
   };
 
+  // Handling radio button filter change and updating URL
   const handleRadioFilterChange = (e, sectionId) => {
     setSearchValue(e.target.value);
     const searchParams = new URLSearchParams(location.search);
@@ -163,56 +161,42 @@ export default function Product() {
     navigate({ search: `?${query}` });
   };
 
-  useEffect(() => {
-    if (customersProduct.loading) {
-      setIsLoaderOpen(true);
-    } else {
-      setIsLoaderOpen(false);
-    }
-  }, [customersProduct.loading]);
+  // Updating loader state based on product loading state
+  // useEffect(() => {
+  //   if (customersProduct.loading) {
+  //     setIsLoaderOpen(true);
+  //   } else {
+  //     setIsLoaderOpen(false);
+  //   }
+  // }, [customersProduct.loading]);
 
+  // Handling price range filter and updating products and URL
   const handlePriceMinMax = () => {
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set("minPrice", min);
-    searchParams.set("maxPrice", max);
+    searchParams.set("price", `${min}-${max}`);
     const query = searchParams.toString();
-    navigate({ search: `?${query}` });
-    // fetchData();
-  };
 
+    dispatch(findProductsbyPrice({ minPrice: min, maxPrice: max }))
+      .then(data => {
+        console.log(data, 'data')
+        setProducts(data.hits);
+        setSearchProducts(data.hits);
+      })
+      .catch(error => {
+        setSearchProducts(null)
+        console.error('Error retrieving products:', error);
+      });
+    // navigate({ search: `?${query}` });
+  };
+// useEffect(()=>{
+//   handlePriceMinMax()
+// },[price])
+  // Updating search value state
   const TextFielData = (e) => {
     setSearchValue(e.target.value);
-    // let OriginalProudcts = products;
-
-    // if (e.target.value.length > 0) {
-    //   let searchResults = products?.filter((eachUser) =>
-    //     eachUser?.name?.toLowerCase().includes(e.target.value)
-    //   );
-    //   setProducts(searchResults);
-    // } else {
-    //   setProducts(OriginalProudcts);
-    // }
   };
 
-  // useEffect(() => {
-  //   // let OriginalProudcts = products;
-
-  //   if (searchValue) {
-  //     // let searchResults = products?.filter((eachUser) =>
-  //     //   eachUser?.name?.toLowerCase().includes(searchValue)
-  //     // );
-  //     // setSearchProducts(searchResults);
-
-  //     receiveProductsSearch(searchValue).then((data) => {
-  //       setSearchProducts(data.hits);
-  //     });
-  //   } else {
-  //     setSearchProducts(products);
-  //   }
-  // }, [searchValue.length]);
-
-
-  // Debounce the search input to limit API calls while typing
+  // Debounced search input to limit API calls while typing
   const debouncedSearch = debounce((value) => {
     if (value) {
       receiveProductsSearch(value).then((data) => {
@@ -222,11 +206,16 @@ export default function Product() {
       setSearchProducts(products);
     }
   }, 500);
+
+  // Calling debounced search function with current search value
   useEffect(() => {
-    // Call the debounced search function with the current search value
     debouncedSearch(searchValue);
+    console.log(2)
   }, [searchValue]);
-  console.log(products, searchProducts)
+
+
+  
+  // console.log(products, searchProducts)
   return (
     <div className="bg-white -z-20 ">
       <div>
@@ -433,7 +422,7 @@ export default function Product() {
                 <form className="hidden lg:block border rounded-md p-5 ">
                   <Box
                     sx={{
-                      border: '1px solid #ccc',
+                      // border: '1px solid #ccc',
                       zIndex: 10000,
                       padding: 0.5,
                       backgroundColor: 'white',
@@ -497,7 +486,7 @@ export default function Product() {
                     </Grid>
                   </Box>
 
-                  {singleFilter.map((section) => (
+                  {singleFilter?.map((section) => (
                     <Disclosure
                       as="div"
                       key={section.id}
@@ -532,11 +521,11 @@ export default function Product() {
                                 defaultValue="female"
                                 name="radio-buttons-group"
                               >
-                                {section.options.map((option, optionIdx) => (
+                                {section?.children?.map((option, optionIdx) => (
                                   <FormControlLabel
-                                    value={option.value}
+                                    value={option.name}
                                     control={<Radio />}
-                                    label={option.label}
+                                    label={option.name}
                                     onChange={(e) =>
                                       handleRadioFilterChange(e, section.id)
                                     }
@@ -570,12 +559,13 @@ export default function Product() {
                   <div className="flex flex-wrap justify-center bg-white border py-5 rounded-md ">
 
                     {loading ? <Skeleton variant="rectangular" width='100%' height={500} /> : <>
-                      {
+                    {searchProducts?<>{
                         searchProducts?.map((item) => (
                           <div className="w-[15rem] border m-3 transition-all cursor-pointer hover:scale-105">
                             <HomeProductCard product={item} />
                           </div>
-                        ))}
+                        ))}</>:<h1>No Products Found</h1>}
+                      
                     </>
                     }
                     {/* <ProductCard product={products} /> */}

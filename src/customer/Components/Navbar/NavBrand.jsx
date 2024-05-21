@@ -59,7 +59,7 @@ const BrandsWrapper = styled.div`
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  margin-left: 20px;
+  margin-left: 4rem;
   :hover {
     background-color: white;
   }

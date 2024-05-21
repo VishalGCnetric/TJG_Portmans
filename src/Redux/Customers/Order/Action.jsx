@@ -32,7 +32,9 @@ export const createOrder = (reqData) => async (dispatch) => {
       reqData.address,
     );
 console.log("address data ", data);
-reqData.toast.succes("shipping address added successfully")
+localStorage.setItem("shippingAddress", JSON.stringify(data));
+
+reqData.toast.succes("Shipping Address Added Successfully")
     if (data.userId) {
       reqData.navigate({ search: `step=3&order_id=${data.userId}` });
     }
