@@ -6,6 +6,7 @@ import { getCartItems, RemoveCartItemNew, updateCartQtyNEW } from "../../../acti
 import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from 'react-hot-toast';
+import EmptyCart from "./EmptyCart";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -35,28 +36,19 @@ const Cart = () => {
   return (
     <div>
       <Toaster/>
-      {cartItems?.cartItems?.orderitems ? <div className="px-5 sticky top-0 w-[100%] h-[10vh] mt-5 lg:mt-0">
-          <div className="border p-5 bg-white shadow-lg rounded-md">
-           <div>Cart Is Empty</div>
-        </div>
-        </div>:<><div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
+      <div className="mt-5 lg:grid grid-cols-3 lg:px-16 relative">
           <div className="lg:col-span-2 lg:px-5 bg-white">
             <div className=" space-y-3">
-              {cartItems?.cartItems?.orderItem === undefined ? <div className="border p-5 bg-white shadow-lg display-flex flex-col justify-center align-center text-center rounded-md">
-                <h1 className="text-2xl font-bold opacity-60 pb-4">Cart Is Empty</h1>
-              {/* <img src="./empty.jpg" height={"300px"} width={"300px"}  alt="empty cart"/> */}
-              </div>: cartItems?.cartItems?.orderItem?.map((item) => (
+              {cartItems?.cartItems?.orderItem === undefined ?<EmptyCart/>: cartItems?.cartItems?.orderItem?.map((item) => (<>
                 <CartItem
                   key={item.id}
                   item={item}
                   showButton={true}
                   handleRemoveItemFromCart={handleRemoveItemFromCart}
                   handleUpdateCartQty={handleUpdateCartQty}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0 ">
+                /> 
+              
+                <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0 ">
             <div className="border p-5 bg-white shadow-lg rounded-md">
               <p className="font-bold opacity-60 pb-4">PRICE DETAILS</p>
               <hr />
@@ -69,7 +61,7 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Discount</span>
-                  <span className="text-green-700">₹ 0</span>
+                  <span className="text-green-700">$ 0</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Delivery Charges</span>
@@ -100,9 +92,13 @@ const Cart = () => {
               </Button>
             </div>
           </div>
-        </div>
-        </>
-        }
+              </>
+               
+              ))}
+            </div>
+          </div>
+
+      </div>
   
     </div>
   );

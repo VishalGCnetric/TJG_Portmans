@@ -63,7 +63,13 @@ export default function ProductDetails() {
           console.error("Error adding item to cart:", error);
         });
     } else {
-      // toast.error("out of Stock")
+      if(!auth){
+        toast.error("Please Login First")
+        // navigate("/sign-in");
+      }else{
+        toast.error("out of Stock")
+
+      }
       console.error("Part number is missing.");
     }
    

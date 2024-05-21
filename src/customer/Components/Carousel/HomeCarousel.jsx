@@ -8,11 +8,13 @@ const handleDragStart = (e) => e.preventDefault();
 
 const HomeCarousel = ({images}) => {
   const navigate = useNavigate();
-  const item = images?.slice(4, 5).map((item, index) => (
+  const data =[images[4],images[9]]
+  // console.log(data,images)
+  const item = data?.map((item, index) => (
     <img
       className="cursor-pointer"
       // onClick={() => navigate(item.path)}
-      src={`${item.url}`}
+      src={`${item?.url}`}
       alt={`banner-${index + 1}`}
       onDragStart={handleDragStart}
       role="presentation"
